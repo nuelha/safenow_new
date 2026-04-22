@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 업무 - 안전NOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        sidebar: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 사이드바 -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="flex items-center gap-3">
+                    <div class="sidebar-logo">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-bold text-white">안전NOW</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="../index.html" class="sidebar-item">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                            대시보드
+                        </a>
+                    </li>
+                    <li>
+                        <a href="my-tasks.html" class="sidebar-item active">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            내 업무
+                            <span class="sidebar-item-badge red">5</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-section">안전 활동</li>
+                    <li><a href="risk-assessment.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>위험성평가</a></li>
+                    <li><a href="tbm.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>TBM</a></li>
+                    <li><a href="safety-inspection.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>안전점검</a></li>
+                    <li><a href="safety-education.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>안전보건교육</a></li>
+                    <li><a href="safety-policy.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>안전경영방침</a></li>
+                    <li><a href="safety-budget.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>안전보건예산</a></li>
+                    <li><a href="opinion.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>의견청취<span class="sidebar-item-badge orange">2</span></a></li>
+                    <li><a href="improvement.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>개선조치<span class="sidebar-item-badge yellow">8</span></a></li>
+
+                    <li class="sidebar-section">관리</li>
+                    <li><a href="compliance.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>이행관리</a></li>
+                    <li><a href="documents.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>업무문서관리</a></li>
+                    <li><a href="process.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>공정관리</a></li>
+                    <li><a href="contractor.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>도급관리</a></li>
+                    <li><a href="workplace.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>사업장관리</a></li>
+
+                    <li class="sidebar-section">지원</li>
+                    <li><a href="support.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>고객지원</a></li>
+                    <li><a href="my-info.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>내 정보관리</a></li>
+                </ul>
+            </nav>
+
+            <div class="workspace-selector">
+                <button class="workspace-btn">
+                    <div class="workspace-avatar">본</div>
+                    <div class="workspace-info">
+                        <div class="workspace-name">본사 사업장</div>
+                        <div class="workspace-role">경영책임자</div>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="header-title">내 업무</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-notification">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <span class="header-notification-dot"></span>
+                    </button>
+                    <div class="header-user">
+                        <div class="header-avatar">김</div>
+                        <span class="header-username">김대표</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto">
+                <!-- 상단 통계 카드 -->
+                <div class="p-6 pb-0">
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="card stat-card p-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">해야 할 일</p>
+                                    <p class="text-2xl font-bold text-gray-900 mt-1">12<span class="text-sm font-normal text-gray-500">건</span></p>
+                                </div>
+                                <div class="stat-card-icon blue">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card stat-card p-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">기한 초과</p>
+                                    <p class="text-2xl font-bold text-red-600 mt-1">3<span class="text-sm font-normal text-gray-500">건</span></p>
+                                </div>
+                                <div class="stat-card-icon red">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card stat-card p-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">완료</p>
+                                    <p class="text-2xl font-bold text-green-600 mt-1">28<span class="text-sm font-normal text-gray-500">건</span></p>
+                                </div>
+                                <div class="stat-card-icon green">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card stat-card p-5">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">업무 진행률</p>
+                                    <p class="text-2xl font-bold text-gray-900 mt-1">70<span class="text-sm font-normal text-gray-500">%</span></p>
+                                </div>
+                                <div class="stat-card-icon purple">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="progress">
+                                    <div class="progress-bar purple" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 탭 & 필터 -->
+                <div class="p-6">
+                    <div class="card">
+                        <div class="px-6 pt-4" data-tab-group="my-tasks">
+                            <div class="sub-tabs">
+                                <button class="sub-tab active" data-tab="all">전체<span class="count">43</span></button>
+                                <button class="sub-tab" data-tab="document">문서업무<span class="count">18</span></button>
+                                <button class="sub-tab" data-tab="approval">결재대기<span class="count">5</span></button>
+                                <button class="sub-tab" data-tab="signature">전자서명<span class="count">8</span></button>
+                                <button class="sub-tab" data-tab="completed">완료<span class="count">28</span></button>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="input-with-icon">
+                                    <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    <input type="text" class="input w-64" placeholder="업무 검색...">
+                                </div>
+                                <select class="select">
+                                    <option>전체 유형</option>
+                                    <option>위험성평가</option>
+                                    <option>TBM</option>
+                                    <option>안전점검</option>
+                                    <option>안전보건교육</option>
+                                    <option>개선조치</option>
+                                    <option>이행관리</option>
+                                </select>
+                                <select class="select">
+                                    <option>전체 상태</option>
+                                    <option>진행중</option>
+                                    <option>기한임박</option>
+                                    <option>기한초과</option>
+                                    <option>완료</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-secondary btn-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                </svg>
+                                필터
+                            </button>
+                        </div>
+
+                        <div data-tab-content="my-tasks">
+                            <!-- 전체 탭 -->
+                            <div class="tab-pane" data-pane="all">
+                                <div class="px-6 py-3 bg-red-50 border-b border-red-100">
+                                    <div class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-red-700">기한 초과 업무 3건</span>
+                                    </div>
+                                </div>
+
+                                <div class="p-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <!-- 기한 초과 카드 1 -->
+                                        <div class="card border-l-4 border-l-red-500 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-danger">기한초과</span>
+                                                        <span class="badge badge-gray">개선조치</span>
+                                                    </div>
+                                                    <span class="text-sm text-red-600 font-semibold">4일 초과</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">용접 작업장 환기시설 설치 완료 확인</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>울산 제1공장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김안전</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">처리하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 기한 초과 카드 2 -->
+                                        <div class="card border-l-4 border-l-red-500 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-danger">기한초과</span>
+                                                        <span class="badge badge-gray">안전점검</span>
+                                                    </div>
+                                                    <span class="text-sm text-red-600 font-semibold">2일 초과</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">전기설비 정기점검 결과 보고</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>인천 물류센터</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">박</div>
+                                                        <span class="text-xs text-gray-500">박점검</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">처리하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 기한 초과 카드 3 -->
+                                        <div class="card border-l-4 border-l-red-500 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-danger">기한초과</span>
+                                                        <span class="badge badge-gray">이행관리</span>
+                                                    </div>
+                                                    <span class="text-sm text-red-600 font-semibold">1일 초과</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">4월 안전보건관리 이행점검 완료</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>본사</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">이</div>
+                                                        <span class="text-xs text-gray-500">이관리</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">처리하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 오늘 마감 카드 -->
+                                        <div class="card border-l-4 border-l-orange-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-warning">오늘마감</span>
+                                                        <span class="badge badge-gray">위험성평가</span>
+                                                    </div>
+                                                    <span class="text-sm text-orange-600 font-semibold">오늘 마감</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">A라인 정기 위험성평가 검토 및 승인</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>울산 제1공장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">최</div>
+                                                        <span class="text-xs text-gray-500">최평가</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">검토하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 내일 마감 카드 -->
+                                        <div class="card border-l-4 border-l-yellow-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-warning">내일마감</span>
+                                                        <span class="badge badge-gray">결재</span>
+                                                    </div>
+                                                    <span class="text-sm text-orange-600 font-semibold">D-1</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">안전보건예산 상반기 집행계획 결재</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>본사</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김총괄</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">결재하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 진행중 카드 1 -->
+                                        <div class="card border-l-4 border-l-blue-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">진행중</span>
+                                                        <span class="badge badge-gray">TBM</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-3</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">B라인 TBM 실시 현황 확인</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>울산 제2공장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">정</div>
+                                                        <span class="text-xs text-gray-500">정TBM</span>
+                                                    </div>
+                                                    <button class="btn btn-outline btn-sm">상세보기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 진행중 카드 2 -->
+                                        <div class="card border-l-4 border-l-blue-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">진행중</span>
+                                                        <span class="badge badge-gray">안전보건교육</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-4</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">신규 입사자 안전교육 실시</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>본사</span>
+                                                    <span class="text-gray-400">·</span>
+                                                    <span>대상 5명</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">교</div>
+                                                        <span class="text-xs text-gray-500">교육담당</span>
+                                                    </div>
+                                                    <button class="btn btn-outline btn-sm">상세보기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 진행중 카드 3 -->
+                                        <div class="card border-l-4 border-l-blue-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">진행중</span>
+                                                        <span class="badge badge-gray">안전점검</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-5</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">월간 소방시설 점검</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>전체 사업장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">소</div>
+                                                        <span class="text-xs text-gray-500">소방담당</span>
+                                                    </div>
+                                                    <button class="btn btn-outline btn-sm">상세보기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 진행중 카드 4 -->
+                                        <div class="card border-l-4 border-l-blue-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">진행중</span>
+                                                        <span class="badge badge-gray">개선조치</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-7</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">통로 바닥 미끄럼 방지 페인트 도포</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                                    <span>울산 제1공장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">시</div>
+                                                        <span class="text-xs text-gray-500">시설팀</span>
+                                                    </div>
+                                                    <button class="btn btn-outline btn-sm">상세보기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                                    <p class="text-sm text-gray-500">총 43건 중 1-9건</p>
+                                    <div class="flex items-center gap-1">
+                                        <button class="btn btn-outline btn-sm" disabled>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                        </button>
+                                        <button class="btn btn-primary btn-sm">1</button>
+                                        <button class="btn btn-outline btn-sm">2</button>
+                                        <button class="btn btn-outline btn-sm">3</button>
+                                        <button class="btn btn-outline btn-sm">4</button>
+                                        <button class="btn btn-outline btn-sm">5</button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 문서업무 탭 -->
+                            <div class="tab-pane hidden" data-pane="document">
+                                <div class="p-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="card border-l-4 border-l-purple-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">작성중</span>
+                                                        <span class="badge badge-gray">이행관리</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-5</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">안전보건관리 5월 계획서 작성</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                    <span>본사</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김총괄</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">작성하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-l-4 border-l-purple-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">작성중</span>
+                                                        <span class="badge badge-gray">위험성평가</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-10</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">신규 공정 위험성평가 보고서</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                    <span>울산 제2공장</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">최</div>
+                                                        <span class="text-xs text-gray-500">최평가</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">작성하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 결재대기 탭 -->
+                            <div class="tab-pane hidden" data-pane="approval">
+                                <div class="p-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="card border-l-4 border-l-yellow-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-warning">결재대기</span>
+                                                        <span class="badge badge-gray">안전보건예산</span>
+                                                    </div>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">안전보건예산 상반기 집행계획</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>상신일: 2026-04-20</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김총괄</span>
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <button class="btn btn-secondary btn-sm">반려</button>
+                                                        <button class="btn btn-primary btn-sm">승인</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-l-4 border-l-yellow-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-warning">결재대기</span>
+                                                        <span class="badge badge-gray">위험성평가</span>
+                                                    </div>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">A라인 정기 위험성평가 결과 보고</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>상신일: 2026-04-21</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">최</div>
+                                                        <span class="text-xs text-gray-500">최평가</span>
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <button class="btn btn-secondary btn-sm">반려</button>
+                                                        <button class="btn btn-primary btn-sm">승인</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 전자서명 탭 -->
+                            <div class="tab-pane hidden" data-pane="signature">
+                                <div class="p-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="card border-l-4 border-l-indigo-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">서명요청</span>
+                                                        <span class="badge badge-gray">안전경영방침</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-8</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">2026년 안전경영방침 서명</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>요청일: 2026-04-15</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김대표</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">서명하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-l-4 border-l-indigo-400 hover:shadow-md transition-shadow cursor-pointer">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">서명요청</span>
+                                                        <span class="badge badge-gray">TBM</span>
+                                                    </div>
+                                                    <span class="text-sm text-orange-600 font-semibold">오늘</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">4/22 A라인 TBM 참석 서명</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>요청일: 2026-04-22</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-500">김팀장</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">서명하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 완료 탭 -->
+                            <div class="tab-pane hidden" data-pane="completed">
+                                <div class="p-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="card border-l-4 border-l-green-400 hover:shadow-md transition-shadow cursor-pointer opacity-75">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-success">완료</span>
+                                                        <span class="badge badge-gray">TBM</span>
+                                                    </div>
+                                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                                <h3 class="font-medium text-gray-500 mb-2 line-clamp-2 line-through">TBM 리더 교육 일정 확정</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-400 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>완료일: 2026-04-22</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">김</div>
+                                                        <span class="text-xs text-gray-400">김관리</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-l-4 border-l-green-400 hover:shadow-md transition-shadow cursor-pointer opacity-75">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-success">완료</span>
+                                                        <span class="badge badge-gray">안전점검</span>
+                                                    </div>
+                                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                                <h3 class="font-medium text-gray-500 mb-2 line-clamp-2 line-through">일상 안전점검 - 자재창고</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-400 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>완료일: 2026-04-21</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">박</div>
+                                                        <span class="text-xs text-gray-400">박점검</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card border-l-4 border-l-green-400 hover:shadow-md transition-shadow cursor-pointer opacity-75">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-success">완료</span>
+                                                        <span class="badge badge-gray">개선조치</span>
+                                                    </div>
+                                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                </div>
+                                                <h3 class="font-medium text-gray-500 mb-2 line-clamp-2 line-through">안전난간 추가 설치</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-400 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                    <span>완료일: 2026-04-20</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600">시</div>
+                                                        <span class="text-xs text-gray-400">시설팀</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
