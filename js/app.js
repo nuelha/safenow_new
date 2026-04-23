@@ -124,7 +124,24 @@ function closeModal(modalId) {
 }
 
 // =========================================
-// 8. 초기화
+// 8. 목표 아코디언 토글
+// =========================================
+function toggleGoal(header) {
+    const accordion = header.closest('.goal-accordion');
+    const content = accordion.querySelector('.goal-content');
+    const chevron = header.querySelector('.goal-chevron');
+
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+    } else {
+        content.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+    }
+}
+
+// =========================================
+// 9. 초기화
 // =========================================
 function init() {
     // 역할 탭 클릭 이벤트 (대시보드 전용)
@@ -165,7 +182,7 @@ function init() {
 document.addEventListener('DOMContentLoaded', init);
 
 // =========================================
-// 9. 유틸리티 함수
+// 10. 유틸리티 함수
 // =========================================
 const Utils = {
     // 날짜 포맷

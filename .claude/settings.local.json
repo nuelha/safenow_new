@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Users\\User\\Documents\\safenow_new2\\design\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
