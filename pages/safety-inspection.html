@@ -389,6 +389,11 @@
                                     <option value="inprogress">진행중</option>
                                     <option value="done">완료</option>
                                 </select>
+                                <select class="select" id="sourceFilter">
+                                    <option value="">전체 출처</option>
+                                    <option value="direct">직접 등록</option>
+                                    <option value="opinion">의견청취 연동</option>
+                                </select>
                                 <div class="input-with-icon">
                                     <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -419,6 +424,23 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <!-- 의견청취 연동 점검 -->
+                                        <tr class="cursor-pointer hover:bg-gray-50 bg-purple-50" onclick="showInspectionDetail('insp-opinion-1')">
+                                            <td><span class="badge bg-red-100 text-red-700">특별점검</span></td>
+                                            <td>
+                                                <div>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="font-medium text-gray-900">[의견청취] 지게차 후진 중 충돌 위험 상황</span>
+                                                        <span class="badge bg-purple-100 text-purple-700 text-xs">의견청취</span>
+                                                    </div>
+                                                    <p class="text-xs text-gray-500 mt-0.5">특별점검표 · 5개 항목</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-600">2026-04-25</td>
+                                            <td class="text-gray-600">김점검</td>
+                                            <td class="text-center"><span class="text-gray-400">-</span></td>
+                                            <td class="text-center"><span class="badge badge-warning">예정</span></td>
+                                        </tr>
                                         <tr class="cursor-pointer hover:bg-gray-50" onclick="showInspectionDetail('insp-1')">
                                             <td><span class="badge bg-blue-100 text-blue-700">일상점검</span></td>
                                             <td>
@@ -524,12 +546,37 @@
                         <div class="grid grid-cols-3 gap-6">
                             <!-- 왼쪽: 점검 정보 -->
                             <div class="col-span-2 space-y-6">
+                                <!-- 의견청취 연동 알림 (연동된 경우에만 표시) -->
+                                <div id="opinionSourceCard" class="hidden">
+                                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-purple-900">의견청취에서 연동된 점검입니다</p>
+                                                    <p class="text-xs text-purple-700 mt-0.5">아차사고 신고 → 현장점검 실시</p>
+                                                </div>
+                                            </div>
+                                            <button class="text-sm text-purple-600 hover:text-purple-700 flex items-center gap-1" onclick="goToOpinion('near-miss-1')">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                원본 의견 보기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- 기본 정보 -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge bg-blue-100 text-blue-700">일상점검</span>
-                                            <span class="badge badge-success">완료</span>
+                                        <div class="flex items-center gap-3" id="detailBadges">
+                                            <span class="badge bg-blue-100 text-blue-700" id="detailTypeBadge">일상점검</span>
+                                            <span class="badge badge-success" id="detailStatusBadge">완료</span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <button class="btn btn-outline btn-sm">
@@ -541,23 +588,23 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <h2 class="text-lg font-bold text-gray-900 mb-4">A동 일상점검</h2>
+                                        <h2 class="text-lg font-bold text-gray-900 mb-4" id="detailTitle">A동 일상점검</h2>
                                         <div class="grid grid-cols-4 gap-4">
                                             <div>
                                                 <p class="text-sm text-gray-500 mb-1">점검일</p>
-                                                <p class="font-medium text-gray-900">2026-04-22</p>
+                                                <p class="font-medium text-gray-900" id="detailDate">2026-04-22</p>
                                             </div>
                                             <div>
                                                 <p class="text-sm text-gray-500 mb-1">점검자</p>
-                                                <p class="font-medium text-gray-900">김점검</p>
+                                                <p class="font-medium text-gray-900" id="detailInspector">김점검</p>
                                             </div>
                                             <div>
                                                 <p class="text-sm text-gray-500 mb-1">점검장소</p>
-                                                <p class="font-medium text-gray-900">A동 전체</p>
+                                                <p class="font-medium text-gray-900" id="detailLocation">A동 전체</p>
                                             </div>
                                             <div>
                                                 <p class="text-sm text-gray-500 mb-1">점검지</p>
-                                                <p class="font-medium text-gray-900">일상점검표</p>
+                                                <p class="font-medium text-gray-900" id="detailChecklist">일상점검표</p>
                                             </div>
                                         </div>
                                     </div>
@@ -675,15 +722,43 @@
                                 </div>
                             </div>
 
-                            <!-- 오른쪽: 개선조치 현황 -->
+                            <!-- 오른쪽: 연동 정보 및 개선조치 -->
                             <div class="space-y-6">
+                                <!-- 연동 출처 정보 -->
+                                <div class="card" id="linkedSourceCard">
+                                    <div class="card-header">
+                                        <h2 class="card-title">연동 정보</h2>
+                                    </div>
+                                    <!-- 연동 없는 경우 -->
+                                    <div class="card-body" id="noLinkedSource">
+                                        <div class="text-center text-gray-500 py-4">
+                                            <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                            </svg>
+                                            <p class="text-sm">연동 정보 없음</p>
+                                        </div>
+                                    </div>
+                                    <!-- 의견청취에서 연동된 경우 -->
+                                    <div class="card-body hidden" id="linkedOpinion">
+                                        <div class="p-3 bg-purple-50 border border-purple-200 rounded-lg cursor-pointer hover:bg-purple-100" onclick="goToOpinion('near-miss-1')">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="badge bg-purple-100 text-purple-700 text-xs">의견청취</span>
+                                                <span class="badge bg-orange-100 text-orange-700 text-xs">아차사고</span>
+                                            </div>
+                                            <p class="text-sm font-medium text-gray-900">지게차 후진 중 충돌 위험 상황</p>
+                                            <p class="text-xs text-gray-500 mt-1">작성자: 박작업</p>
+                                            <p class="text-xs text-gray-500">등록일: 2026-04-22</p>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- 연결된 개선조치 -->
                                 <div class="card">
                                     <div class="card-header">
                                         <h2 class="card-title">관련 개선조치</h2>
-                                        <span class="badge badge-info">1건</span>
+                                        <span class="badge badge-info" id="improvementCount">1건</span>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body" id="improvementList">
                                         <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg cursor-pointer hover:bg-yellow-100" onclick="goToImprovementDetail('imp-insp-1')">
                                             <div class="flex items-center justify-between mb-2">
                                                 <span class="badge badge-info">조치중</span>
@@ -692,6 +767,15 @@
                                             <p class="text-sm font-medium text-gray-900">비상구 유도등 교체</p>
                                             <p class="text-xs text-gray-500 mt-1">담당: 오전기 (시설팀)</p>
                                             <p class="text-xs text-gray-500">완료예정: 2026-04-25</p>
+                                        </div>
+                                    </div>
+                                    <!-- 개선조치 없는 경우 -->
+                                    <div class="card-body hidden" id="noImprovement">
+                                        <div class="text-center text-gray-500 py-4">
+                                            <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <p class="text-sm">모든 항목 적합</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1025,7 +1109,7 @@
                                     </svg>
                                     임시저장
                                 </button>
-                                <button class="btn btn-primary">
+                                <button class="btn btn-primary" onclick="showCompleteModal()">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
@@ -1272,6 +1356,126 @@
         </div>
     </div>
 
+    <!-- 점검 완료 & 개선조치 배정 모달 -->
+    <div id="completeModal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeCompleteModal()"></div>
+        <div class="modal-content w-full max-w-2xl">
+            <div class="modal-header">
+                <h2 class="modal-title">점검 완료</h2>
+                <button onclick="closeCompleteModal()" class="modal-close">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 점검 결과 요약 -->
+                <div class="p-4 bg-gray-50 rounded-lg mb-6">
+                    <h3 class="font-medium text-gray-900 mb-3">점검 결과 요약</h3>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div class="p-3 bg-white rounded-lg border">
+                            <p class="text-2xl font-bold text-green-600">8</p>
+                            <p class="text-sm text-gray-500">적합</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border border-red-200">
+                            <p class="text-2xl font-bold text-red-600">1</p>
+                            <p class="text-sm text-gray-500">부적합</p>
+                        </div>
+                        <div class="p-3 bg-white rounded-lg border">
+                            <p class="text-2xl font-bold text-gray-600">1</p>
+                            <p class="text-sm text-gray-500">해당없음</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 부적합 항목 - 개선조치 필요 여부 및 담당자 배정 -->
+                <div id="failItemsSection">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-medium text-gray-900">부적합 항목 개선조치 배정</h3>
+                        <span class="badge bg-red-100 text-red-700">1건</span>
+                    </div>
+
+                    <div class="border rounded-lg divide-y">
+                        <!-- 부적합 항목 1 -->
+                        <div class="p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex items-start gap-3">
+                                    <span class="badge bg-red-100 text-red-700 mt-0.5">부적합</span>
+                                    <div>
+                                        <p class="font-medium text-gray-900">비상조명등 작동 여부</p>
+                                        <p class="text-sm text-gray-500 mt-1">유도등 1개 불량</p>
+                                    </div>
+                                </div>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded border-gray-300" checked onchange="toggleImprovementForm(1, this.checked)">
+                                    <span class="text-sm text-gray-700">개선조치 생성</span>
+                                </label>
+                            </div>
+
+                            <!-- 개선조치 생성 폼 -->
+                            <div id="improvementForm1" class="mt-3 pt-3 border-t bg-yellow-50 -mx-4 -mb-4 p-4 rounded-b-lg">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label text-sm">담당자 <span class="text-red-500">*</span></label>
+                                        <select class="select w-full">
+                                            <option value="">담당자 선택</option>
+                                            <option value="oh" selected>오전기 (시설팀)</option>
+                                            <option value="lee">이설비 (설비팀)</option>
+                                            <option value="park">박설비 (설비팀)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label text-sm">완료 예정일 <span class="text-red-500">*</span></label>
+                                        <input type="date" class="input w-full" value="2026-04-29">
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <label class="form-label text-sm">개선 조치사항</label>
+                                    <input type="text" class="input w-full" value="비상구 유도등 교체" placeholder="개선 조치사항 입력">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 모든 항목 적합인 경우 -->
+                <div id="allPassSection" class="hidden">
+                    <div class="p-6 bg-green-50 rounded-lg text-center">
+                        <svg class="w-12 h-12 text-green-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="font-medium text-green-800">모든 점검 항목이 적합합니다</p>
+                        <p class="text-sm text-green-600 mt-1">추가 개선조치가 필요하지 않습니다</p>
+                    </div>
+                </div>
+
+                <!-- 의견청취 연동 시 상태 업데이트 안내 -->
+                <div id="opinionUpdateNotice" class="mt-4 p-3 bg-purple-50 rounded-lg border border-purple-200 hidden">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-medium text-purple-900">의견청취 연동 점검</p>
+                            <p class="text-sm text-purple-700 mt-1">점검 완료 시 연동된 의견청취 건의 상태도 함께 업데이트됩니다.</p>
+                            <p class="text-xs text-purple-600 mt-1">• 개선조치 생성 시 → 의견청취 상태: 개선조치중</p>
+                            <p class="text-xs text-purple-600">• 개선조치 없이 완료 시 → 의견청취 상태: 완료</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeCompleteModal()">취소</button>
+                <button class="btn btn-primary" onclick="completeInspection()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    점검 완료
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/app.js"></script>
     <script>
         // 탭 전환
@@ -1285,12 +1489,69 @@
             });
         });
 
+        // 현재 점검 정보
+        let currentInspection = {
+            isFromOpinion: false,
+            opinionId: null
+        };
+
         // 목록/상세 뷰 전환
         function showInspectionDetail(id) {
             document.getElementById('inspectionListView').classList.add('hidden');
             document.getElementById('inspectionDetailView').classList.remove('hidden');
             document.getElementById('inspectionFormView').classList.add('hidden');
             document.getElementById('inspectionExecuteView').classList.add('hidden');
+
+            // 의견청취 연동 점검인지 확인
+            if (id === 'insp-opinion-1') {
+                // 의견청취 연동 점검
+                currentInspection.isFromOpinion = true;
+                currentInspection.opinionId = 'near-miss-1';
+
+                document.getElementById('opinionSourceCard').classList.remove('hidden');
+                document.getElementById('noLinkedSource').classList.add('hidden');
+                document.getElementById('linkedOpinion').classList.remove('hidden');
+
+                // 상세 정보 업데이트
+                document.getElementById('detailTypeBadge').className = 'badge bg-red-100 text-red-700';
+                document.getElementById('detailTypeBadge').textContent = '특별점검';
+                document.getElementById('detailStatusBadge').className = 'badge badge-warning';
+                document.getElementById('detailStatusBadge').textContent = '예정';
+                document.getElementById('detailTitle').textContent = '[의견청취] 지게차 후진 중 충돌 위험 상황';
+                document.getElementById('detailDate').textContent = '2026-04-25';
+                document.getElementById('detailInspector').textContent = '김점검';
+                document.getElementById('detailLocation').textContent = 'B구역 물류창고';
+                document.getElementById('detailChecklist').textContent = '특별점검표';
+
+                // 개선조치 없음 표시
+                document.getElementById('improvementList').classList.add('hidden');
+                document.getElementById('noImprovement').classList.remove('hidden');
+                document.getElementById('improvementCount').textContent = '0건';
+            } else {
+                // 일반 점검
+                currentInspection.isFromOpinion = false;
+                currentInspection.opinionId = null;
+
+                document.getElementById('opinionSourceCard').classList.add('hidden');
+                document.getElementById('noLinkedSource').classList.remove('hidden');
+                document.getElementById('linkedOpinion').classList.add('hidden');
+
+                // 기본 상세 정보
+                document.getElementById('detailTypeBadge').className = 'badge bg-blue-100 text-blue-700';
+                document.getElementById('detailTypeBadge').textContent = '일상점검';
+                document.getElementById('detailStatusBadge').className = 'badge badge-success';
+                document.getElementById('detailStatusBadge').textContent = '완료';
+                document.getElementById('detailTitle').textContent = 'A동 일상점검';
+                document.getElementById('detailDate').textContent = '2026-04-22';
+                document.getElementById('detailInspector').textContent = '김점검';
+                document.getElementById('detailLocation').textContent = 'A동 전체';
+                document.getElementById('detailChecklist').textContent = '일상점검표';
+
+                // 개선조치 표시
+                document.getElementById('improvementList').classList.remove('hidden');
+                document.getElementById('noImprovement').classList.add('hidden');
+                document.getElementById('improvementCount').textContent = '1건';
+            }
         }
 
         function showInspectionList() {
@@ -1346,6 +1607,50 @@
 
         function goToImprovementDetail(id) {
             window.location.href = 'improvement.html?id=' + id + '&from=inspection';
+        }
+
+        // 의견청취 페이지 이동
+        function goToOpinion(id) {
+            window.location.href = 'opinion.html?id=' + id + '&from=inspection';
+        }
+
+        // 점검 완료 모달
+        function showCompleteModal() {
+            document.getElementById('completeModal').classList.remove('hidden');
+
+            // 의견청취 연동 점검인 경우 안내 표시
+            if (currentInspection.isFromOpinion) {
+                document.getElementById('opinionUpdateNotice').classList.remove('hidden');
+            } else {
+                document.getElementById('opinionUpdateNotice').classList.add('hidden');
+            }
+        }
+
+        function closeCompleteModal() {
+            document.getElementById('completeModal').classList.add('hidden');
+        }
+
+        function toggleImprovementForm(itemNo, checked) {
+            const form = document.getElementById('improvementForm' + itemNo);
+            if (checked) {
+                form.classList.remove('hidden');
+            } else {
+                form.classList.add('hidden');
+            }
+        }
+
+        function completeInspection() {
+            closeCompleteModal();
+
+            // 의견청취 연동 점검인 경우
+            if (currentInspection.isFromOpinion) {
+                alert('점검이 완료되었습니다.\n\n• 개선조치 1건이 생성되었습니다.\n• 연동된 의견청취 상태가 "개선조치중"으로 변경됩니다.');
+                // 의견청취 페이지로 이동
+                window.location.href = 'opinion.html?id=' + currentInspection.opinionId + '&from=inspection&completed=true';
+            } else {
+                alert('점검이 완료되었습니다.\n개선조치 1건이 생성되었습니다.');
+                showInspectionList();
+            }
         }
 
         // 점검지 등록 폼

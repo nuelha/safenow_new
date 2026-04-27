@@ -120,7 +120,7 @@
             <main class="flex-1 overflow-y-auto p-6">
                 <!-- 목록 뷰 -->
                 <div id="opinionListView">
-                    <!-- 통계 카드 -->
+                    <!-- 통계 카드 - 검토중 제거, 점검중/개선조치중 추가 -->
                     <div class="grid grid-cols-5 gap-4 mb-6">
                         <div class="card stat-card p-4">
                             <div class="flex items-center justify-between">
@@ -151,12 +151,12 @@
                         <div class="card stat-card p-4">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-500">검토중</p>
+                                    <p class="text-sm text-gray-500">점검중</p>
                                     <p class="text-xl font-bold text-blue-600 mt-1">3<span class="text-sm font-normal text-gray-500">건</span></p>
                                 </div>
                                 <div class="stat-card-icon purple w-10 h-10">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                                     </svg>
                                 </div>
                             </div>
@@ -164,7 +164,7 @@
                         <div class="card stat-card p-4">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-500">조치중</p>
+                                    <p class="text-sm text-gray-500">개선조치중</p>
                                     <p class="text-xl font-bold text-yellow-600 mt-1">5<span class="text-sm font-normal text-gray-500">건</span></p>
                                 </div>
                                 <div class="stat-card-icon yellow w-10 h-10">
@@ -203,8 +203,8 @@
                             <select class="select" id="statusFilter">
                                 <option value="">전체 상태</option>
                                 <option value="pending">접수대기</option>
-                                <option value="review">검토중</option>
-                                <option value="action">조치중</option>
+                                <option value="inspection">점검중</option>
+                                <option value="improvement">개선조치중</option>
                                 <option value="done">완료</option>
                                 <option value="reject">반려</option>
                             </select>
@@ -215,12 +215,12 @@
                                 <input type="text" class="input w-64" placeholder="제목, 작성자 검색...">
                             </div>
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('opinion-modal')">
+                        <a href="opinion-register.html" class="btn btn-primary">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
                             의견 등록
-                        </button>
+                        </a>
                     </div>
 
                     <!-- 작업중지 요청 (상단 고정) -->
@@ -278,24 +278,39 @@
                                     </tr>
                                     <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('suggestion-1')">
                                         <td><span class="badge bg-blue-100 text-blue-700">안전제안</span></td>
-                                        <td class="font-medium text-gray-900">용접작업장 환기시설 개선 제안</td>
+                                        <td class="font-medium text-gray-900">
+                                            <div class="flex items-center gap-2">
+                                                용접작업장 환기시설 개선 제안
+                                                <span class="badge bg-purple-100 text-purple-700 text-xs">안전점검 연동</span>
+                                            </div>
+                                        </td>
                                         <td class="text-gray-600">이기술</td>
                                         <td class="text-gray-600">2026-04-21</td>
-                                        <td class="text-center"><span class="badge badge-info">검토중</span></td>
+                                        <td class="text-center"><span class="badge badge-info">점검중</span></td>
                                     </tr>
                                     <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('report-1')">
                                         <td><span class="badge bg-purple-100 text-purple-700">위험신고</span></td>
-                                        <td class="font-medium text-gray-900">2층 계단 난간 흔들림 현상</td>
+                                        <td class="font-medium text-gray-900">
+                                            <div class="flex items-center gap-2">
+                                                2층 계단 난간 흔들림 현상
+                                                <span class="badge bg-yellow-100 text-yellow-700 text-xs">개선조치 연동</span>
+                                            </div>
+                                        </td>
                                         <td class="text-gray-600">최안전</td>
                                         <td class="text-gray-600">2026-04-20</td>
-                                        <td class="text-center"><span class="badge badge-warning">조치중</span></td>
+                                        <td class="text-center"><span class="badge badge-warning">개선조치중</span></td>
                                     </tr>
                                     <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('survey-1')">
                                         <td><span class="badge bg-green-100 text-green-700">청취조사</span></td>
-                                        <td class="font-medium text-gray-900">야간작업 피로도 관련 의견</td>
+                                        <td class="font-medium text-gray-900">
+                                            <div class="flex items-center gap-2">
+                                                야간작업 피로도 관련 의견
+                                                <span class="badge bg-purple-100 text-purple-700 text-xs">안전점검 연동</span>
+                                            </div>
+                                        </td>
                                         <td class="text-gray-600">정근로</td>
                                         <td class="text-gray-600">2026-04-19</td>
-                                        <td class="text-center"><span class="badge badge-info">검토중</span></td>
+                                        <td class="text-center"><span class="badge badge-info">점검중</span></td>
                                     </tr>
                                     <tr class="cursor-pointer hover:bg-gray-50">
                                         <td><span class="badge bg-blue-100 text-blue-700">안전제안</span></td>
@@ -362,12 +377,12 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="flex items-center gap-3">
-                                        <span class="badge bg-orange-100 text-orange-700">아차사고</span>
-                                        <span class="badge badge-warning">접수대기</span>
+                                        <span class="badge bg-orange-100 text-orange-700" id="detailCategoryBadge">아차사고</span>
+                                        <span class="badge badge-warning" id="detailStatusBadge">접수대기</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h2 class="text-xl font-semibold text-gray-900 mb-4">지게차 후진 중 충돌 위험 상황 발생</h2>
+                                    <h2 class="text-xl font-semibold text-gray-900 mb-4" id="detailTitle">지게차 후진 중 충돌 위험 상황 발생</h2>
 
                                     <div class="grid grid-cols-3 gap-4 mb-6">
                                         <div>
@@ -379,15 +394,15 @@
                                             <p class="font-medium text-gray-900">2026-04-22 09:15</p>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-500 mb-1">발생장소</p>
-                                            <p class="font-medium text-gray-900">B구역 물류창고</p>
+                                            <p class="text-sm text-gray-500 mb-1">사업장</p>
+                                            <p class="font-medium text-gray-900">본사 사업장</p>
                                         </div>
                                     </div>
 
                                     <div class="mb-6">
                                         <p class="text-sm text-gray-500 mb-2">상세내용</p>
                                         <div class="p-4 bg-gray-50 rounded-lg">
-                                            <p class="text-gray-700 leading-relaxed">
+                                            <p class="text-gray-700 leading-relaxed" id="detailContent">
                                                 오전 9시경 B구역 물류창고에서 지게차가 후진 중 보행자와 충돌할 뻔한 상황이 발생했습니다.<br><br>
                                                 해당 구역은 시야 확보가 어려운 곳이며, 지게차 후진 시 경고음이 작게 들려 보행자가 인지하지 못했습니다.<br><br>
                                                 다행히 큰 사고로 이어지지는 않았으나, 향후 동일한 상황이 재발할 수 있어 안전조치가 필요합니다.
@@ -423,7 +438,7 @@
                                     </div>
                                 </div>
 
-                                <!-- STEP 1: 접수대기 상태 - 접수/반려 버튼 -->
+                                <!-- STEP 1: 접수대기 상태 - 조치 선택 화면 -->
                                 <div class="card-body" id="step1-pending">
                                     <div class="p-4 bg-orange-50 rounded-lg border border-orange-200 mb-4">
                                         <div class="flex items-start gap-3">
@@ -432,112 +447,171 @@
                                             </svg>
                                             <div>
                                                 <p class="text-sm font-medium text-orange-900">접수 대기 중</p>
-                                                <p class="text-sm text-orange-700 mt-1">의견을 검토하고 접수 또는 반려 처리해주세요.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <button class="btn btn-primary" onclick="processStep('accept')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                            접수
-                                        </button>
-                                        <button class="btn btn-outline text-red-600 border-red-300 hover:bg-red-50" onclick="openModal('reject-modal')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                            </svg>
-                                            반려
-                                        </button>
-                                    </div>
-                                    <p class="text-sm text-gray-500 mt-3">접수 시 검토 단계로 전환되며, 담당자를 배정할 수 있습니다.</p>
-                                </div>
-
-                                <!-- STEP 2: 검토중 상태 - 담당자 배정 및 조치여부 결정 -->
-                                <div class="card-body hidden" id="step2-review">
-                                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
-                                        <div class="flex items-start gap-3">
-                                            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                            </svg>
-                                            <div>
-                                                <p class="text-sm font-medium text-blue-900">검토 중</p>
-                                                <p class="text-sm text-blue-700 mt-1">조치 필요 여부를 결정하고, 필요시 담당자를 배정해주세요.</p>
+                                                <p class="text-sm text-orange-700 mt-1">의견을 검토하고 조치 방법을 선택해주세요.</p>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <!-- 조치 방법 선택 (라디오) -->
                                     <div class="space-y-4">
-                                        <!-- 조치 필요 여부 -->
-                                        <div>
-                                            <label class="form-label">조치 필요 여부 <span class="text-red-500">*</span></label>
-                                            <div class="flex items-center gap-4">
-                                                <label class="flex items-center gap-2 cursor-pointer">
-                                                    <input type="radio" name="actionRequired" value="yes" class="w-4 h-4 text-primary-600" onchange="toggleActionFields(true)">
-                                                    <span class="text-sm text-gray-700">조치 필요</span>
-                                                </label>
-                                                <label class="flex items-center gap-2 cursor-pointer">
-                                                    <input type="radio" name="actionRequired" value="no" class="w-4 h-4 text-primary-600" onchange="toggleActionFields(false)">
-                                                    <span class="text-sm text-gray-700">조치 불필요</span>
-                                                </label>
+                                        <label class="form-label">조치 방법 선택 <span class="text-red-500">*</span></label>
+
+                                        <!-- A. 현장점검 실시 -->
+                                        <div class="border rounded-lg p-4 cursor-pointer hover:border-primary-500 transition-colors" onclick="selectActionType('inspection')">
+                                            <label class="flex items-start gap-3 cursor-pointer">
+                                                <input type="radio" name="actionType" value="inspection" class="w-4 h-4 text-primary-600 mt-1">
+                                                <div class="flex-1">
+                                                    <p class="font-medium text-gray-900">현장점검 실시</p>
+                                                    <p class="text-sm text-gray-500 mt-1">안전점검 메뉴에 특별점검이 자동 생성됩니다.</p>
+                                                </div>
+                                            </label>
+
+                                            <!-- 현장점검 입력 폼 -->
+                                            <div id="inspectionForm" class="hidden mt-4 pt-4 border-t space-y-4">
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="form-label">점검 종류 <span class="text-red-500">*</span></label>
+                                                        <select class="select w-full">
+                                                            <option value="special" selected>특별점검</option>
+                                                            <option value="daily">일상점검</option>
+                                                            <option value="weekly">주간점검</option>
+                                                            <option value="joint">합동점검</option>
+                                                            <option value="patrol">순회점검</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="form-label">점검 예정일 <span class="text-red-500">*</span></label>
+                                                        <input type="date" class="input w-full" value="2026-04-25">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="form-label">담당자 <span class="text-red-500">*</span></label>
+                                                    <select class="select w-full">
+                                                        <option value="">담당자 선택</option>
+                                                        <option value="kim">김점검 (안전팀)</option>
+                                                        <option value="jung">정안전 (안전팀)</option>
+                                                        <option value="lee">이설비 (설비팀)</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="form-label">점검 시 확인사항</label>
+                                                    <textarea class="input w-full h-24" placeholder="점검 시 확인해야 할 사항을 입력하세요">지게차 후진 경고음 작동 상태 확인
+B구역 물류창고 시야 확보 상태 점검
+보행자 통로 분리 현황 확인</textarea>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- 조치 필요 시 표시되는 필드들 -->
-                                        <div id="actionFields" class="hidden space-y-4 p-4 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <label class="form-label">담당자 배정 <span class="text-red-500">*</span></label>
-                                                <select class="select w-full">
-                                                    <option value="">담당자 선택</option>
-                                                    <option value="lee">이설비 (설비팀)</option>
-                                                    <option value="park">박설비 (설비팀)</option>
-                                                    <option value="kim">김점검 (안전팀)</option>
-                                                    <option value="jung">정안전 (안전팀)</option>
-                                                    <option value="oh">오전기 (전기팀)</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="form-label">완료 예정일 <span class="text-red-500">*</span></label>
-                                                <input type="date" class="input w-full" value="2026-04-30">
-                                            </div>
-                                            <div>
-                                                <label class="form-label">개선대책 <span class="text-red-500">*</span></label>
-                                                <textarea class="input w-full h-24" placeholder="개선대책을 입력하세요">지게차 후방 감지 센서 및 경고장치 설치
+                                        <!-- B. 개선조치 바로 생성 -->
+                                        <div class="border rounded-lg p-4 cursor-pointer hover:border-primary-500 transition-colors" onclick="selectActionType('improvement')">
+                                            <label class="flex items-start gap-3 cursor-pointer">
+                                                <input type="radio" name="actionType" value="improvement" class="w-4 h-4 text-primary-600 mt-1">
+                                                <div class="flex-1">
+                                                    <p class="font-medium text-gray-900">개선조치 바로 생성</p>
+                                                    <p class="text-sm text-gray-500 mt-1">개선조치 메뉴에 조치 항목이 자동 생성됩니다.</p>
+                                                </div>
+                                            </label>
+
+                                            <!-- 개선조치 입력 폼 -->
+                                            <div id="improvementForm" class="hidden mt-4 pt-4 border-t space-y-4">
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="form-label">담당자 <span class="text-red-500">*</span></label>
+                                                        <select class="select w-full">
+                                                            <option value="">담당자 선택</option>
+                                                            <option value="lee">이설비 (설비팀)</option>
+                                                            <option value="park">박설비 (설비팀)</option>
+                                                            <option value="oh">오전기 (전기팀)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="form-label">완료 예정일 <span class="text-red-500">*</span></label>
+                                                        <input type="date" class="input w-full" value="2026-04-30">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="form-label">개선 내용 <span class="text-red-500">*</span></label>
+                                                    <textarea class="input w-full h-24" placeholder="개선 내용을 입력하세요">지게차 후방 감지 센서 및 경고장치 설치
 - 후방 감지 센서 설치 (거리별 경고음 차등)
 - 후방 카메라 및 모니터 설치
 - 강화된 후진 경고등 설치
 - 보행자 통로 분리 표시 추가</textarea>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- 조치 불필요 시 표시되는 필드 -->
-                                        <div id="noActionFields" class="hidden space-y-4 p-4 bg-gray-50 rounded-lg">
+                                        <!-- C. 반려 -->
+                                        <div class="border rounded-lg p-4 cursor-pointer hover:border-red-300 transition-colors" onclick="selectActionType('reject')">
+                                            <label class="flex items-start gap-3 cursor-pointer">
+                                                <input type="radio" name="actionType" value="reject" class="w-4 h-4 text-red-600 mt-1">
+                                                <div class="flex-1">
+                                                    <p class="font-medium text-gray-900">반려</p>
+                                                    <p class="text-sm text-gray-500 mt-1">반려 사유가 작성자에게 알림톡으로 발송됩니다.</p>
+                                                </div>
+                                            </label>
+
+                                            <!-- 반려 입력 폼 -->
+                                            <div id="rejectForm" class="hidden mt-4 pt-4 border-t space-y-4">
+                                                <div>
+                                                    <label class="form-label">반려 사유 <span class="text-red-500">*</span></label>
+                                                    <textarea class="input w-full h-24" placeholder="반려 사유를 입력하세요"></textarea>
+                                                </div>
+                                                <div class="p-3 bg-red-50 rounded-lg border border-red-200">
+                                                    <p class="text-sm text-red-700">반려 처리 시 작성자에게 알림톡이 발송됩니다.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 저장 버튼 -->
+                                    <div class="flex items-center gap-3 pt-4 mt-4 border-t" id="pendingActions">
+                                        <button class="btn btn-primary" onclick="submitAction()" id="submitActionBtn" disabled>
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                            저장
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- STEP 2: 점검중 상태 -->
+                                <div class="card-body hidden" id="step2-inspection">
+                                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
+                                        <div class="flex items-start gap-3">
+                                            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                            </svg>
                                             <div>
-                                                <label class="form-label">처리 사유 <span class="text-red-500">*</span></label>
-                                                <textarea class="input w-full h-20" placeholder="조치 불필요 사유를 입력하세요"></textarea>
+                                                <p class="text-sm font-medium text-blue-900">현장점검 진행 중</p>
+                                                <p class="text-sm text-blue-700 mt-1">안전점검이 완료되면 자동으로 상태가 변경됩니다.</p>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- 버튼 -->
-                                        <div class="flex items-center gap-3 pt-2">
-                                            <button class="btn btn-primary" onclick="processStep('assign')">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    <!-- 연결된 안전점검 카드 -->
+                                    <div class="p-4 bg-white border rounded-lg">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="badge bg-purple-100 text-purple-700">안전점검 연동</span>
+                                                <span class="badge badge-info">점검예정</span>
+                                            </div>
+                                            <span class="text-sm text-gray-500">2026-04-25 예정</span>
+                                        </div>
+                                        <p class="font-medium text-gray-900 mb-2">[의견청취] 지게차 후진 중 충돌 위험 상황 발생</p>
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm text-gray-500">담당: 김점검 (안전팀)</p>
+                                            <button class="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1" onclick="goToInspection('insp-opinion-1')">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                                 </svg>
-                                                검토 완료
-                                            </button>
-                                            <button class="btn btn-outline text-red-600 border-red-300 hover:bg-red-50" onclick="openModal('reject-modal')">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                                </svg>
-                                                반려
+                                                점검 상세 보기
                                             </button>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- STEP 3: 조치중 상태 - 진행상황 표시 -->
-                                <div class="card-body hidden" id="step3-action">
+                                <!-- STEP 3: 개선조치중 상태 -->
+                                <div class="card-body hidden" id="step3-improvement">
                                     <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-200 mb-4">
                                         <div class="flex items-start gap-3">
                                             <svg class="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -545,33 +619,31 @@
                                             </svg>
                                             <div>
                                                 <p class="text-sm font-medium text-yellow-900">개선조치 진행 중</p>
-                                                <p class="text-sm text-yellow-700 mt-1">담당자가 개선조치를 진행하고 있습니다.</p>
+                                                <p class="text-sm text-yellow-700 mt-1">개선조치가 완료되면 자동으로 상태가 변경됩니다.</p>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="grid grid-cols-2 gap-4 mb-4">
-                                        <div class="p-3 bg-gray-50 rounded-lg">
-                                            <p class="text-xs text-gray-500 mb-1">담당자</p>
-                                            <p class="font-medium text-gray-900">이설비 (설비팀)</p>
+                                    <!-- 연결된 개선조치 카드 -->
+                                    <div class="p-4 bg-white border rounded-lg">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="badge bg-yellow-100 text-yellow-700">의견청취 연동</span>
+                                                <span class="badge badge-warning">조치중</span>
+                                            </div>
+                                            <span class="text-sm text-gray-500">2026-04-30 예정</span>
                                         </div>
-                                        <div class="p-3 bg-gray-50 rounded-lg">
-                                            <p class="text-xs text-gray-500 mb-1">완료 예정일</p>
-                                            <p class="font-medium text-gray-900">2026-04-30</p>
+                                        <p class="font-medium text-gray-900 mb-2">지게차 후방 감지 센서 및 경고장치 설치</p>
+                                        <div class="flex items-center justify-between">
+                                            <p class="text-sm text-gray-500">담당: 이설비 (설비팀)</p>
+                                            <button class="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1" onclick="goToImprovement('imp-opinion-1')">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                개선조치 상세 보기
+                                            </button>
                                         </div>
                                     </div>
-
-                                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-200 mb-4">
-                                        <p class="text-xs text-blue-600 mb-1">개선대책</p>
-                                        <p class="text-sm text-gray-700">지게차 후방 감지 센서 및 경고장치 설치</p>
-                                    </div>
-
-                                    <button class="btn btn-outline w-full" onclick="goToImprovement('imp-opinion-1')">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                        </svg>
-                                        개선조치 상세 보기
-                                    </button>
                                 </div>
 
                                 <!-- STEP 4: 완료 상태 -->
@@ -599,17 +671,37 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- STEP 5: 반려 상태 -->
+                                <div class="card-body hidden" id="step5-rejected">
+                                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-300 mb-4">
+                                        <div class="flex items-start gap-3">
+                                            <svg class="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                            </svg>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-900">반려 처리됨</p>
+                                                <p class="text-sm text-gray-700 mt-1">작성자에게 반려 사유가 발송되었습니다.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3 bg-gray-50 rounded-lg">
+                                        <p class="text-xs text-gray-500 mb-1">반려 사유</p>
+                                        <p class="text-sm text-gray-700">해당 구역은 이미 지난 주 점검 완료되었으며, 현재 보행자 통로 분리 작업이 진행 중입니다.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 오른쪽: 처리 이력 -->
+                        <!-- 오른쪽: 처리 이력 & 연동 정보 -->
                         <div class="space-y-6">
                             <div class="card">
                                 <div class="card-header">
                                     <h2 class="card-title">처리 이력</h2>
                                 </div>
                                 <div class="card-body">
-                                    <div class="relative">
+                                    <div class="relative" id="historyTimeline">
                                         <div class="absolute left-2 top-2 bottom-2 w-0.5 bg-gray-200"></div>
                                         <div class="space-y-6">
                                             <div class="relative flex items-start gap-4">
@@ -619,7 +711,7 @@
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <p class="font-medium text-gray-900">등록됨</p>
+                                                    <p class="font-medium text-gray-900">접수</p>
                                                     <p class="text-sm text-gray-500">박작업</p>
                                                     <p class="text-xs text-gray-400 mt-1">2026-04-22 09:15</p>
                                                 </div>
@@ -629,36 +721,41 @@
                                 </div>
                             </div>
 
-                            <!-- 관련 개선조치 (조치 필요 시 생성됨) -->
-                            <div class="card" id="relatedImprovement">
+                            <!-- 연동 정보 카드 -->
+                            <div class="card" id="linkedInfoCard">
                                 <div class="card-header">
-                                    <h2 class="card-title">관련 개선조치</h2>
+                                    <h2 class="card-title">연동 정보</h2>
                                 </div>
-                                <!-- 개선조치 없는 경우 -->
-                                <div class="card-body" id="noImprovement">
+                                <!-- 연동 없는 경우 -->
+                                <div class="card-body" id="noLinkedInfo">
                                     <div class="p-4 bg-gray-50 rounded-lg text-center text-gray-500">
                                         <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                                         </svg>
-                                        <p class="text-sm">접수 및 검토 후<br>개선조치가 생성됩니다</p>
+                                        <p class="text-sm">조치 선택 후<br>연동 정보가 표시됩니다</p>
                                     </div>
                                 </div>
-                                <!-- 개선조치 있는 경우 (검토완료 상태에서 표시) -->
-                                <div class="card-body hidden" id="hasImprovement">
-                                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-100" onclick="goToImprovement('imp-opinion-1')">
+                                <!-- 안전점검 연동된 경우 -->
+                                <div class="card-body hidden" id="linkedInspection">
+                                    <div class="p-3 bg-purple-50 rounded-lg border border-purple-200 cursor-pointer hover:bg-purple-100" onclick="goToInspection('insp-opinion-1')">
                                         <div class="flex items-center justify-between mb-2">
-                                            <span class="badge badge-info text-xs">조치중</span>
-                                            <span class="text-xs text-gray-500">2026-04-30 예정</span>
+                                            <span class="badge bg-purple-100 text-purple-700 text-xs">안전점검</span>
+                                            <span class="badge badge-info text-xs">점검예정</span>
+                                        </div>
+                                        <p class="text-sm font-medium text-gray-900">[의견청취] 지게차 후진 중 충돌 위험</p>
+                                        <p class="text-xs text-gray-500 mt-1">담당: 김점검 | 2026-04-25</p>
+                                    </div>
+                                </div>
+                                <!-- 개선조치 연동된 경우 -->
+                                <div class="card-body hidden" id="linkedImprovement">
+                                    <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-200 cursor-pointer hover:bg-yellow-100" onclick="goToImprovement('imp-opinion-1')">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="badge bg-yellow-100 text-yellow-700 text-xs">개선조치</span>
+                                            <span class="badge badge-warning text-xs">조치중</span>
                                         </div>
                                         <p class="text-sm font-medium text-gray-900">지게차 후방 감지 센서 설치</p>
-                                        <p class="text-xs text-gray-500 mt-1">담당: 이설비</p>
+                                        <p class="text-xs text-gray-500 mt-1">담당: 이설비 | 2026-04-30</p>
                                     </div>
-                                    <button class="mt-3 text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1" onclick="goToImprovement('imp-opinion-1')">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                        </svg>
-                                        개선조치 상세 보기
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -668,144 +765,48 @@
         </div>
     </div>
 
-    <!-- 의견 등록 모달 -->
-    <div id="opinion-modal" class="modal hidden">
-        <div class="modal-backdrop" onclick="closeModal('opinion-modal')"></div>
-        <div class="modal-content modal-lg">
-            <div class="modal-header">
-                <h3 class="modal-title">의견 등록</h3>
-                <button class="modal-close" onclick="closeModal('opinion-modal')">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="space-y-4">
-                    <div>
-                        <label class="form-label">분류 <span class="text-red-500">*</span></label>
-                        <select class="select w-full">
-                            <option value="">선택하세요</option>
-                            <option value="stop">작업중지요청</option>
-                            <option value="survey">청취조사</option>
-                            <option value="near-miss">아차사고</option>
-                            <option value="suggestion">안전제안</option>
-                            <option value="report">위험신고</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="form-label">제목 <span class="text-red-500">*</span></label>
-                        <input type="text" class="input w-full" placeholder="제목을 입력하세요">
-                    </div>
-                    <div>
-                        <label class="form-label">발생장소</label>
-                        <input type="text" class="input w-full" placeholder="발생 장소를 입력하세요">
-                    </div>
-                    <div>
-                        <label class="form-label">상세내용 <span class="text-red-500">*</span></label>
-                        <textarea class="input w-full h-32" placeholder="상세 내용을 입력하세요"></textarea>
-                    </div>
-                    <div>
-                        <label class="form-label">사진 첨부</label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors cursor-pointer">
-                            <svg class="w-10 h-10 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <p class="text-sm text-gray-600">클릭하거나 파일을 드래그하세요</p>
-                            <p class="text-xs text-gray-400 mt-1">JPG, PNG (최대 10MB)</p>
-                        </div>
-                    </div>
-                    <div class="p-4 bg-red-50 rounded-lg border border-red-200">
-                        <div class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                            </svg>
-                            <div>
-                                <p class="text-sm font-medium text-red-900">작업중지요청 안내</p>
-                                <p class="text-sm text-red-700 mt-1">작업중지요청 선택 시 안전관리자에게 즉시 알림톡이 발송됩니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal('opinion-modal')">취소</button>
-                <button class="btn btn-primary">등록</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 반려 사유 모달 -->
-    <div id="reject-modal" class="modal hidden">
-        <div class="modal-backdrop" onclick="closeModal('reject-modal')"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">반려 처리</h3>
-                <button class="modal-close" onclick="closeModal('reject-modal')">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="p-4 bg-red-50 rounded-lg border border-red-200 mb-4">
-                    <div class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                        </svg>
-                        <div>
-                            <p class="text-sm font-medium text-red-900">반려 안내</p>
-                            <p class="text-sm text-red-700 mt-1">반려 시 작성자에게 알림톡이 발송됩니다. 반려 사유를 명확히 작성해주세요.</p>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <label class="form-label">반려 사유 <span class="text-red-500">*</span></label>
-                    <textarea class="input w-full h-32" placeholder="반려 사유를 입력하세요"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal('reject-modal')">취소</button>
-                <button class="btn bg-red-600 text-white hover:bg-red-700" onclick="processStep('reject')">반려 처리</button>
-            </div>
-        </div>
-    </div>
-
     <script src="../js/app.js"></script>
     <script>
         // 현재 상태 저장
-        let currentStatus = 'pending'; // pending, review, action, done, rejected
+        let currentStatus = 'pending'; // pending, inspection, improvement, done, rejected
+        let selectedActionType = null;
 
         function showOpinionDetail(id) {
             document.getElementById('opinionListView').classList.add('hidden');
             document.getElementById('opinionDetailView').classList.remove('hidden');
 
             // 상태별 UI 설정 (데모용 - 실제로는 서버에서 데이터 로드)
-            if (id === 'suggestion-1') {
-                // 검토중 상태
-                setStatus('review');
-                document.getElementById('noImprovement').classList.remove('hidden');
-                document.getElementById('hasImprovement').classList.add('hidden');
+            if (id === 'suggestion-1' || id === 'survey-1') {
+                // 점검중 상태
+                setStatus('inspection');
+                document.getElementById('noLinkedInfo').classList.add('hidden');
+                document.getElementById('linkedInspection').classList.remove('hidden');
+                document.getElementById('linkedImprovement').classList.add('hidden');
             } else if (id === 'report-1') {
-                // 조치중 상태
-                setStatus('action');
-                document.getElementById('noImprovement').classList.add('hidden');
-                document.getElementById('hasImprovement').classList.remove('hidden');
-            } else if (id === 'near-miss-1') {
+                // 개선조치중 상태
+                setStatus('improvement');
+                document.getElementById('noLinkedInfo').classList.add('hidden');
+                document.getElementById('linkedInspection').classList.add('hidden');
+                document.getElementById('linkedImprovement').classList.remove('hidden');
+            } else if (id === 'near-miss-1' || id === 'stop-1') {
                 // 접수대기 상태
                 setStatus('pending');
-                document.getElementById('noImprovement').classList.remove('hidden');
-                document.getElementById('hasImprovement').classList.add('hidden');
+                document.getElementById('noLinkedInfo').classList.remove('hidden');
+                document.getElementById('linkedInspection').classList.add('hidden');
+                document.getElementById('linkedImprovement').classList.add('hidden');
             } else {
                 setStatus('pending');
-                document.getElementById('noImprovement').classList.remove('hidden');
-                document.getElementById('hasImprovement').classList.add('hidden');
+                document.getElementById('noLinkedInfo').classList.remove('hidden');
+                document.getElementById('linkedInspection').classList.add('hidden');
+                document.getElementById('linkedImprovement').classList.add('hidden');
             }
         }
 
         function showOpinionList() {
             document.getElementById('opinionListView').classList.remove('hidden');
             document.getElementById('opinionDetailView').classList.add('hidden');
+            // 폼 초기화
+            resetForms();
         }
 
         function setStatus(status) {
@@ -813,82 +814,166 @@
 
             // 모든 단계 숨기기
             document.getElementById('step1-pending').classList.add('hidden');
-            document.getElementById('step2-review').classList.add('hidden');
-            document.getElementById('step3-action').classList.add('hidden');
+            document.getElementById('step2-inspection').classList.add('hidden');
+            document.getElementById('step3-improvement').classList.add('hidden');
             document.getElementById('step4-done').classList.add('hidden');
+            document.getElementById('step5-rejected').classList.add('hidden');
 
             // 배지 업데이트
             const badge = document.getElementById('currentStatusBadge');
+            const detailBadge = document.getElementById('detailStatusBadge');
 
             switch(status) {
                 case 'pending':
                     document.getElementById('step1-pending').classList.remove('hidden');
                     badge.className = 'badge badge-warning';
                     badge.textContent = '접수대기';
+                    detailBadge.className = 'badge badge-warning';
+                    detailBadge.textContent = '접수대기';
                     break;
-                case 'review':
-                    document.getElementById('step2-review').classList.remove('hidden');
+                case 'inspection':
+                    document.getElementById('step2-inspection').classList.remove('hidden');
                     badge.className = 'badge badge-info';
-                    badge.textContent = '검토중';
+                    badge.textContent = '점검중';
+                    detailBadge.className = 'badge badge-info';
+                    detailBadge.textContent = '점검중';
                     break;
-                case 'action':
-                    document.getElementById('step3-action').classList.remove('hidden');
+                case 'improvement':
+                    document.getElementById('step3-improvement').classList.remove('hidden');
                     badge.className = 'badge badge-warning';
-                    badge.textContent = '조치중';
+                    badge.textContent = '개선조치중';
+                    detailBadge.className = 'badge badge-warning';
+                    detailBadge.textContent = '개선조치중';
                     break;
                 case 'done':
                     document.getElementById('step4-done').classList.remove('hidden');
                     badge.className = 'badge badge-success';
                     badge.textContent = '완료';
+                    detailBadge.className = 'badge badge-success';
+                    detailBadge.textContent = '완료';
+                    break;
+                case 'rejected':
+                    document.getElementById('step5-rejected').classList.remove('hidden');
+                    badge.className = 'badge badge-gray';
+                    badge.textContent = '반려';
+                    detailBadge.className = 'badge badge-gray';
+                    detailBadge.textContent = '반려';
                     break;
             }
         }
 
-        function processStep(action) {
-            if (action === 'accept') {
-                // 접수 -> 검토중으로 변경
-                setStatus('review');
-                alert('접수되었습니다. 조치 필요 여부를 결정하고 담당자를 배정해주세요.');
-            } else if (action === 'assign') {
-                // 검토완료 -> 조치중으로 변경
-                const actionRequired = document.querySelector('input[name="actionRequired"]:checked');
-                if (!actionRequired) {
-                    alert('조치 필요 여부를 선택해주세요.');
-                    return;
-                }
-                if (actionRequired.value === 'yes') {
-                    setStatus('action');
-                    // 개선조치 표시
-                    document.getElementById('noImprovement').classList.add('hidden');
-                    document.getElementById('hasImprovement').classList.remove('hidden');
-                    alert('검토가 완료되었습니다. 개선조치가 생성되었습니다.');
-                } else {
-                    setStatus('done');
-                    alert('검토가 완료되었습니다. 조치 불필요로 처리되었습니다.');
-                }
-            } else if (action === 'reject') {
-                closeModal('reject-modal');
-                alert('반려 처리되었습니다. 작성자에게 알림톡이 발송됩니다.');
-                showOpinionList();
+        function selectActionType(type) {
+            selectedActionType = type;
+
+            // 라디오 버튼 선택
+            const radios = document.querySelectorAll('input[name="actionType"]');
+            radios.forEach(radio => {
+                radio.checked = (radio.value === type);
+            });
+
+            // 모든 폼 숨기기
+            document.getElementById('inspectionForm').classList.add('hidden');
+            document.getElementById('improvementForm').classList.add('hidden');
+            document.getElementById('rejectForm').classList.add('hidden');
+
+            // 선택된 폼 표시
+            if (type === 'inspection') {
+                document.getElementById('inspectionForm').classList.remove('hidden');
+            } else if (type === 'improvement') {
+                document.getElementById('improvementForm').classList.remove('hidden');
+            } else if (type === 'reject') {
+                document.getElementById('rejectForm').classList.remove('hidden');
+            }
+
+            // 저장 버튼 활성화
+            document.getElementById('submitActionBtn').disabled = false;
+        }
+
+        function submitAction() {
+            if (!selectedActionType) {
+                alert('조치 방법을 선택해주세요.');
+                return;
+            }
+
+            if (selectedActionType === 'inspection') {
+                // 현장점검 생성
+                setStatus('inspection');
+                document.getElementById('noLinkedInfo').classList.add('hidden');
+                document.getElementById('linkedInspection').classList.remove('hidden');
+                document.getElementById('linkedImprovement').classList.add('hidden');
+
+                // 처리 이력 추가
+                addHistoryItem('현장점검 생성', '박안전', '안전점검 특별점검으로 연동', 'blue');
+
+                alert('현장점검이 생성되었습니다.\n안전점검 메뉴에서 확인할 수 있습니다.');
+            } else if (selectedActionType === 'improvement') {
+                // 개선조치 생성
+                setStatus('improvement');
+                document.getElementById('noLinkedInfo').classList.add('hidden');
+                document.getElementById('linkedInspection').classList.add('hidden');
+                document.getElementById('linkedImprovement').classList.remove('hidden');
+
+                // 처리 이력 추가
+                addHistoryItem('개선조치 생성', '박안전', '개선조치 메뉴로 연동', 'yellow');
+
+                alert('개선조치가 생성되었습니다.\n개선조치 메뉴에서 확인할 수 있습니다.');
+            } else if (selectedActionType === 'reject') {
+                // 반려 처리
+                setStatus('rejected');
+
+                // 처리 이력 추가
+                addHistoryItem('반려', '박안전', '반려 처리됨', 'gray');
+
+                alert('반려 처리되었습니다.\n작성자에게 알림톡이 발송됩니다.');
             }
         }
 
-        function toggleActionFields(show) {
-            const actionFields = document.getElementById('actionFields');
-            const noActionFields = document.getElementById('noActionFields');
+        function addHistoryItem(title, user, description, color) {
+            const timeline = document.getElementById('historyTimeline').querySelector('.space-y-6');
+            const newItem = document.createElement('div');
+            newItem.className = 'relative flex items-start gap-4';
 
-            if (show) {
-                actionFields.classList.remove('hidden');
-                noActionFields.classList.add('hidden');
-            } else {
-                actionFields.classList.add('hidden');
-                noActionFields.classList.remove('hidden');
-            }
+            const colorClass = {
+                'blue': 'bg-blue-500',
+                'yellow': 'bg-yellow-500',
+                'green': 'bg-green-500',
+                'gray': 'bg-gray-500'
+            }[color] || 'bg-gray-500';
+
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0, 10) + ' ' + now.toTimeString().slice(0, 5);
+
+            newItem.innerHTML = `
+                <div class="w-5 h-5 rounded-full ${colorClass} flex items-center justify-center flex-shrink-0 z-10">
+                    <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-900">${title}</p>
+                    <p class="text-sm text-gray-500">${user}</p>
+                    <p class="text-xs text-gray-400 mt-1">${dateStr}</p>
+                </div>
+            `;
+
+            timeline.appendChild(newItem);
+        }
+
+        function resetForms() {
+            selectedActionType = null;
+            document.querySelectorAll('input[name="actionType"]').forEach(radio => radio.checked = false);
+            document.getElementById('inspectionForm').classList.add('hidden');
+            document.getElementById('improvementForm').classList.add('hidden');
+            document.getElementById('rejectForm').classList.add('hidden');
+            document.getElementById('submitActionBtn').disabled = true;
         }
 
         function goToImprovement(id) {
-            // 개선조치 페이지로 이동
             window.location.href = 'improvement.html?id=' + id + '&from=opinion';
+        }
+
+        function goToInspection(id) {
+            window.location.href = 'safety-inspection.html?id=' + id + '&from=opinion';
         }
 
         // URL 파라미터 확인 (개선조치에서 돌아온 경우)
@@ -897,7 +982,7 @@
             const id = params.get('id');
             const from = params.get('from');
 
-            if (id && from === 'improvement') {
+            if (id && (from === 'improvement' || from === 'inspection')) {
                 showOpinionDetail(id);
             }
         });

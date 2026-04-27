@@ -1,895 +1,1734 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>안전NOW - 프로토타입</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                        },
-                        sidebar: '#1e293b',
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#eff6ff",
+                100: "#dbeafe",
+                500: "#3b82f6",
+                600: "#2563eb",
+                700: "#1d4ed8",
+              },
+              sidebar: "#1e293b",
+            },
+          },
+        },
+      };
     </script>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="bg-gray-50">
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body class="bg-gray-50">
     <div class="flex h-screen overflow-hidden">
-        <!-- 사이드바 -->
-        <aside id="sidebar" class="sidebar">
-            <div class="sidebar-header">
-                <a href="index.html" class="flex items-center gap-3">
-                    <div class="sidebar-logo">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                        </svg>
-                    </div>
-                    <span class="text-lg font-bold text-white">안전NOW</span>
-                </a>
+      <!-- 사이드바 -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <a href="index.html" class="flex items-center gap-3">
+            <div class="sidebar-logo">
+              <svg
+                class="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
             </div>
-
-            <nav class="sidebar-nav">
-                <ul class="space-y-1">
-                    <li>
-                        <a href="index.html" class="sidebar-item active">
-                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-                            </svg>
-                            대시보드
-                        </a>
-                    </li>
-                    <li>
-                        <a href="pages/my-tasks.html" class="sidebar-item">
-                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                            </svg>
-                            내 업무
-                            <span class="sidebar-item-badge red">5</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-section">안전 활동</li>
-                    <li><a href="pages/risk-assessment.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>위험성평가</a></li>
-                    <li><a href="pages/tbm.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>TBM</a></li>
-                    <li><a href="pages/safety-inspection.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>안전점검</a></li>
-                    <li><a href="pages/safety-education.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>안전보건교육</a></li>
-                    <li><a href="pages/safety-policy.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>안전경영방침</a></li>
-                    <li><a href="pages/safety-budget.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>안전보건예산</a></li>
-                    <li><a href="pages/opinion.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>의견청취<span class="sidebar-item-badge orange">2</span></a></li>
-                    <li><a href="pages/improvement.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>개선조치<span class="sidebar-item-badge yellow">8</span></a></li>
-
-                    <li class="sidebar-section">관리</li>
-                    <li><a href="pages/compliance.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>이행관리</a></li>
-                    <li><a href="pages/documents.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>업무문서관리</a></li>
-                    <li><a href="pages/process.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>공정관리</a></li>
-                    <li><a href="pages/contractor.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>도급관리</a></li>
-                    <li><a href="pages/workplace.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>사업장관리</a></li>
-
-                    <li class="sidebar-section">지원</li>
-                    <li><a href="pages/support.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>고객지원</a></li>
-                    <li><a href="pages/my-info.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>내 정보관리</a></li>
-                </ul>
-            </nav>
-
-            <div class="workspace-selector">
-                <button class="workspace-btn">
-                    <div class="workspace-avatar">본</div>
-                    <div class="workspace-info">
-                        <div class="workspace-name">본사 사업장</div>
-                        <div class="workspace-role">경영책임자</div>
-                    </div>
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
-                    </svg>
-                </button>
-            </div>
-        </aside>
-
-        <!-- 메인 콘텐츠 -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            <header class="header">
-                <div class="header-left">
-                    <h1 id="header-title" class="header-title">대시보드</h1>
-                    <div id="role-tabs" class="header-tabs">
-                        <button class="role-tab header-tab active" data-role="ceo">경영책임자</button>
-                        <button class="role-tab header-tab" data-role="manager">관리자</button>
-                        <button class="role-tab header-tab" data-role="worker">근로자</button>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <button class="header-notification">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                        </svg>
-                        <span class="header-notification-dot"></span>
-                    </button>
-                    <div class="header-user">
-                        <div class="header-avatar">김</div>
-                        <span class="header-username">김대표</span>
-                    </div>
-                </div>
-            </header>
-
-            <main class="flex-1 overflow-y-auto p-6">
-                <!-- 경영책임자 대시보드 -->
-                <div id="dashboard-ceo" class="dashboard-content space-y-6">
-                    <!-- 이행률 카드 -->
-                    <div class="card p-6">
-                        <div class="flex items-center gap-8">
-                            <div class="flex-shrink-0">
-                                <p class="text-sm text-gray-500 mb-1">이행률</p>
-                                <p class="text-3xl font-bold text-gray-900">63%</p>
-                                <p class="text-sm text-gray-500">26/48건</p>
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-2 text-xs text-gray-500">
-                                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-green-500 rounded-full"></span> 완료 30건</span>
-                                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> 진행중 12건</span>
-                                    <span class="flex items-center gap-1"><span class="w-2 h-2 bg-gray-300 rounded-full"></span> 계획 6건</span>
-                                </div>
-                                <div class="w-full h-8 bg-gray-200 rounded-full overflow-hidden flex">
-                                    <div class="h-full bg-green-500 flex items-center justify-center text-white text-xs font-medium" style="width: 62.5%">완료 62.5%</div>
-                                    <div class="h-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium" style="width: 25%">진행 25%</div>
-                                    <div class="h-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-medium" style="width: 12.5%">12.5%</div>
-                                </div>
-                                <div class="flex justify-between text-xs text-gray-400 mt-1">
-                                    <span>0%</span>
-                                    <span>25%</span>
-                                    <span>50%</span>
-                                    <span>75%</span>
-                                    <span>100%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 목표/KPI 달성률 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">목표/KPI 달성률</h2>
-                            <a href="pages/safety-policy.html#goal-kpi" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                        </div>
-                        <div class="p-4">
-                            <div class="grid grid-cols-4 gap-4">
-                                <div class="p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-700 font-medium">중대재해 발생 건수</span>
-                                        <span class="badge badge-success">100%</span>
-                                    </div>
-                                    <div class="w-full h-2 bg-green-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-green-500 rounded-full" style="width: 100%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">목표 0건 · 현재 0건</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-700 font-medium">위험성평가 완료율</span>
-                                        <span class="badge badge-warning">72%</span>
-                                    </div>
-                                    <div class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-yellow-500 rounded-full" style="width: 72%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">목표 100% · 현재 72%</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-700 font-medium">교육 이수율</span>
-                                        <span class="badge badge-warning">72%</span>
-                                    </div>
-                                    <div class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-yellow-500 rounded-full" style="width: 72%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">목표 100% · 현재 72%</p>
-                                </div>
-                                <div class="p-4 bg-gray-50 rounded-lg">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <span class="text-sm text-gray-700 font-medium">아차사고 신고건수</span>
-                                        <span class="badge badge-success">100%</span>
-                                    </div>
-                                    <div class="w-full h-2 bg-green-200 rounded-full overflow-hidden">
-                                        <div class="h-full bg-green-500 rounded-full" style="width: 100%"></div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">목표 10건 이하 · 현재 5건</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <!-- 아차사고-작업중지 발생 추이 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">아차사고-작업중지 발생 추이</h2>
-                                <div class="flex items-center gap-2">
-                                    <button class="px-3 py-1 text-sm rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200">6개월</button>
-                                    <button class="px-3 py-1 text-sm rounded-md bg-blue-500 text-white">12개월</button>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="h-64 flex items-end gap-2">
-                                    <!-- 간단한 바 차트 시뮬레이션 -->
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 60%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 30%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">4월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 45%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 20%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">5월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 70%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 35%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">6월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 55%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 25%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">7월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 40%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 15%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">8월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 50%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 20%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">9월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 35%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 10%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">10월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 30%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 15%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">11월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 25%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 10%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">12월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 20%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 8%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">1월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 28%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 12%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">2월</span>
-                                    </div>
-                                    <div class="flex-1 flex flex-col items-center gap-1">
-                                        <div class="w-full flex gap-1 items-end justify-center h-48">
-                                            <div class="w-4 bg-orange-400 rounded-t" style="height: 22%"></div>
-                                            <div class="w-4 bg-red-400 rounded-t" style="height: 10%"></div>
-                                        </div>
-                                        <span class="text-xs text-gray-500">3월</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-center gap-6 mt-4 text-sm">
-                                    <span class="flex items-center gap-2"><span class="w-3 h-3 bg-orange-400 rounded"></span> 아차사고</span>
-                                    <span class="flex items-center gap-2"><span class="w-3 h-3 bg-red-400 rounded"></span> 작업중지</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 개선조치 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">개선조치 현황</h2>
-                                <a href="pages/improvement.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-3 gap-4 text-center mb-4">
-                                    <div class="p-4 bg-red-50 rounded-lg border border-red-100">
-                                        <p class="text-2xl font-bold text-red-600">2</p>
-                                        <p class="text-sm text-gray-600 mt-1">대기중</p>
-                                    </div>
-                                    <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-100">
-                                        <p class="text-2xl font-bold text-yellow-600">1</p>
-                                        <p class="text-sm text-gray-600 mt-1">조치중</p>
-                                    </div>
-                                    <div class="p-4 bg-green-50 rounded-lg border border-green-100">
-                                        <p class="text-2xl font-bold text-green-600">12</p>
-                                        <p class="text-sm text-gray-600 mt-1">조치완료</p>
-                                    </div>
-                                </div>
-                                <div class="divide-y divide-gray-100">
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-warning">조치중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-danger">대기중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-danger">대기중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <!-- 의견청취 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">의견청취 현황</h2>
-                                <a href="pages/opinion.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-5 gap-3 text-center mb-4">
-                                    <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                                        <p class="text-xl font-bold text-blue-600">3</p>
-                                        <p class="text-xs text-gray-600 mt-1">접수</p>
-                                    </div>
-                                    <div class="p-3 bg-purple-50 rounded-lg border border-purple-100">
-                                        <p class="text-xl font-bold text-purple-600">2</p>
-                                        <p class="text-xs text-gray-600 mt-1">검토중</p>
-                                    </div>
-                                    <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                                        <p class="text-xl font-bold text-yellow-600">4</p>
-                                        <p class="text-xs text-gray-600 mt-1">조치중</p>
-                                    </div>
-                                    <div class="p-3 bg-red-50 rounded-lg border border-red-100">
-                                        <p class="text-xl font-bold text-red-600">1</p>
-                                        <p class="text-xs text-gray-600 mt-1">반려</p>
-                                    </div>
-                                    <div class="p-3 bg-green-50 rounded-lg border border-green-100">
-                                        <p class="text-xl font-bold text-green-600">12</p>
-                                        <p class="text-xs text-gray-600 mt-1">조치완료</p>
-                                    </div>
-                                </div>
-                                <div class="border-b border-gray-200 mb-3">
-                                    <div class="flex gap-4">
-                                        <button class="pb-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600">청취조사</button>
-                                        <button class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700">안전제안</button>
-                                        <button class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700">위험신고</button>
-                                    </div>
-                                </div>
-                                <div class="divide-y divide-gray-100">
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-warning">조치중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 소음 관련 건의</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-info">검토중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 소음 관련 건의</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-success">접수</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 소음 관련 건의</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-success">접수</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 소음 관련 건의</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 교육 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">교육 현황</h2>
-                                <a href="pages/safety-education.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="space-y-3">
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">관리감독자 교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">신규채용자 교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">위험성평가 교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">정기교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">특별교육(유해위험작업 관련 교육)</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">비상조치 매뉴얼 관련 교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                        <span class="text-sm text-gray-700">물질안전보건자료(MSDS) 교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                    <div class="flex items-center justify-between py-2">
-                                        <span class="text-sm text-gray-700">기타 안전보건교육</span>
-                                        <span class="text-sm font-medium text-gray-900">100% (1/1건)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 관리자 대시보드 -->
-                <div id="dashboard-manager" class="dashboard-content hidden space-y-6">
-                    <!-- 내 할일 -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">내 할일</h2>
-                            <a href="pages/my-tasks.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                        </div>
-                        <div class="p-4">
-                            <div class="border-b border-gray-200 mb-4">
-                                <div class="flex gap-6">
-                                    <button class="pb-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600">문서업무</button>
-                                    <button class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700">결재대기</button>
-                                    <button class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700">전자서명</button>
-                                </div>
-                            </div>
-                            <div class="divide-y divide-gray-100">
-                                <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <span class="badge badge-info">대기</span>
-                                        <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                    </div>
-                                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                </div>
-                                <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <span class="badge badge-danger">기한초과</span>
-                                        <span class="text-sm text-gray-900">작업전 안전점검회의(TBM)</span>
-                                    </div>
-                                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                </div>
-                                <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <span class="badge badge-danger">기한초과</span>
-                                        <span class="text-sm text-gray-900">작업전 안전점검회의(TBM)</span>
-                                    </div>
-                                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                </div>
-                                <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <span class="badge badge-info">대기</span>
-                                        <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                    </div>
-                                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                </div>
-                                <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                    <div class="flex items-center gap-3">
-                                        <span class="badge badge-info">대기</span>
-                                        <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                    </div>
-                                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <!-- 개선조치 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">개선조치 현황</h2>
-                                <a href="pages/improvement.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-3 gap-4 text-center mb-4">
-                                    <div class="p-4 bg-red-50 rounded-lg border border-red-100">
-                                        <p class="text-2xl font-bold text-red-600">2</p>
-                                        <p class="text-sm text-gray-600 mt-1">대기중</p>
-                                    </div>
-                                    <div class="p-4 bg-yellow-50 rounded-lg border border-yellow-100">
-                                        <p class="text-2xl font-bold text-yellow-600">1</p>
-                                        <p class="text-sm text-gray-600 mt-1">조치중</p>
-                                    </div>
-                                    <div class="p-4 bg-green-50 rounded-lg border border-green-100">
-                                        <p class="text-2xl font-bold text-green-600">12</p>
-                                        <p class="text-sm text-gray-600 mt-1">조치완료</p>
-                                    </div>
-                                </div>
-                                <div class="divide-y divide-gray-100">
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-warning">조치중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-danger">대기중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between">
-                                        <div class="flex items-center gap-2">
-                                            <span class="badge badge-danger">대기중</span>
-                                            <span class="text-sm text-gray-900">3층 작업장 방음처리</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">2026-03-28</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 교육현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">교육현황</h2>
-                                <a href="pages/safety-education.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-4 gap-3 mb-4">
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">관리감독자 교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">신규채용자 교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">위험성평가 교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">정기교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-4 gap-3">
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">특별교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">비상조치 매뉴얼</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">MSDS 교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                    <div class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100">
-                                        <p class="text-sm text-gray-700 font-medium">기타 교육</p>
-                                        <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <!-- TBM 이행율 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">TBM 이행율</h2>
-                                <a href="pages/tbm.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm text-gray-700 font-medium">1공장 오전 TBM</span>
-                                            <span class="badge badge-success">100%</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-blue-200 rounded-full overflow-hidden">
-                                            <div class="h-full bg-blue-500 rounded-full" style="width: 100%"></div>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">진행 0건 · 완료 0건</p>
-                                    </div>
-                                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm text-gray-700 font-medium">2공장 오전 TBM</span>
-                                            <span class="badge badge-warning">72%</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden">
-                                            <div class="h-full bg-yellow-500 rounded-full" style="width: 72%"></div>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">진행 0건 · 완료 0건</p>
-                                    </div>
-                                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm text-gray-700 font-medium">화학물질 취급 TBM</span>
-                                            <span class="badge badge-warning">72%</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden">
-                                            <div class="h-full bg-yellow-500 rounded-full" style="width: 72%"></div>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">진행 0건 · 완료 0건</p>
-                                    </div>
-                                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="text-sm text-gray-700 font-medium">고소작업 안전 TBM</span>
-                                            <span class="badge badge-success">100%</span>
-                                        </div>
-                                        <div class="w-full h-2 bg-green-200 rounded-full overflow-hidden">
-                                            <div class="h-full bg-green-500 rounded-full" style="width: 100%"></div>
-                                        </div>
-                                        <p class="text-xs text-gray-500 mt-2">진행 0건 · 완료 0건</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- TBM 그룹 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">TBM 그룹 현황</h2>
-                                <a href="pages/tbm.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="grid grid-cols-3 gap-4 text-center mb-4">
-                                    <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
-                                        <p class="text-2xl font-bold text-blue-600">5개</p>
-                                        <p class="text-sm text-gray-600 mt-1">전체 그룹</p>
-                                    </div>
-                                    <div class="p-4 bg-green-50 rounded-lg border border-green-100">
-                                        <p class="text-2xl font-bold text-green-600">47명</p>
-                                        <p class="text-sm text-gray-600 mt-1">전체 멤버</p>
-                                    </div>
-                                    <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
-                                        <p class="text-2xl font-bold text-purple-600">315h</p>
-                                        <p class="text-sm text-gray-600 mt-1">누적 시간</p>
-                                    </div>
-                                </div>
-                                <table class="w-full text-sm">
-                                    <thead>
-                                        <tr class="border-b border-gray-200">
-                                            <th class="py-2 text-left text-gray-500 font-medium">TBM그룹</th>
-                                            <th class="py-2 text-center text-gray-500 font-medium">누적시간</th>
-                                            <th class="py-2 text-center text-gray-500 font-medium">그룹인원</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="border-b border-gray-100">
-                                            <td class="py-2 text-gray-900">1공장 오전반</td>
-                                            <td class="py-2 text-center text-gray-600">96h</td>
-                                            <td class="py-2 text-center text-gray-600">12명</td>
-                                        </tr>
-                                        <tr class="border-b border-gray-100">
-                                            <td class="py-2 text-gray-900">1공장 오전반</td>
-                                            <td class="py-2 text-center text-gray-600">96h</td>
-                                            <td class="py-2 text-center text-gray-600">12명</td>
-                                        </tr>
-                                        <tr class="border-b border-gray-100">
-                                            <td class="py-2 text-gray-900">1공장 오전반</td>
-                                            <td class="py-2 text-center text-gray-600">96h</td>
-                                            <td class="py-2 text-center text-gray-600">12명</td>
-                                        </tr>
-                                        <tr class="border-b border-gray-100">
-                                            <td class="py-2 text-gray-900">1공장 오전반</td>
-                                            <td class="py-2 text-center text-gray-600">96h</td>
-                                            <td class="py-2 text-center text-gray-600">12명</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 text-gray-900">1공장 오전반</td>
-                                            <td class="py-2 text-center text-gray-600">96h</td>
-                                            <td class="py-2 text-center text-gray-600">12명</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 근로자 대시보드 -->
-                <div id="dashboard-worker" class="dashboard-content hidden space-y-6">
-                    <!-- 바로가기 -->
-                    <div class="card">
-                        <div class="card-header border-b-0 pb-0">
-                            <h2 class="card-title">바로가기</h2>
-                            <span class="text-sm text-gray-500">현장에서 발생한 상황을 즉시 신고하세요.</span>
-                        </div>
-                        <div class="p-4">
-                            <div class="grid grid-cols-3 gap-4">
-                                <a href="pages/opinion.html" class="p-6 bg-orange-50 border border-orange-200 rounded-xl hover:bg-orange-100 transition-colors cursor-pointer text-center">
-                                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="font-semibold text-gray-900 mb-1">아차사고 신고</p>
-                                    <p class="text-xs text-gray-500">사고가 날 뻔한 상황을<br>즉시 신고하세요</p>
-                                </a>
-                                <a href="pages/opinion.html" class="p-6 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors cursor-pointer text-center">
-                                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="font-semibold text-gray-900 mb-1">작업중지권 행사</p>
-                                    <p class="text-xs text-gray-500">위험한 상황에서<br>즉시 작업중지권을 행사하세요</p>
-                                </a>
-                                <a href="pages/opinion.html" class="p-6 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors cursor-pointer text-center">
-                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <p class="font-semibold text-gray-900 mb-1">안전제안</p>
-                                    <p class="text-xs text-gray-500">더 안전한 작업환경을 위해<br>아이디어를 제안하세요</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <!-- 내 할일 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">내 할일</h2>
-                                <a href="pages/my-tasks.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">바로가기 →</a>
-                            </div>
-                            <div class="p-4">
-                                <div class="border-b border-gray-200 mb-4">
-                                    <div class="flex gap-6">
-                                        <button class="pb-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600">문서업무</button>
-                                        <button class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700">결재대기</button>
-                                        <button class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700">전자서명</button>
-                                    </div>
-                                </div>
-                                <div class="divide-y divide-gray-100">
-                                    <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge badge-info">대기</span>
-                                            <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge badge-danger">기한초과</span>
-                                            <span class="text-sm text-gray-900">작업전 안전점검회의(TBM)</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge badge-danger">기한초과</span>
-                                            <span class="text-sm text-gray-900">작업전 안전점검회의(TBM)</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge badge-info">대기</span>
-                                            <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                    </div>
-                                    <div class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <span class="badge badge-info">대기</span>
-                                            <span class="text-sm text-gray-900">관리감독자의 선임서, 직무교육 이수 실적</span>
-                                        </div>
-                                        <span class="text-sm text-gray-500">~ 2026-03-27</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 내 교육 현황 -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">내 교육 현황</h2>
-                                <div class="flex items-center gap-2">
-                                    <select class="text-sm border border-gray-200 rounded-md px-3 py-1.5 bg-white">
-                                        <option>26년 1분기</option>
-                                        <option>26년 2분기</option>
-                                        <option>25년 4분기</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="p-4">
-                                <div class="flex gap-8">
-                                    <!-- 도넛 차트 -->
-                                    <div class="flex-shrink-0">
-                                        <div class="relative w-40 h-40">
-                                            <svg class="w-40 h-40 transform -rotate-90" viewBox="0 0 160 160">
-                                                <circle cx="80" cy="80" r="60" fill="none" stroke="#e5e7eb" stroke-width="20"/>
-                                                <circle cx="80" cy="80" r="60" fill="none" stroke="#f59e0b" stroke-width="20"
-                                                    stroke-dasharray="294.5" stroke-dashoffset="63.4" stroke-linecap="round"/>
-                                            </svg>
-                                            <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                                <span class="text-3xl font-bold text-gray-900">78%</span>
-                                                <span class="text-sm text-gray-500">달성율</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- 이수시간 목록 -->
-                                    <div class="flex-1 space-y-3">
-                                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                            <span class="text-sm text-gray-700">법정 이수시간</span>
-                                            <span class="text-sm font-semibold text-gray-900">12h</span>
-                                        </div>
-                                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
-                                            <span class="text-sm text-gray-700">정기교육 이수시간</span>
-                                            <span class="text-sm font-semibold text-gray-900">7h</span>
-                                        </div>
-                                        <div class="flex items-center justify-between py-2">
-                                            <span class="text-sm text-gray-700">TBM 인정시간</span>
-                                            <span class="text-sm font-semibold text-gray-900">2h</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+            <span class="text-lg font-bold text-white">안전NOW</span>
+          </a>
         </div>
+
+        <nav class="sidebar-nav">
+          <ul class="space-y-1">
+            <li>
+              <a href="index.html" class="sidebar-item active">
+                <svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  ></path>
+                </svg>
+                대시보드
+              </a>
+            </li>
+            <li>
+              <a href="pages/my-tasks.html" class="sidebar-item">
+                <svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                  ></path>
+                </svg>
+                내 업무
+                <span class="sidebar-item-badge red">5</span>
+              </a>
+            </li>
+
+            <li class="sidebar-section">안전 활동</li>
+            <li>
+              <a href="pages/risk-assessment.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  ></path></svg
+                >위험성평가</a
+              >
+            </li>
+            <li>
+              <a href="pages/tbm.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  ></path></svg
+                >TBM</a
+              >
+            </li>
+            <li>
+              <a href="pages/safety-inspection.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                  ></path></svg
+                >안전점검</a
+              >
+            </li>
+            <li>
+              <a href="pages/safety-education.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  ></path></svg
+                >안전보건교육</a
+              >
+            </li>
+            <li>
+              <a href="pages/safety-policy.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  ></path></svg
+                >안전경영방침</a
+              >
+            </li>
+            <li>
+              <a href="pages/safety-budget.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path></svg
+                >안전보건예산</a
+              >
+            </li>
+            <li>
+              <a href="pages/opinion.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  ></path></svg
+                >의견청취<span class="sidebar-item-badge orange">2</span></a
+              >
+            </li>
+            <li>
+              <a href="pages/improvement.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  ></path></svg
+                >개선조치<span class="sidebar-item-badge yellow">8</span></a
+              >
+            </li>
+
+            <li class="sidebar-section">관리</li>
+            <li>
+              <a href="pages/compliance.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path></svg
+                >이행관리</a
+              >
+            </li>
+            <li>
+              <a href="pages/documents.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                  ></path></svg
+                >업무문서관리</a
+              >
+            </li>
+            <li>
+              <a href="pages/process.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
+                  ></path></svg
+                >공정관리</a
+              >
+            </li>
+            <li>
+              <a href="pages/contractor.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path></svg
+                >도급관리</a
+              >
+            </li>
+            <li>
+              <a href="pages/workplace.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  ></path></svg
+                >사업장관리</a
+              >
+            </li>
+
+            <li class="sidebar-section">지원</li>
+            <li>
+              <a href="pages/support.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
+                  ></path></svg
+                >고객지원</a
+              >
+            </li>
+            <li>
+              <a href="pages/my-info.html" class="sidebar-item"
+                ><svg
+                  class="sidebar-item-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path></svg
+                >내 정보관리</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="workspace-selector">
+          <button class="workspace-btn">
+            <div class="workspace-avatar">본</div>
+            <div class="workspace-info">
+              <div class="workspace-name">본사 사업장</div>
+              <div class="workspace-role">경영책임자</div>
+            </div>
+            <svg
+              class="w-4 h-4 text-slate-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </aside>
+
+      <!-- 메인 콘텐츠 -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="header">
+          <div class="header-left">
+            <h1 id="header-title" class="header-title">대시보드</h1>
+            <div id="role-tabs" class="header-tabs">
+              <button class="role-tab header-tab active" data-role="ceo">
+                경영책임자
+              </button>
+              <button class="role-tab header-tab" data-role="manager">
+                관리자
+              </button>
+              <button class="role-tab header-tab" data-role="worker">
+                근로자
+              </button>
+            </div>
+          </div>
+          <div class="header-right">
+            <button class="header-notification">
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                ></path>
+              </svg>
+              <span class="header-notification-dot"></span>
+            </button>
+            <div class="header-user">
+              <div class="header-avatar">김</div>
+              <span class="header-username">김대표</span>
+            </div>
+          </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-6">
+          <!-- 경영책임자 대시보드 -->
+          <div id="dashboard-ceo" class="dashboard-content space-y-6">
+            <!-- 이행률 카드 -->
+            <div class="card p-6">
+              <div class="flex items-center gap-8">
+                <div class="flex-shrink-0">
+                  <p class="text-sm text-gray-500 mb-1">이행률</p>
+                  <p class="text-3xl font-bold text-gray-900">63%</p>
+                  <p class="text-sm text-gray-500">26/48건</p>
+                </div>
+                <div class="flex-1">
+                  <div
+                    class="flex items-center gap-4 mb-2 text-xs text-gray-500"
+                  >
+                    <span class="flex items-center gap-1"
+                      ><span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                      완료 30건</span
+                    >
+                    <span class="flex items-center gap-1"
+                      ><span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                      진행중 12건</span
+                    >
+                    <span class="flex items-center gap-1"
+                      ><span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+                      계획 6건</span
+                    >
+                  </div>
+                  <div
+                    class="w-full h-8 bg-gray-200 rounded-full overflow-hidden flex"
+                  >
+                    <div
+                      class="h-full bg-green-500 flex items-center justify-center text-white text-xs font-medium"
+                      style="width: 62.5%"
+                    >
+                      완료 62.5%
+                    </div>
+                    <div
+                      class="h-full bg-blue-500 flex items-center justify-center text-white text-xs font-medium"
+                      style="width: 25%"
+                    >
+                      진행 25%
+                    </div>
+                    <div
+                      class="h-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-medium"
+                      style="width: 12.5%"
+                    >
+                      12.5%
+                    </div>
+                  </div>
+                  <div class="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 목표/KPI 달성률 -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">목표/KPI 달성률</h2>
+                <a
+                  href="pages/safety-policy.html#goal-kpi"
+                  class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  >바로가기 →</a
+                >
+              </div>
+              <div class="p-4">
+                <div class="grid grid-cols-4 gap-4">
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-700 font-medium"
+                        >중대재해 발생 건수</span
+                      >
+                      <span class="badge badge-success">100%</span>
+                    </div>
+                    <div
+                      class="w-full h-2 bg-green-200 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-green-500 rounded-full"
+                        style="width: 100%"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      목표 0건 · 현재 0건
+                    </p>
+                  </div>
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-700 font-medium"
+                        >위험성평가 완료율</span
+                      >
+                      <span class="badge badge-warning">72%</span>
+                    </div>
+                    <div
+                      class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-yellow-500 rounded-full"
+                        style="width: 72%"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      목표 100% · 현재 72%
+                    </p>
+                  </div>
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-700 font-medium"
+                        >교육 이수율</span
+                      >
+                      <span class="badge badge-warning">72%</span>
+                    </div>
+                    <div
+                      class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-yellow-500 rounded-full"
+                        style="width: 72%"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      목표 100% · 현재 72%
+                    </p>
+                  </div>
+                  <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm text-gray-700 font-medium"
+                        >아차사고 신고건수</span
+                      >
+                      <span class="badge badge-success">100%</span>
+                    </div>
+                    <div
+                      class="w-full h-2 bg-green-200 rounded-full overflow-hidden"
+                    >
+                      <div
+                        class="h-full bg-green-500 rounded-full"
+                        style="width: 100%"
+                      ></div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                      목표 10건 이하 · 현재 5건
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <!-- 아차사고-작업중지 발생 추이 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">아차사고-작업중지 발생 추이</h2>
+                  <div class="flex items-center gap-2">
+                    <button
+                      class="px-3 py-1 text-sm rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    >
+                      6개월
+                    </button>
+                    <button
+                      class="px-3 py-1 text-sm rounded-md bg-blue-500 text-white"
+                    >
+                      12개월
+                    </button>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <div class="h-64 flex items-end gap-2">
+                    <!-- 간단한 바 차트 시뮬레이션 -->
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 60%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 30%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">4월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 45%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 20%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">5월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 70%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 35%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">6월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 55%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 25%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">7월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 40%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 15%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">8월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 50%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 20%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">9월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 35%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 10%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">10월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 30%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 15%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">11월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 25%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 10%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">12월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 20%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 8%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">1월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 28%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 12%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">2월</span>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center gap-1">
+                      <div
+                        class="w-full flex gap-1 items-end justify-center h-48"
+                      >
+                        <div
+                          class="w-4 bg-orange-400 rounded-t"
+                          style="height: 22%"
+                        ></div>
+                        <div
+                          class="w-4 bg-red-400 rounded-t"
+                          style="height: 10%"
+                        ></div>
+                      </div>
+                      <span class="text-xs text-gray-500">3월</span>
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-center justify-center gap-6 mt-4 text-sm"
+                  >
+                    <span class="flex items-center gap-2"
+                      ><span class="w-3 h-3 bg-orange-400 rounded"></span>
+                      아차사고</span
+                    >
+                    <span class="flex items-center gap-2"
+                      ><span class="w-3 h-3 bg-red-400 rounded"></span>
+                      작업중지</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- 개선조치 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">개선조치 현황</h2>
+                  <a
+                    href="pages/improvement.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-3 gap-4 text-center mb-4">
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100">
+                      <p class="text-2xl font-bold text-red-600">2</p>
+                      <p class="text-sm text-gray-600 mt-1">대기중</p>
+                    </div>
+                    <div
+                      class="p-4 bg-yellow-50 rounded-lg border border-yellow-100"
+                    >
+                      <p class="text-2xl font-bold text-yellow-600">1</p>
+                      <p class="text-sm text-gray-600 mt-1">조치중</p>
+                    </div>
+                    <div
+                      class="p-4 bg-green-50 rounded-lg border border-green-100"
+                    >
+                      <p class="text-2xl font-bold text-green-600">12</p>
+                      <p class="text-sm text-gray-600 mt-1">조치완료</p>
+                    </div>
+                  </div>
+                  <div class="divide-y divide-gray-100">
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-warning">조치중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-danger">대기중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-danger">대기중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <!-- 의견청취 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">의견청취 현황</h2>
+                  <a
+                    href="pages/opinion.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-5 gap-3 text-center mb-4">
+                    <div
+                      class="p-3 bg-blue-50 rounded-lg border border-blue-100"
+                    >
+                      <p class="text-xl font-bold text-blue-600">3</p>
+                      <p class="text-xs text-gray-600 mt-1">접수</p>
+                    </div>
+                    <div
+                      class="p-3 bg-purple-50 rounded-lg border border-purple-100"
+                    >
+                      <p class="text-xl font-bold text-purple-600">2</p>
+                      <p class="text-xs text-gray-600 mt-1">검토중</p>
+                    </div>
+                    <div
+                      class="p-3 bg-yellow-50 rounded-lg border border-yellow-100"
+                    >
+                      <p class="text-xl font-bold text-yellow-600">4</p>
+                      <p class="text-xs text-gray-600 mt-1">조치중</p>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg border border-red-100">
+                      <p class="text-xl font-bold text-red-600">1</p>
+                      <p class="text-xs text-gray-600 mt-1">반려</p>
+                    </div>
+                    <div
+                      class="p-3 bg-green-50 rounded-lg border border-green-100"
+                    >
+                      <p class="text-xl font-bold text-green-600">12</p>
+                      <p class="text-xs text-gray-600 mt-1">조치완료</p>
+                    </div>
+                  </div>
+                  <div class="border-b border-gray-200 mb-3">
+                    <div class="flex gap-4">
+                      <button
+                        class="pb-2 text-sm font-medium text-blue-600 border-b-2 border-blue-600"
+                      >
+                        청취조사
+                      </button>
+                      <button
+                        class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        안전제안
+                      </button>
+                      <button
+                        class="pb-2 text-sm font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        위험신고
+                      </button>
+                    </div>
+                  </div>
+                  <div class="divide-y divide-gray-100">
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-warning">조치중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 소음 관련 건의</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-info">검토중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 소음 관련 건의</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-success">접수</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 소음 관련 건의</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-success">접수</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 소음 관련 건의</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 교육 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">교육 현황</h2>
+                  <a
+                    href="pages/safety-education.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="space-y-3">
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700">관리감독자 교육</span>
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700">신규채용자 교육</span>
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700">위험성평가 교육</span>
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700">정기교육</span>
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700"
+                        >특별교육(유해위험작업 관련 교육)</span
+                      >
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700"
+                        >비상조치 매뉴얼 관련 교육</span
+                      >
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div
+                      class="flex items-center justify-between py-2 border-b border-gray-100"
+                    >
+                      <span class="text-sm text-gray-700"
+                        >물질안전보건자료(MSDS) 교육</span
+                      >
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                      <span class="text-sm text-gray-700"
+                        >기타 안전보건교육</span
+                      >
+                      <span class="text-sm font-medium text-gray-900"
+                        >100% (1/1건)</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 관리자 대시보드 -->
+          <div
+            id="dashboard-manager"
+            class="dashboard-content hidden space-y-6"
+          >
+            <!-- 내 할일 -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">내 할일</h2>
+                <a
+                  href="pages/my-tasks.html"
+                  class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  >바로가기 →</a
+                >
+              </div>
+              <div class="p-4">
+                <div class="border-b border-gray-200 mb-4">
+                  <div class="flex gap-6">
+                    <button
+                      class="pb-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600"
+                    >
+                      문서업무
+                    </button>
+                    <button
+                      class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700"
+                    >
+                      결재대기
+                    </button>
+                    <button
+                      class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700"
+                    >
+                      전자서명
+                    </button>
+                  </div>
+                </div>
+                <div class="divide-y divide-gray-100">
+                  <div
+                    class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-info">대기</span>
+                      <span class="text-sm text-gray-900"
+                        >관리감독자의 선임서, 직무교육 이수 실적</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                  </div>
+                  <div
+                    class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-danger">기한초과</span>
+                      <span class="text-sm text-gray-900"
+                        >작업전 안전점검회의(TBM)</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                  </div>
+                  <div
+                    class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-danger">기한초과</span>
+                      <span class="text-sm text-gray-900"
+                        >작업전 안전점검회의(TBM)</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                  </div>
+                  <div
+                    class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-info">대기</span>
+                      <span class="text-sm text-gray-900"
+                        >관리감독자의 선임서, 직무교육 이수 실적</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                  </div>
+                  <div
+                    class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                  >
+                    <div class="flex items-center gap-3">
+                      <span class="badge badge-info">대기</span>
+                      <span class="text-sm text-gray-900"
+                        >관리감독자의 선임서, 직무교육 이수 실적</span
+                      >
+                    </div>
+                    <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <!-- 개선조치 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">개선조치 현황</h2>
+                  <a
+                    href="pages/improvement.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-3 gap-4 text-center mb-4">
+                    <div class="p-4 bg-red-50 rounded-lg border border-red-100">
+                      <p class="text-2xl font-bold text-red-600">2</p>
+                      <p class="text-sm text-gray-600 mt-1">대기중</p>
+                    </div>
+                    <div
+                      class="p-4 bg-yellow-50 rounded-lg border border-yellow-100"
+                    >
+                      <p class="text-2xl font-bold text-yellow-600">1</p>
+                      <p class="text-sm text-gray-600 mt-1">조치중</p>
+                    </div>
+                    <div
+                      class="p-4 bg-green-50 rounded-lg border border-green-100"
+                    >
+                      <p class="text-2xl font-bold text-green-600">12</p>
+                      <p class="text-sm text-gray-600 mt-1">조치완료</p>
+                    </div>
+                  </div>
+                  <div class="divide-y divide-gray-100">
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-warning">조치중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-danger">대기중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="badge badge-danger">대기중</span>
+                        <span class="text-sm text-gray-900"
+                          >3층 작업장 방음처리</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">2026-03-28</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 교육현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">교육현황</h2>
+                  <a
+                    href="pages/safety-education.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-4 gap-3 mb-4">
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">
+                        관리감독자 교육
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">
+                        신규채용자 교육
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">
+                        위험성평가 교육
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">정기교육</p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-4 gap-3">
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">특별교육</p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">
+                        비상조치 매뉴얼
+                      </p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">MSDS 교육</p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                    <div
+                      class="p-3 bg-gray-50 rounded-lg text-center border border-gray-100"
+                    >
+                      <p class="text-sm text-gray-700 font-medium">기타 교육</p>
+                      <p class="text-xs text-gray-500 mt-1">100% (1/1건)</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <!-- TBM 이행율 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">TBM 이행율</h2>
+                  <a
+                    href="pages/tbm.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div
+                      class="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                    >
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-700 font-medium"
+                          >1공장 오전 TBM</span
+                        >
+                        <span class="badge badge-success">100%</span>
+                      </div>
+                      <div
+                        class="w-full h-2 bg-blue-200 rounded-full overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-blue-500 rounded-full"
+                          style="width: 100%"
+                        ></div>
+                      </div>
+                      <p class="text-xs text-gray-500 mt-2">
+                        진행 0건 · 완료 0건
+                      </p>
+                    </div>
+                    <div
+                      class="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                    >
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-700 font-medium"
+                          >2공장 오전 TBM</span
+                        >
+                        <span class="badge badge-warning">72%</span>
+                      </div>
+                      <div
+                        class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-yellow-500 rounded-full"
+                          style="width: 72%"
+                        ></div>
+                      </div>
+                      <p class="text-xs text-gray-500 mt-2">
+                        진행 0건 · 완료 0건
+                      </p>
+                    </div>
+                    <div
+                      class="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                    >
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-700 font-medium"
+                          >화학물질 취급 TBM</span
+                        >
+                        <span class="badge badge-warning">72%</span>
+                      </div>
+                      <div
+                        class="w-full h-2 bg-yellow-200 rounded-full overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-yellow-500 rounded-full"
+                          style="width: 72%"
+                        ></div>
+                      </div>
+                      <p class="text-xs text-gray-500 mt-2">
+                        진행 0건 · 완료 0건
+                      </p>
+                    </div>
+                    <div
+                      class="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                    >
+                      <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-700 font-medium"
+                          >고소작업 안전 TBM</span
+                        >
+                        <span class="badge badge-success">100%</span>
+                      </div>
+                      <div
+                        class="w-full h-2 bg-green-200 rounded-full overflow-hidden"
+                      >
+                        <div
+                          class="h-full bg-green-500 rounded-full"
+                          style="width: 100%"
+                        ></div>
+                      </div>
+                      <p class="text-xs text-gray-500 mt-2">
+                        진행 0건 · 완료 0건
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TBM 그룹 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">TBM 그룹 현황</h2>
+                  <a
+                    href="pages/tbm.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="grid grid-cols-3 gap-4 text-center mb-4">
+                    <div
+                      class="p-4 bg-blue-50 rounded-lg border border-blue-100"
+                    >
+                      <p class="text-2xl font-bold text-blue-600">5개</p>
+                      <p class="text-sm text-gray-600 mt-1">전체 그룹</p>
+                    </div>
+                    <div
+                      class="p-4 bg-green-50 rounded-lg border border-green-100"
+                    >
+                      <p class="text-2xl font-bold text-green-600">47명</p>
+                      <p class="text-sm text-gray-600 mt-1">전체 멤버</p>
+                    </div>
+                    <div
+                      class="p-4 bg-purple-50 rounded-lg border border-purple-100"
+                    >
+                      <p class="text-2xl font-bold text-purple-600">315h</p>
+                      <p class="text-sm text-gray-600 mt-1">누적 시간</p>
+                    </div>
+                  </div>
+                  <table class="w-full text-sm">
+                    <thead>
+                      <tr class="border-b border-gray-200">
+                        <th class="py-2 text-left text-gray-500 font-medium">
+                          TBM그룹
+                        </th>
+                        <th class="py-2 text-center text-gray-500 font-medium">
+                          누적시간
+                        </th>
+                        <th class="py-2 text-center text-gray-500 font-medium">
+                          그룹인원
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b border-gray-100">
+                        <td class="py-2 text-gray-900">1공장 오전반</td>
+                        <td class="py-2 text-center text-gray-600">96h</td>
+                        <td class="py-2 text-center text-gray-600">12명</td>
+                      </tr>
+                      <tr class="border-b border-gray-100">
+                        <td class="py-2 text-gray-900">1공장 오전반</td>
+                        <td class="py-2 text-center text-gray-600">96h</td>
+                        <td class="py-2 text-center text-gray-600">12명</td>
+                      </tr>
+                      <tr class="border-b border-gray-100">
+                        <td class="py-2 text-gray-900">1공장 오전반</td>
+                        <td class="py-2 text-center text-gray-600">96h</td>
+                        <td class="py-2 text-center text-gray-600">12명</td>
+                      </tr>
+                      <tr class="border-b border-gray-100">
+                        <td class="py-2 text-gray-900">1공장 오전반</td>
+                        <td class="py-2 text-center text-gray-600">96h</td>
+                        <td class="py-2 text-center text-gray-600">12명</td>
+                      </tr>
+                      <tr>
+                        <td class="py-2 text-gray-900">1공장 오전반</td>
+                        <td class="py-2 text-center text-gray-600">96h</td>
+                        <td class="py-2 text-center text-gray-600">12명</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 근로자 대시보드 -->
+          <div id="dashboard-worker" class="dashboard-content hidden space-y-6">
+            <!-- 바로가기 -->
+            <div class="card">
+              <div class="card-header border-b-0 pb-0">
+                <h2 class="card-title">바로가기</h2>
+                <span class="text-sm text-gray-500"
+                  >현장에서 발생한 상황을 즉시 신고하세요.</span
+                >
+              </div>
+              <div class="p-4">
+                <div class="grid grid-cols-3 gap-4">
+                  <a
+                    href="pages/opinion.html"
+                    class="p-6 bg-orange-50 border border-orange-200 rounded-xl hover:bg-orange-100 transition-colors cursor-pointer text-center"
+                  >
+                    <div
+                      class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3"
+                    >
+                      <svg
+                        class="w-6 h-6 text-orange-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="font-semibold text-gray-900 mb-1">
+                      아차사고 신고
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      사고가 날 뻔한 상황을<br />즉시 신고하세요
+                    </p>
+                  </a>
+                  <a
+                    href="pages/opinion.html"
+                    class="p-6 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors cursor-pointer text-center"
+                  >
+                    <div
+                      class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3"
+                    >
+                      <svg
+                        class="w-6 h-6 text-red-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="font-semibold text-gray-900 mb-1">
+                      작업중지권 행사
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      위험한 상황에서<br />즉시 작업중지권을 행사하세요
+                    </p>
+                  </a>
+                  <a
+                    href="pages/opinion.html"
+                    class="p-6 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors cursor-pointer text-center"
+                  >
+                    <div
+                      class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3"
+                    >
+                      <svg
+                        class="w-6 h-6 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="font-semibold text-gray-900 mb-1">안전제안</p>
+                    <p class="text-xs text-gray-500">
+                      더 안전한 작업환경을 위해<br />아이디어를 제안하세요
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <!-- 내 할일 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">내 할일</h2>
+                  <a
+                    href="pages/my-tasks.html"
+                    class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                    >바로가기 →</a
+                  >
+                </div>
+                <div class="p-4">
+                  <div class="border-b border-gray-200 mb-4">
+                    <div class="flex gap-6">
+                      <button
+                        class="pb-3 text-sm font-medium text-blue-600 border-b-2 border-blue-600"
+                      >
+                        문서업무
+                      </button>
+                      <button
+                        class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        결재대기
+                      </button>
+                      <button
+                        class="pb-3 text-sm font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        전자서명
+                      </button>
+                    </div>
+                  </div>
+                  <div class="divide-y divide-gray-100">
+                    <div
+                      class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-info">대기</span>
+                        <span class="text-sm text-gray-900"
+                          >관리감독자의 선임서, 직무교육 이수 실적</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                    </div>
+                    <div
+                      class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-danger">기한초과</span>
+                        <span class="text-sm text-gray-900"
+                          >작업전 안전점검회의(TBM)</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                    </div>
+                    <div
+                      class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-danger">기한초과</span>
+                        <span class="text-sm text-gray-900"
+                          >작업전 안전점검회의(TBM)</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                    </div>
+                    <div
+                      class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-info">대기</span>
+                        <span class="text-sm text-gray-900"
+                          >관리감독자의 선임서, 직무교육 이수 실적</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                    </div>
+                    <div
+                      class="py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="flex items-center gap-3">
+                        <span class="badge badge-info">대기</span>
+                        <span class="text-sm text-gray-900"
+                          >관리감독자의 선임서, 직무교육 이수 실적</span
+                        >
+                      </div>
+                      <span class="text-sm text-gray-500">~ 2026-03-27</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 내 교육 현황 -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">내 교육 현황</h2>
+                  <div class="flex items-center gap-2">
+                    <select
+                      class="text-sm border border-gray-200 rounded-md px-3 py-1.5 bg-white"
+                    >
+                      <option>26년 1분기</option>
+                      <option>26년 2분기</option>
+                      <option>25년 4분기</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="p-4">
+                  <div class="flex gap-8">
+                    <!-- 도넛 차트 -->
+                    <div class="flex-shrink-0">
+                      <div class="relative w-40 h-40">
+                        <svg
+                          class="w-40 h-40 transform -rotate-90"
+                          viewBox="0 0 160 160"
+                        >
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="60"
+                            fill="none"
+                            stroke="#e5e7eb"
+                            stroke-width="20"
+                          />
+                          <circle
+                            cx="80"
+                            cy="80"
+                            r="60"
+                            fill="none"
+                            stroke="#f59e0b"
+                            stroke-width="20"
+                            stroke-dasharray="294.5"
+                            stroke-dashoffset="63.4"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                        <div
+                          class="absolute inset-0 flex flex-col items-center justify-center"
+                        >
+                          <span class="text-3xl font-bold text-gray-900"
+                            >78%</span
+                          >
+                          <span class="text-sm text-gray-500">달성율</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 이수시간 목록 -->
+                    <div class="flex-1 space-y-3">
+                      <div
+                        class="flex items-center justify-between py-2 border-b border-gray-100"
+                      >
+                        <span class="text-sm text-gray-700">법정 이수시간</span>
+                        <span class="text-sm font-semibold text-gray-900"
+                          >12h</span
+                        >
+                      </div>
+                      <div
+                        class="flex items-center justify-between py-2 border-b border-gray-100"
+                      >
+                        <span class="text-sm text-gray-700"
+                          >정기교육 이수시간</span
+                        >
+                        <span class="text-sm font-semibold text-gray-900"
+                          >7h</span
+                        >
+                      </div>
+                      <div class="flex items-center justify-between py-2">
+                        <span class="text-sm text-gray-700">TBM 인정시간</span>
+                        <span class="text-sm font-semibold text-gray-900"
+                          >2h</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
 
     <script src="js/app.js"></script>
-</body>
+  </body>
 </html>
