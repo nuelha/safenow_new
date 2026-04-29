@@ -202,11 +202,11 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                     </svg>
-                                    문서 등록
+                                    새 문서 등록
                                 </button>
                             </div>
 
-                            <div class="alert alert-warning mb-4">
+                            <div class="alert alert-warning mb-3">
                                 <svg class="alert-icon text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
                                 </svg>
@@ -215,6 +215,17 @@
                                     <p class="alert-message text-yellow-700">산업안전보건법 및 중대재해처벌법에서 요구하는 필수 문서가 등록되지 않았습니다.</p>
                                 </div>
                                 <button class="btn btn-sm bg-yellow-100 text-yellow-800 hover:bg-yellow-200 ml-auto">미등록 문서 확인</button>
+                            </div>
+
+                            <div class="alert alert-info mb-4">
+                                <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <div class="alert-content">
+                                    <p class="alert-title text-blue-800">개정이 필요한 문서 1건</p>
+                                    <p class="alert-message text-blue-700">법령 개정 또는 이행 주기 도래로 새 버전 등록이 필요한 문서가 있습니다.</p>
+                                </div>
+                                <button class="btn btn-sm bg-blue-100 text-blue-800 hover:bg-blue-200 ml-auto">확인하기</button>
                             </div>
 
                             <div class="card">
@@ -419,9 +430,13 @@
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                                                     다운로드
                                                 </button>
-                                                <button class="btn btn-primary">
+                                                <button class="btn btn-outline" onclick="openInfoEditModal()">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                                    수정
+                                                    정보 수정
+                                                </button>
+                                                <button class="btn btn-primary" onclick="openNewVersionModal()">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                                    새 버전 등록
                                                 </button>
                                             </div>
                                         </div>
@@ -688,7 +703,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">기본 서류</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('위험성평가 절차서 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -706,7 +721,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">비상조치 매뉴얼</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('비상조치계획 절차서 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -724,7 +739,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">교육</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('안전보건교육 계획서 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -742,7 +757,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">도급, 용역, 위탁 평가</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('수급업체 안전평가표 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -760,7 +775,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">안전점검</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('일일 안전점검 체크리스트 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -778,7 +793,7 @@
                                     <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">협의체</span>
-                                        <button class="btn btn-outline btn-sm">가져오기</button>
+                                        <button class="btn btn-outline btn-sm" onclick="openImportStandardModal('안전보건위원회 회의록 (표준)')">가져오기</button>
                                     </div>
                                 </div>
                             </div>
@@ -796,12 +811,12 @@
         </div>
     </div>
 
-    <!-- 문서 등록 모달 -->
+    <!-- 새 문서 등록 모달 -->
     <div id="uploadDocModal" class="modal hidden">
         <div class="modal-backdrop" onclick="closeUploadDocModal()"></div>
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">
-                <h2 class="modal-title">문서 등록</h2>
+                <h2 class="modal-title">새 문서 등록</h2>
                 <button class="modal-close" onclick="closeUploadDocModal()">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -911,65 +926,10 @@
                     </div>
                 </div>
 
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <p class="text-sm font-medium text-gray-700 mb-3">또는 표준문서에서 선택</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="standardDoc" value="" class="sr-only peer" checked>
-                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">직접 업로드</p>
-                                        <p class="text-xs text-gray-500">내 파일 선택</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="standardDoc" value="risk" class="sr-only peer">
-                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">위험성평가 절차서</p>
-                                        <p class="text-xs text-gray-500">표준문서</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="standardDoc" value="emergency" class="sr-only peer">
-                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">비상조치계획 절차서</p>
-                                        <p class="text-xs text-gray-500">표준문서</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="standardDoc" value="education" class="sr-only peer">
-                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                    </div>
-                                    <div>
-                                        <p class="text-sm font-medium text-gray-900">안전보건교육 계획서</p>
-                                        <p class="text-xs text-gray-500">표준문서</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </label>
+                <div class="alert alert-info">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700">표준 양식이 필요하면 등록을 취소하고 <strong>표준문서 탭</strong>에서 가져오기를 사용하세요.</p>
                     </div>
                 </div>
             </div>
@@ -1356,6 +1316,144 @@
                         등록하기
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 새 버전 등록 모달 -->
+    <div id="newVersionModal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeNewVersionModal()"></div>
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 class="modal-title">새 버전 등록</h2>
+                <button class="modal-close" onclick="closeNewVersionModal()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 현재 버전 정보 (읽기전용) -->
+                <div class="mb-5 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p class="text-xs text-gray-500 mb-2">현재 버전 정보</p>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">위험성평가 절차서</p>
+                            <p class="text-xs text-gray-500 mt-1">현재 버전: <span class="font-medium text-gray-700">v2.1</span> (2026-04-15) · 김안전</p>
+                        </div>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700">📄 파일형</span>
+                    </div>
+                </div>
+
+                <!-- 새 파일 업로드 -->
+                <div class="mb-5">
+                    <label class="form-label">새 파일 업로드 <span class="text-red-500">*</span></label>
+                    <div class="mt-2 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-primary-400 hover:bg-primary-50/50 transition-all cursor-pointer">
+                        <svg class="w-10 h-10 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <p class="text-sm font-medium text-gray-700">새 파일을 드래그하거나 클릭하여 업로드</p>
+                        <p class="text-xs text-gray-500 mt-1">PDF, Word, Excel, PowerPoint, 이미지 파일 지원</p>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">기존 파일(<span class="font-medium">위험성평가_절차서_v2.1.pdf · 2.4MB</span>)은 버전 히스토리에 보존됩니다.</p>
+                </div>
+
+                <!-- 버전 정보 -->
+                <div class="grid grid-cols-2 gap-4 mb-2">
+                    <div>
+                        <label class="form-label">버전 번호 <span class="text-red-500">*</span></label>
+                        <input id="newVersionNumber" type="text" class="input w-full mt-2" value="v2.2">
+                        <div class="flex items-center gap-2 mt-2 text-xs">
+                            <button type="button" class="text-blue-600 hover:underline" onclick="document.getElementById('newVersionNumber').value='v2.2'">+0.1 (v2.2)</button>
+                            <span class="text-gray-300">|</span>
+                            <button type="button" class="text-blue-600 hover:underline" onclick="document.getElementById('newVersionNumber').value='v3.0'">+1.0 (v3.0, 메이저)</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">변경 사유 <span class="text-red-500">*</span></label>
+                        <input type="text" class="input w-full mt-2" placeholder="예: 법령 개정 반영, 체크리스트 항목 추가">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNewVersionModal()">취소</button>
+                <button class="btn btn-primary" onclick="submitNewVersion()">새 버전 등록</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 정보 수정 모달 (메타데이터만) -->
+    <div id="infoEditModal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeInfoEditModal()"></div>
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2 class="modal-title">문서 정보 수정</h2>
+                <button class="modal-close" onclick="closeInfoEditModal()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info mb-4">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700">메타데이터만 변경됩니다. 파일 또는 양식 내용을 변경하려면 <strong>새 버전 등록</strong>을 사용하세요.</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="form-label">문서명</label>
+                        <input type="text" class="input w-full mt-2" value="위험성평가 절차서">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">카테고리</label>
+                            <select class="select w-full mt-2"><option selected>위험성평가</option></select>
+                        </div>
+                        <div>
+                            <label class="form-label">공개 범위</label>
+                            <select class="select w-full mt-2"><option selected>전체 공개</option><option>관리자만</option><option>특정 인원만</option></select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="form-label">설명</label>
+                        <textarea class="input w-full mt-2" rows="3">산업안전보건법 제36조에 따른 위험성평가 실시 절차 및 방법을 규정한 문서입니다.</textarea>
+                    </div>
+                    <div>
+                        <label class="form-label">법적 근거</label>
+                        <input type="text" class="input w-full mt-2" value="산업안전보건법 제36조">
+                    </div>
+                    <div>
+                        <label class="form-label">태그</label>
+                        <input type="text" class="input w-full mt-2" value="위험성평가, 절차서, 법정필수">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeInfoEditModal()">취소</button>
+                <button class="btn btn-primary" onclick="closeInfoEditModal()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 표준문서 가져오기 확인 모달 -->
+    <div id="importStandardModal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeImportStandardModal()"></div>
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3 class="modal-title">표준문서 가져오기</h3>
+                <button class="modal-close" onclick="closeImportStandardModal()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-sm text-gray-700 mb-2"><strong id="importStandardName">수급업체 안전평가표 (표준)</strong>을<br>우리 회사 문서로 가져옵니다.</p>
+                <p class="text-xs text-gray-500 mt-3 leading-relaxed">가져온 문서는 우리 회사 문서 목록에 추가되며, 회사 상황에 맞게 수정할 수 있습니다.</p>
+                <div class="alert alert-info mt-4">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700 text-xs">가져옴 표시 후 원본 표준문서가 업데이트되면 알림을 받을 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeImportStandardModal()">취소</button>
+                <button class="btn btn-primary" onclick="confirmImportStandard()">가져오기</button>
             </div>
         </div>
     </div>
@@ -1767,6 +1865,43 @@
             document.getElementById('uploadSuccessModal').classList.add('hidden');
         }
 
+        // ===== 새 버전 등록 =====
+        function openNewVersionModal() {
+            document.getElementById('newVersionModal').classList.remove('hidden');
+        }
+        function closeNewVersionModal() {
+            document.getElementById('newVersionModal').classList.add('hidden');
+        }
+        function submitNewVersion() {
+            closeNewVersionModal();
+            document.getElementById('uploadSuccessModal').classList.remove('hidden');
+            const title = document.querySelector('#uploadSuccessModal h3');
+            if (title) title.textContent = '새 버전이 등록되었습니다';
+        }
+
+        // ===== 정보 수정 (메타데이터만) =====
+        function openInfoEditModal() {
+            document.getElementById('infoEditModal').classList.remove('hidden');
+        }
+        function closeInfoEditModal() {
+            document.getElementById('infoEditModal').classList.add('hidden');
+        }
+
+        // ===== 표준문서 가져오기 =====
+        function openImportStandardModal(name) {
+            const el = document.getElementById('importStandardName');
+            if (el && name) el.textContent = name;
+            document.getElementById('importStandardModal').classList.remove('hidden');
+        }
+        function closeImportStandardModal() {
+            document.getElementById('importStandardModal').classList.add('hidden');
+        }
+        function confirmImportStandard() {
+            closeImportStandardModal();
+            // 표준문서 탭에서 우리 회사 문서 탭으로 전환 + 알림
+            alert('가져오기가 완료되었습니다. 우리 회사 문서 목록에서 확인하세요.');
+        }
+
         // File upload simulation
         document.addEventListener('DOMContentLoaded', function() {
             const dropzone = document.getElementById('uploadDropzone');
@@ -1781,7 +1916,7 @@
             // Connect to the button in header
             const registerBtns = document.querySelectorAll('.btn.btn-primary');
             registerBtns.forEach(btn => {
-                if (btn.textContent.includes('문서 등록')) {
+                if (btn.textContent.includes('새 문서 등록') || btn.textContent.includes('문서 등록')) {
                     btn.onclick = openUploadDocModal;
                 }
             });
