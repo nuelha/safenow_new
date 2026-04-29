@@ -69,16 +69,63 @@
             </nav>
 
             <div class="workspace-selector">
-                <button class="workspace-btn">
-                    <div class="workspace-avatar">본</div>
+                <button class="workspace-btn" onclick="toggleWorkspaceDropdown()">
+                    <div id="workspace-avatar" class="workspace-avatar">본</div>
                     <div class="workspace-info">
-                        <div class="workspace-name">본사 사업장</div>
-                        <div class="workspace-role">경영책임자</div>
+                        <div id="workspace-name" class="workspace-name">본사 사업장</div>
+                        <div id="workspace-role" class="workspace-role">경영책임자</div>
                     </div>
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="workspace-chevron" class="w-4 h-4 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
                     </svg>
                 </button>
+                <!-- 드롭다운 메뉴 -->
+                <div id="workspace-dropdown" class="hidden absolute bottom-full left-0 right-0 mb-1 mx-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+                    <div class="py-1 max-h-64 overflow-y-auto">
+                        <div class="px-3 py-1.5 text-xs font-medium text-slate-400 uppercase">원청 사업장</div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="ceo" data-name="본사 사업장" data-avatar="본" data-user="김대표" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">경영책임자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="manager" data-name="본사 사업장" data-avatar="본" data-user="박안전" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="worker" data-name="본사 사업장" data-avatar="본" data-user="최근로" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">근로자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="px-3 py-1.5 text-xs font-medium text-slate-400 uppercase border-t border-slate-600 mt-1">협력업체</div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="contractor" data-name="(주)안전건설" data-avatar="안" data-user="이도급" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">안</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">(주)안전건설</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="contractor" data-name="대한설비(주)" data-avatar="대" data-user="박설비" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">대</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">대한설비(주)</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -96,8 +143,8 @@
                         <span class="header-notification-dot"></span>
                     </button>
                     <div class="header-user">
-                        <div class="header-avatar">김</div>
-                        <span class="header-username">김대표</span>
+                        <div id="header-avatar" class="header-avatar">김</div>
+                        <span id="header-username" class="header-username">김대표</span>
                     </div>
                 </div>
             </header>
@@ -866,17 +913,96 @@
                     </div>
                     <div>
                         <label class="form-label">문서 유형 <span class="text-red-500">*</span></label>
-                        <select class="select w-full mt-2">
+                        <select id="docTypeSelect" class="select w-full mt-2" onchange="toggleEvalMetaSection()">
                             <option value="">문서 유형 선택</option>
                             <option value="procedure">절차서</option>
                             <option value="plan">계획서</option>
                             <option value="report" selected>보고서</option>
                             <option value="record">기록부</option>
                             <option value="checklist">체크리스트</option>
+                            <option value="evalform">평가표</option>
                             <option value="minutes">회의록</option>
                             <option value="certificate">확인서/증명서</option>
                             <option value="policy">방침/규정</option>
                         </select>
+                    </div>
+                </div>
+
+                <!-- 평가표 전용 메타정보 (문서유형='평가표' 또는 '체크리스트' 선택 시 노출) -->
+                <div id="evalMetaSection" class="hidden mb-6 border border-blue-100 bg-blue-50/40 rounded-lg p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        <h4 class="text-sm font-semibold text-gray-900">평가서 설정</h4>
+                        <span class="text-xs text-gray-500">— 도급관리 등에서 평가서로 사용됩니다.</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 mb-5">
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">만점 <span class="text-red-500">*</span></label>
+                            <div class="mt-1 flex items-center gap-2">
+                                <input id="evalMaxScore" type="number" class="input w-full" value="100" min="1">
+                                <span class="text-sm text-gray-500">점</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">적격 기준점수 <span class="text-red-500">*</span></label>
+                            <div class="mt-1 flex items-center gap-2">
+                                <input id="evalPassScore" type="number" class="input w-full" value="80" min="0">
+                                <span class="text-sm text-gray-500">점 이상</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">평가 척도 <span class="text-red-500">*</span></label>
+                            <select id="evalScale" class="select w-full mt-1">
+                                <option value="5">5단계 (매우우수~매우미흡)</option>
+                                <option value="3">3단계 (우수/보통/미흡)</option>
+                                <option value="2">2단계 (적합/부적합)</option>
+                                <option value="score">직접 점수 입력</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 평가 항목 빌더 -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label class="text-sm font-medium text-gray-900">평가 항목</label>
+                            <div class="text-xs text-gray-600">
+                                항목 합계: <span id="evalItemTotal" class="font-semibold text-blue-700">0</span> /
+                                만점 <span id="evalMaxScoreEcho">100</span>점
+                                <span id="evalTotalWarn" class="text-red-600 ml-2 hidden">⚠ 만점과 일치해야 합니다</span>
+                                <span id="evalTotalOk" class="text-green-600 ml-2 hidden">✓ 일치</span>
+                            </div>
+                        </div>
+
+                        <div id="evalCategories" class="space-y-3">
+                            <!-- 카테고리 1 (기본 1개) -->
+                            <div class="eval-category bg-white border border-gray-200 rounded-lg p-3" data-category-index="0">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="text-xs text-gray-500 font-mono">#1</span>
+                                    <input type="text" class="input flex-1 cat-name" placeholder="카테고리명 (예: 안전보건 경영시스템)">
+                                    <input type="number" class="input w-24 cat-score text-center" placeholder="배점" min="0">
+                                    <span class="text-sm text-gray-500">점</span>
+                                    <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeCategory(this)" title="카테고리 삭제">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="eval-items pl-6 space-y-2"></div>
+                                <button type="button" class="mt-2 ml-6 text-xs text-blue-600 hover:underline" onclick="addItem(this)">
+                                    + 항목 추가
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="button" class="mt-3 btn btn-outline btn-sm" onclick="addCategory()">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            카테고리 추가
+                        </button>
+
+                        <div class="mt-3 text-xs text-gray-500">
+                            <p>· 카테고리 배점은 해당 카테고리 항목 배점의 합과 같아야 합니다.</p>
+                            <p>· 항목 배점의 총합은 위 만점과 일치해야 합니다.</p>
+                            <p>· 등록된 평가서는 도급관리의 수급업체 평가, 협력업체 정기평가 등에서 선택해 사용할 수 있습니다.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -1147,6 +1273,120 @@
             document.getElementById('docListView').classList.remove('hidden');
             document.getElementById('docDetailView').classList.add('hidden');
         }
+
+        // ========== 평가서 메타 / 항목 빌더 ==========
+
+        // 문서유형이 '평가표' 또는 '체크리스트'일 때만 메타 섹션 노출
+        function toggleEvalMetaSection() {
+            const sel = document.getElementById('docTypeSelect');
+            const section = document.getElementById('evalMetaSection');
+            if (!sel || !section) return;
+            const show = sel.value === 'evalform' || sel.value === 'checklist';
+            section.classList.toggle('hidden', !show);
+        }
+
+        // 카테고리 추가
+        function addCategory() {
+            const container = document.getElementById('evalCategories');
+            const idx = container.querySelectorAll('.eval-category').length;
+            const node = document.createElement('div');
+            node.className = 'eval-category bg-white border border-gray-200 rounded-lg p-3';
+            node.dataset.categoryIndex = idx;
+            node.innerHTML = `
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs text-gray-500 font-mono">#${idx + 1}</span>
+                    <input type="text" class="input flex-1 cat-name" placeholder="카테고리명">
+                    <input type="number" class="input w-24 cat-score text-center" placeholder="배점" min="0">
+                    <span class="text-sm text-gray-500">점</span>
+                    <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeCategory(this)" title="카테고리 삭제">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
+                    </button>
+                </div>
+                <div class="eval-items pl-6 space-y-2"></div>
+                <button type="button" class="mt-2 ml-6 text-xs text-blue-600 hover:underline" onclick="addItem(this)">
+                    + 항목 추가
+                </button>
+            `;
+            container.appendChild(node);
+            renumberCategories();
+            recalcEvalTotal();
+        }
+
+        function removeCategory(btn) {
+            const cat = btn.closest('.eval-category');
+            if (!cat) return;
+            const remaining = document.querySelectorAll('.eval-category').length;
+            if (remaining <= 1) {
+                alert('최소 1개의 카테고리는 유지해야 합니다.');
+                return;
+            }
+            cat.remove();
+            renumberCategories();
+            recalcEvalTotal();
+        }
+
+        // 항목 추가
+        function addItem(btn) {
+            const cat = btn.closest('.eval-category');
+            const items = cat.querySelector('.eval-items');
+            const node = document.createElement('div');
+            node.className = 'eval-item flex items-center gap-2';
+            node.innerHTML = `
+                <input type="text" class="input flex-1 item-name" placeholder="항목명 (예: 안전보건 방침 수립)">
+                <input type="text" class="input flex-1 item-desc" placeholder="설명 (선택)">
+                <input type="number" class="input w-20 item-score text-center" placeholder="배점" min="0">
+                <span class="text-sm text-gray-500">점</span>
+                <button type="button" class="text-red-500 hover:text-red-700" onclick="removeItem(this)" title="항목 삭제">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+            items.appendChild(node);
+            recalcEvalTotal();
+        }
+
+        function removeItem(btn) {
+            const item = btn.closest('.eval-item');
+            if (item) item.remove();
+            recalcEvalTotal();
+        }
+
+        function renumberCategories() {
+            document.querySelectorAll('.eval-category').forEach((cat, idx) => {
+                cat.dataset.categoryIndex = idx;
+                const num = cat.querySelector('span.font-mono');
+                if (num) num.textContent = '#' + (idx + 1);
+            });
+        }
+
+        // 항목 배점 합계 자동 계산 + 만점 일치 검증
+        function recalcEvalTotal() {
+            const max = parseFloat(document.getElementById('evalMaxScore')?.value) || 0;
+            document.getElementById('evalMaxScoreEcho').textContent = max;
+            let total = 0;
+            document.querySelectorAll('.item-score').forEach(input => {
+                total += parseFloat(input.value) || 0;
+            });
+            document.getElementById('evalItemTotal').textContent = total;
+            const warn = document.getElementById('evalTotalWarn');
+            const ok = document.getElementById('evalTotalOk');
+            if (total === 0) {
+                warn.classList.add('hidden');
+                ok.classList.add('hidden');
+            } else if (total !== max) {
+                warn.classList.remove('hidden');
+                ok.classList.add('hidden');
+            } else {
+                warn.classList.add('hidden');
+                ok.classList.remove('hidden');
+            }
+        }
+
+        // 모달 내 점수/만점 입력 변화 감지
+        document.addEventListener('input', (e) => {
+            if (e.target.matches('#evalMaxScore, .item-score')) {
+                recalcEvalTotal();
+            }
+        });
     </script>
 </body>
 </html>

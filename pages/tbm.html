@@ -69,16 +69,63 @@
             </nav>
 
             <div class="workspace-selector">
-                <button class="workspace-btn">
-                    <div class="workspace-avatar">본</div>
+                <button class="workspace-btn" onclick="toggleWorkspaceDropdown()">
+                    <div id="workspace-avatar" class="workspace-avatar">본</div>
                     <div class="workspace-info">
-                        <div class="workspace-name">본사 사업장</div>
-                        <div class="workspace-role">안전관리자</div>
+                        <div id="workspace-name" class="workspace-name">본사 사업장</div>
+                        <div id="workspace-role" class="workspace-role">경영책임자</div>
                     </div>
-                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="workspace-chevron" class="w-4 h-4 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
                     </svg>
                 </button>
+                <!-- 드롭다운 메뉴 -->
+                <div id="workspace-dropdown" class="hidden absolute bottom-full left-0 right-0 mb-1 mx-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+                    <div class="py-1 max-h-64 overflow-y-auto">
+                        <div class="px-3 py-1.5 text-xs font-medium text-slate-400 uppercase">원청 사업장</div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="ceo" data-name="본사 사업장" data-avatar="본" data-user="김대표" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">경영책임자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="manager" data-name="본사 사업장" data-avatar="본" data-user="박안전" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="worker" data-name="본사 사업장" data-avatar="본" data-user="최근로" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">근로자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="px-3 py-1.5 text-xs font-medium text-slate-400 uppercase border-t border-slate-600 mt-1">협력업체</div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="contractor" data-name="(주)안전건설" data-avatar="안" data-user="이도급" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">안</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">(주)안전건설</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="contractor" data-name="대한설비(주)" data-avatar="대" data-user="박설비" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">대</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">대한설비(주)</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -96,8 +143,8 @@
                         <span class="header-notification-dot"></span>
                     </button>
                     <div class="header-user">
-                        <div class="header-avatar">박</div>
-                        <span class="header-username">박안전</span>
+                        <div id="header-avatar" class="header-avatar">김</div>
+                        <span id="header-username" class="header-username">김대표</span>
                     </div>
                 </div>
             </header>
@@ -179,11 +226,15 @@
                         </div>
                     </div>
 
-                    <!-- 원청/도급 필터 탭 -->
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="flex bg-gray-100 rounded-lg p-1">
-                            <button class="px-4 py-2 text-sm font-medium rounded-md bg-white shadow-sm text-gray-900" onclick="filterTbmType('own')">원청 TBM</button>
-                            <button class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-900" onclick="filterTbmType('contractor')">도급업체 TBM</button>
+                    <!-- 원청/도급 필터 탭 (원청에게만 표시) -->
+                    <div id="tbm-filter-tabs" class="flex items-center gap-4 mb-4">
+                        <div id="tbm-type-filter" class="flex bg-gray-100 rounded-lg p-1">
+                            <button id="btn-filter-own" class="px-4 py-2 text-sm font-medium rounded-md bg-white shadow-sm text-gray-900" onclick="filterTbmType('own')">원청 TBM</button>
+                            <button id="btn-filter-contractor" class="px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-gray-900" onclick="filterTbmType('contractor')">도급업체 TBM</button>
+                        </div>
+                        <!-- 협력업체용 업체명 표시 -->
+                        <div id="contractor-name-badge" class="hidden px-4 py-2 bg-purple-100 text-purple-700 rounded-lg font-medium text-sm">
+                            <span id="contractor-company-name">(주)안전건설</span> TBM
                         </div>
                         <div class="flex-1"></div>
                         <div class="flex items-center gap-3">
@@ -224,8 +275,9 @@
                                             <th class="w-24 text-center">상태</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showTbmDetail('tbm-1')">
+                                    <tbody id="tbm-table-body">
+                                        <!-- 원청 TBM 목록 -->
+                                        <tr class="tbm-row tbm-own cursor-pointer hover:bg-gray-50" data-type="own" onclick="showTbmDetail('tbm-1')">
                                             <td class="font-medium text-gray-900">2026-04-22</td>
                                             <td class="text-gray-600">08:00~08:30</td>
                                             <td>
@@ -239,7 +291,7 @@
                                             <td class="text-center text-gray-600">8명</td>
                                             <td class="text-center"><span class="badge badge-success">완료</span></td>
                                         </tr>
-                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showTbmDetail('tbm-2')">
+                                        <tr class="tbm-row tbm-own cursor-pointer hover:bg-gray-50" data-type="own" onclick="showTbmDetail('tbm-2')">
                                             <td class="font-medium text-gray-900">2026-04-22</td>
                                             <td class="text-gray-600">08:00~08:30</td>
                                             <td>
@@ -253,7 +305,7 @@
                                             <td class="text-center text-gray-600">5명</td>
                                             <td class="text-center"><span class="badge badge-success">완료</span></td>
                                         </tr>
-                                        <tr class="cursor-pointer hover:bg-gray-50 bg-blue-50" onclick="showTbmDetail('tbm-3')">
+                                        <tr class="tbm-row tbm-own cursor-pointer hover:bg-gray-50 bg-blue-50" data-type="own" onclick="showTbmDetail('tbm-3')">
                                             <td class="font-medium text-gray-900">2026-04-22</td>
                                             <td class="text-gray-600">13:00~13:30</td>
                                             <td>
@@ -267,7 +319,7 @@
                                             <td class="text-center text-gray-600">4명</td>
                                             <td class="text-center"><span class="badge badge-warning">예정</span></td>
                                         </tr>
-                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showTbmDetail('tbm-4')">
+                                        <tr class="tbm-row tbm-own cursor-pointer hover:bg-gray-50" data-type="own" onclick="showTbmDetail('tbm-4')">
                                             <td class="font-medium text-gray-900">2026-04-21</td>
                                             <td class="text-gray-600">08:00~08:30</td>
                                             <td>
@@ -280,6 +332,63 @@
                                             <td class="text-gray-600">최용접</td>
                                             <td class="text-center text-gray-600">6명</td>
                                             <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                        </tr>
+                                        <!-- 협력업체 TBM 목록 (기본 숨김) -->
+                                        <tr class="tbm-row tbm-contractor hidden cursor-pointer hover:bg-gray-50" data-type="contractor" data-company="(주)안전건설" onclick="showTbmDetail('tbm-c1')">
+                                            <td class="font-medium text-gray-900">2026-04-22</td>
+                                            <td class="text-gray-600">07:30~08:00</td>
+                                            <td>
+                                                <div>
+                                                    <span class="font-medium text-gray-900">철골구조물 설치</span>
+                                                    <p class="text-xs text-purple-600 mt-0.5">(주)안전건설</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-600">현장 A구역</td>
+                                            <td class="text-gray-600">이도급</td>
+                                            <td class="text-center text-gray-600">12명</td>
+                                            <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                        </tr>
+                                        <tr class="tbm-row tbm-contractor hidden cursor-pointer hover:bg-gray-50" data-type="contractor" data-company="(주)안전건설" onclick="showTbmDetail('tbm-c2')">
+                                            <td class="font-medium text-gray-900">2026-04-21</td>
+                                            <td class="text-gray-600">07:30~08:00</td>
+                                            <td>
+                                                <div>
+                                                    <span class="font-medium text-gray-900">고소작업 안전점검</span>
+                                                    <p class="text-xs text-purple-600 mt-0.5">(주)안전건설</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-600">현장 B구역</td>
+                                            <td class="text-gray-600">이도급</td>
+                                            <td class="text-center text-gray-600">8명</td>
+                                            <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                        </tr>
+                                        <tr class="tbm-row tbm-contractor hidden cursor-pointer hover:bg-gray-50" data-type="contractor" data-company="대한설비(주)" onclick="showTbmDetail('tbm-c3')">
+                                            <td class="font-medium text-gray-900">2026-04-22</td>
+                                            <td class="text-gray-600">08:00~08:30</td>
+                                            <td>
+                                                <div>
+                                                    <span class="font-medium text-gray-900">배관 설치 작업</span>
+                                                    <p class="text-xs text-orange-600 mt-0.5">대한설비(주)</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-600">기계실</td>
+                                            <td class="text-gray-600">박설비</td>
+                                            <td class="text-center text-gray-600">5명</td>
+                                            <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                        </tr>
+                                        <tr class="tbm-row tbm-contractor hidden cursor-pointer hover:bg-gray-50 bg-blue-50" data-type="contractor" data-company="대한설비(주)" onclick="showTbmDetail('tbm-c4')">
+                                            <td class="font-medium text-gray-900">2026-04-22</td>
+                                            <td class="text-gray-600">13:00~13:30</td>
+                                            <td>
+                                                <div>
+                                                    <span class="font-medium text-gray-900">용접 작업 준비</span>
+                                                    <p class="text-xs text-orange-600 mt-0.5">대한설비(주)</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-gray-600">기계실</td>
+                                            <td class="text-gray-600">박설비</td>
+                                            <td class="text-center text-gray-600">4명</td>
+                                            <td class="text-center"><span class="badge badge-warning">예정</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -640,78 +749,353 @@
 
                 <!-- 스케줄 탭 -->
                 <div id="tab-schedule" class="tab-content hidden">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900">반복 TBM 스케줄</h2>
-                        <button class="btn btn-primary">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                            </svg>
-                            스케줄 등록
-                        </button>
+                    <!-- 스케줄 목록 뷰 -->
+                    <div id="scheduleListView">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-lg font-semibold text-gray-900">반복 TBM 스케줄</h2>
+                            <button class="btn btn-primary" onclick="openScheduleModal()">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                </svg>
+                                스케줄 등록
+                            </button>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>스케줄 제목</th>
+                                            <th class="w-24">주기</th>
+                                            <th class="w-28">시간</th>
+                                            <th class="w-32">작업종류</th>
+                                            <th class="w-28">TBM그룹</th>
+                                            <th class="w-24 text-center">상태</th>
+                                            <th class="w-20"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showScheduleDetail('schedule-1')">
+                                            <td class="font-medium text-gray-900">조립1팀 일일 TBM</td>
+                                            <td><span class="badge bg-blue-100 text-blue-700">매일</span></td>
+                                            <td class="text-gray-600">08:00</td>
+                                            <td class="text-gray-600">일일점검</td>
+                                            <td class="text-gray-600">조립1팀</td>
+                                            <td class="text-center"><span class="badge badge-success">활성</span></td>
+                                            <td>
+                                                <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500" onclick="event.stopPropagation(); openScheduleModal('schedule-1')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showScheduleDetail('schedule-2')">
+                                            <td class="font-medium text-gray-900">도장팀 일일 TBM</td>
+                                            <td><span class="badge bg-blue-100 text-blue-700">매일</span></td>
+                                            <td class="text-gray-600">08:00</td>
+                                            <td class="text-gray-600">일일점검</td>
+                                            <td class="text-gray-600">도장팀</td>
+                                            <td class="text-center"><span class="badge badge-success">활성</span></td>
+                                            <td>
+                                                <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500" onclick="event.stopPropagation(); openScheduleModal('schedule-2')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showScheduleDetail('schedule-3')">
+                                            <td class="font-medium text-gray-900">프레스팀 주간 TBM</td>
+                                            <td><span class="badge bg-green-100 text-green-700">매주 월</span></td>
+                                            <td class="text-gray-600">08:30</td>
+                                            <td class="text-gray-600">주간점검</td>
+                                            <td class="text-gray-600">프레스팀</td>
+                                            <td class="text-center"><span class="badge badge-success">활성</span></td>
+                                            <td>
+                                                <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500" onclick="event.stopPropagation(); openScheduleModal('schedule-3')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showScheduleDetail('schedule-4')">
+                                            <td class="font-medium text-gray-900">용접팀 작업 전 TBM</td>
+                                            <td><span class="badge bg-purple-100 text-purple-700">매주 화,목</span></td>
+                                            <td class="text-gray-600">07:30</td>
+                                            <td class="text-gray-600">용접작업</td>
+                                            <td class="text-gray-600">용접팀</td>
+                                            <td class="text-center"><span class="badge badge-success">활성</span></td>
+                                            <td>
+                                                <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500" onclick="event.stopPropagation(); openScheduleModal('schedule-4')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr class="cursor-pointer hover:bg-gray-50" onclick="showScheduleDetail('schedule-5')">
+                                            <td class="font-medium text-gray-900">전사 월간 안전 TBM</td>
+                                            <td><span class="badge bg-orange-100 text-orange-700">매월 1일</span></td>
+                                            <td class="text-gray-600">09:00</td>
+                                            <td class="text-gray-600">월간점검</td>
+                                            <td class="text-gray-600">전체</td>
+                                            <td class="text-center"><span class="badge badge-gray">비활성</span></td>
+                                            <td>
+                                                <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500" onclick="event.stopPropagation(); openScheduleModal('schedule-5')">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>스케줄 제목</th>
-                                        <th class="w-24">주기</th>
-                                        <th class="w-28">시간</th>
-                                        <th class="w-32">작업종류</th>
-                                        <th class="w-28">TBM그룹</th>
-                                        <th class="w-24 text-center">상태</th>
-                                        <th class="w-20"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="font-medium text-gray-900">조립1팀 일일 TBM</td>
-                                        <td><span class="badge bg-blue-100 text-blue-700">매일</span></td>
-                                        <td class="text-gray-600">08:00</td>
-                                        <td class="text-gray-600">일일점검</td>
-                                        <td class="text-gray-600">조립1팀</td>
-                                        <td class="text-center"><span class="badge badge-success">활성</span></td>
-                                        <td>
-                                            <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+                    <!-- 스케줄 상세 뷰 -->
+                    <div id="scheduleDetailView" class="hidden">
+                        <div class="mb-4">
+                            <button onclick="showScheduleList()" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                스케줄 목록으로 돌아가기
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-6">
+                            <!-- 좌측: 스케줄 정보 -->
+                            <div class="col-span-2 space-y-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="flex items-center gap-3">
+                                            <h2 class="card-title">조립1팀 일일 TBM</h2>
+                                            <span class="badge badge-success">활성</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <button class="btn btn-outline btn-sm" onclick="openScheduleModal('schedule-1')">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                                 </svg>
+                                                수정
                                             </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium text-gray-900">도장팀 일일 TBM</td>
-                                        <td><span class="badge bg-blue-100 text-blue-700">매일</span></td>
-                                        <td class="text-gray-600">08:00</td>
-                                        <td class="text-gray-600">일일점검</td>
-                                        <td class="text-gray-600">도장팀</td>
-                                        <td class="text-center"><span class="badge badge-success">활성</span></td>
-                                        <td>
-                                            <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
+                                            <button class="btn btn-danger btn-sm">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                                 </svg>
+                                                삭제
                                             </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="font-medium text-gray-900">프레스팀 주간 TBM</td>
-                                        <td><span class="badge bg-green-100 text-green-700">매주 월</span></td>
-                                        <td class="text-gray-600">08:30</td>
-                                        <td class="text-gray-600">주간점검</td>
-                                        <td class="text-gray-600">프레스팀</td>
-                                        <td class="text-center"><span class="badge badge-success">활성</span></td>
-                                        <td>
-                                            <button class="p-2 hover:bg-gray-100 rounded-lg text-gray-500">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                                </svg>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="grid grid-cols-2 gap-6">
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">반복 주기</p>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge bg-blue-100 text-blue-700">매일</span>
+                                                        <span class="text-gray-900">평일만 (월~금)</span>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">TBM 시간</p>
+                                                    <p class="font-medium text-gray-900">08:00 ~ 08:30 (30분)</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">TBM 장소</p>
+                                                    <p class="font-medium text-gray-900">A동 1층 조립라인 앞</p>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">TBM 그룹</p>
+                                                    <p class="font-medium text-gray-900">조립1팀</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">TBM 리더</p>
+                                                    <p class="font-medium text-gray-900">김조립</p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm text-gray-500 mb-1">작업 종류</p>
+                                                    <p class="font-medium text-gray-900">일일점검</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-6 pt-6 border-t border-gray-200">
+                                            <p class="text-sm text-gray-500 mb-2">주요 점검 항목</p>
+                                            <ul class="space-y-2">
+                                                <li class="flex items-center gap-2 text-gray-700">
+                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    개인보호구 착용 상태 확인
+                                                </li>
+                                                <li class="flex items-center gap-2 text-gray-700">
+                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    작업 전 장비 점검
+                                                </li>
+                                                <li class="flex items-center gap-2 text-gray-700">
+                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    당일 작업 내용 공유
+                                                </li>
+                                                <li class="flex items-center gap-2 text-gray-700">
+                                                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    위험요소 사전 파악
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 최근 실행 이력 -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">최근 실행 이력</h3>
+                                        <a href="#" class="text-sm text-primary-600 hover:text-primary-700">전체 보기</a>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="w-28">실행일</th>
+                                                    <th class="w-24">시간</th>
+                                                    <th>리더</th>
+                                                    <th class="w-20 text-center">참여자</th>
+                                                    <th class="w-24 text-center">상태</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="cursor-pointer hover:bg-gray-50" onclick="showTbmDetail('tbm-1')">
+                                                    <td class="font-medium text-gray-900">2026-04-22</td>
+                                                    <td class="text-gray-600">08:00~08:30</td>
+                                                    <td class="text-gray-600">김조립</td>
+                                                    <td class="text-center text-gray-600">8명</td>
+                                                    <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                                </tr>
+                                                <tr class="cursor-pointer hover:bg-gray-50">
+                                                    <td class="font-medium text-gray-900">2026-04-21</td>
+                                                    <td class="text-gray-600">08:00~08:28</td>
+                                                    <td class="text-gray-600">김조립</td>
+                                                    <td class="text-center text-gray-600">7명</td>
+                                                    <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                                </tr>
+                                                <tr class="cursor-pointer hover:bg-gray-50">
+                                                    <td class="font-medium text-gray-900">2026-04-18</td>
+                                                    <td class="text-gray-600">08:00~08:32</td>
+                                                    <td class="text-gray-600">김조립</td>
+                                                    <td class="text-center text-gray-600">8명</td>
+                                                    <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                                </tr>
+                                                <tr class="cursor-pointer hover:bg-gray-50">
+                                                    <td class="font-medium text-gray-900">2026-04-17</td>
+                                                    <td class="text-gray-600">08:00~08:25</td>
+                                                    <td class="text-gray-600">김조립</td>
+                                                    <td class="text-center text-gray-600">6명</td>
+                                                    <td class="text-center"><span class="badge badge-success">완료</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 우측: 통계 및 참여자 -->
+                            <div class="space-y-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">스케줄 통계</h3>
+                                    </div>
+                                    <div class="card-body space-y-4">
+                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <span class="text-gray-600">총 실행 횟수</span>
+                                            <span class="font-bold text-gray-900">87회</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                            <span class="text-gray-600">이번달 실행</span>
+                                            <span class="font-bold text-green-600">15회</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                                            <span class="text-gray-600">누적 교육시간</span>
+                                            <span class="font-bold text-blue-600">43.5시간</span>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                                            <span class="text-gray-600">평균 참여자</span>
+                                            <span class="font-bold text-purple-600">7.2명</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">참여 그룹 멤버</h3>
+                                        <span class="text-sm text-gray-500">8명</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="space-y-3">
+                                            <li class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">김</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">김조립</p>
+                                                    <p class="text-xs text-gray-500">리더</p>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-medium">박</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">박조립</p>
+                                                    <p class="text-xs text-gray-500">멤버</p>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-medium">이</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">이조립</p>
+                                                    <p class="text-xs text-gray-500">멤버</p>
+                                                </div>
+                                            </li>
+                                            <li class="flex items-center gap-3">
+                                                <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-sm font-medium">최</div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">최조립</p>
+                                                    <p class="text-xs text-gray-500">멤버</p>
+                                                </div>
+                                            </li>
+                                            <li class="text-center py-2">
+                                                <button class="text-sm text-primary-600 hover:text-primary-700">+ 4명 더보기</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">다음 예정</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                            <div class="w-12 h-12 bg-blue-600 rounded-lg flex flex-col items-center justify-center text-white">
+                                                <span class="text-xs">4월</span>
+                                                <span class="text-lg font-bold">23</span>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">수요일</p>
+                                                <p class="text-sm text-gray-600">08:00 ~ 08:30</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -843,6 +1227,219 @@
         </div>
     </div>
 
+    <!-- 스케줄 등록/수정 모달 -->
+    <div id="scheduleModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h2 id="scheduleModalTitle" class="text-xl font-bold text-gray-900">TBM 스케줄 등록</h2>
+                <button onclick="closeScheduleModal()" class="p-2 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+                <div class="space-y-6">
+                    <!-- 기본 정보 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">기본 정보</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label class="form-label">스케줄 제목 <span class="text-red-500">*</span></label>
+                                <input type="text" id="scheduleTitle" class="input w-full" placeholder="예: 조립1팀 일일 TBM">
+                            </div>
+                            <div>
+                                <label class="form-label">TBM 그룹 <span class="text-red-500">*</span></label>
+                                <select id="scheduleGroup" class="select w-full">
+                                    <option value="">선택하세요</option>
+                                    <option value="assembly1">조립1팀</option>
+                                    <option value="assembly2">조립2팀</option>
+                                    <option value="paint">도장팀</option>
+                                    <option value="press">프레스팀</option>
+                                    <option value="weld">용접팀</option>
+                                    <option value="all">전체</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">TBM 리더 <span class="text-red-500">*</span></label>
+                                <select id="scheduleLeader" class="select w-full">
+                                    <option value="">선택하세요</option>
+                                    <option value="kim">김조립</option>
+                                    <option value="lee">이도장</option>
+                                    <option value="park">박프레스</option>
+                                    <option value="choi">최용접</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 반복 설정 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">반복 설정</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">반복 주기 <span class="text-red-500">*</span></label>
+                                <select id="scheduleRepeat" class="select w-full" onchange="updateRepeatOptions()">
+                                    <option value="daily">매일</option>
+                                    <option value="weekly">매주</option>
+                                    <option value="monthly">매월</option>
+                                </select>
+                            </div>
+                            <div id="weekdayOptions" class="hidden">
+                                <label class="form-label">요일 선택 <span class="text-red-500">*</span></label>
+                                <div class="flex gap-1">
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="mon" class="sr-only">
+                                        <span class="text-sm font-medium">월</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="tue" class="sr-only">
+                                        <span class="text-sm font-medium">화</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="wed" class="sr-only">
+                                        <span class="text-sm font-medium">수</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="thu" class="sr-only">
+                                        <span class="text-sm font-medium">목</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="fri" class="sr-only">
+                                        <span class="text-sm font-medium">금</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="sat" class="sr-only">
+                                        <span class="text-sm font-medium">토</span>
+                                    </label>
+                                    <label class="flex items-center justify-center w-9 h-9 rounded-lg border cursor-pointer hover:bg-gray-50 has-[:checked]:bg-primary-100 has-[:checked]:border-primary-500 has-[:checked]:text-primary-700">
+                                        <input type="checkbox" name="weekday" value="sun" class="sr-only">
+                                        <span class="text-sm font-medium">일</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="monthdayOptions" class="hidden">
+                                <label class="form-label">날짜 선택 <span class="text-red-500">*</span></label>
+                                <select id="scheduleMonthDay" class="select w-full">
+                                    <option value="1">매월 1일</option>
+                                    <option value="5">매월 5일</option>
+                                    <option value="10">매월 10일</option>
+                                    <option value="15">매월 15일</option>
+                                    <option value="20">매월 20일</option>
+                                    <option value="last">매월 마지막 날</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 시간 설정 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">시간 및 장소</h3>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <label class="form-label">시작 시간 <span class="text-red-500">*</span></label>
+                                <input type="time" id="scheduleStartTime" class="input w-full" value="08:00">
+                            </div>
+                            <div>
+                                <label class="form-label">종료 시간 <span class="text-red-500">*</span></label>
+                                <input type="time" id="scheduleEndTime" class="input w-full" value="08:30">
+                            </div>
+                            <div>
+                                <label class="form-label">TBM 장소</label>
+                                <input type="text" id="scheduleLocation" class="input w-full" placeholder="예: A동 1층 회의실">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 작업 설정 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">작업 정보</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="form-label">작업 종류 <span class="text-red-500">*</span></label>
+                                <input type="text" id="scheduleWorkType" class="input w-full" placeholder="예: 일일점검, 용접작업">
+                            </div>
+                            <div>
+                                <label class="form-label">작업 내용</label>
+                                <input type="text" id="scheduleWorkContent" class="input w-full" placeholder="상세 작업 내용">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 점검 항목 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">주요 점검 항목</h3>
+                        <div id="checklistItems" class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <input type="text" class="input flex-1" placeholder="점검 항목 입력">
+                                <button type="button" class="p-2 text-gray-400 hover:text-red-500" onclick="this.parentElement.remove()">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addChecklistItem()" class="mt-2 text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            점검 항목 추가
+                        </button>
+                    </div>
+
+                    <!-- 옵션 설정 -->
+                    <div>
+                        <h3 class="text-sm font-semibold text-gray-700 mb-3">추가 설정</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="scheduleRiskLink" class="w-4 h-4 rounded border-gray-300" checked>
+                                <div>
+                                    <span class="font-medium text-gray-900">위험성평가 연동</span>
+                                    <p class="text-sm text-gray-500">해당 공정의 위험성평가 결과를 자동으로 불러옵니다</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="scheduleSignature" class="w-4 h-4 rounded border-gray-300" checked>
+                                <div>
+                                    <span class="font-medium text-gray-900">참석자 전자서명 필수</span>
+                                    <p class="text-sm text-gray-500">TBM 완료 시 참석자 서명을 수집합니다</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="scheduleNotification" class="w-4 h-4 rounded border-gray-300" checked>
+                                <div>
+                                    <span class="font-medium text-gray-900">알림 발송</span>
+                                    <p class="text-sm text-gray-500">TBM 시작 10분 전 참석자에게 알림을 발송합니다</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 활성화 상태 -->
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <span class="font-medium text-gray-900">스케줄 활성화</span>
+                            <p class="text-sm text-gray-500">비활성화 시 TBM이 자동 생성되지 않습니다</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="scheduleActive" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-2 p-6 border-t bg-gray-50">
+                <button onclick="closeScheduleModal()" class="btn btn-outline">취소</button>
+                <button onclick="saveSchedule()" class="btn btn-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    저장
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/app.js"></script>
     <script>
         // 탭 전환
@@ -875,8 +1472,310 @@
         }
 
         function filterTbmType(type) {
-            // 원청/도급 필터 토글
+            const btnOwn = document.getElementById('btn-filter-own');
+            const btnContractor = document.getElementById('btn-filter-contractor');
+            const rows = document.querySelectorAll('.tbm-row');
+
+            // 버튼 스타일 토글
+            if (type === 'own') {
+                btnOwn.classList.add('bg-white', 'shadow-sm', 'text-gray-900');
+                btnOwn.classList.remove('text-gray-600');
+                btnContractor.classList.remove('bg-white', 'shadow-sm', 'text-gray-900');
+                btnContractor.classList.add('text-gray-600');
+            } else {
+                btnContractor.classList.add('bg-white', 'shadow-sm', 'text-gray-900');
+                btnContractor.classList.remove('text-gray-600');
+                btnOwn.classList.remove('bg-white', 'shadow-sm', 'text-gray-900');
+                btnOwn.classList.add('text-gray-600');
+            }
+
+            // 행 필터링
+            rows.forEach(row => {
+                if (row.dataset.type === type) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
         }
+
+        // TBM 페이지 권한별 분기 처리
+        function applyTbmRoleFilter() {
+            const role = AppState.currentRole;
+            const workplaceName = AppState.currentWorkplace;
+            const typeFilter = document.getElementById('tbm-type-filter');
+            const contractorBadge = document.getElementById('contractor-name-badge');
+            const contractorCompanyName = document.getElementById('contractor-company-name');
+            const rows = document.querySelectorAll('.tbm-row');
+
+            if (role === 'contractor') {
+                // 협력업체: 필터 탭 숨기고 해당 업체 TBM만 표시
+                if (typeFilter) typeFilter.classList.add('hidden');
+                if (contractorBadge) {
+                    contractorBadge.classList.remove('hidden');
+                    contractorCompanyName.textContent = workplaceName;
+                }
+
+                // 해당 협력업체의 TBM만 표시
+                rows.forEach(row => {
+                    if (row.dataset.type === 'contractor' && row.dataset.company === workplaceName) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            } else {
+                // 원청(CEO/Manager/Worker): 필터 탭 표시하고 원청 TBM 기본 표시
+                if (typeFilter) typeFilter.classList.remove('hidden');
+                if (contractorBadge) contractorBadge.classList.add('hidden');
+
+                // 원청 TBM 기본 표시
+                filterTbmType('own');
+            }
+        }
+
+        // 페이지 로드 시 권한별 필터 적용
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(applyTbmRoleFilter, 100);
+        });
+
+        // 기존 selectWorkspace 함수 확장 (권한 변경 시 TBM 필터 재적용)
+        const originalSelectWorkspace = window.selectWorkspace;
+        window.selectWorkspace = function(element) {
+            if (originalSelectWorkspace) {
+                originalSelectWorkspace(element);
+            }
+            setTimeout(applyTbmRoleFilter, 100);
+        };
+
+        // 스케줄 뷰 전환
+        let currentEditScheduleId = null;
+
+        function showScheduleDetail(id) {
+            document.getElementById('scheduleListView').classList.add('hidden');
+            document.getElementById('scheduleDetailView').classList.remove('hidden');
+        }
+
+        function showScheduleList() {
+            document.getElementById('scheduleListView').classList.remove('hidden');
+            document.getElementById('scheduleDetailView').classList.add('hidden');
+        }
+
+        // 스케줄 모달 열기
+        function openScheduleModal(scheduleId = null) {
+            const modal = document.getElementById('scheduleModal');
+            const title = document.getElementById('scheduleModalTitle');
+
+            currentEditScheduleId = scheduleId;
+
+            if (scheduleId) {
+                title.textContent = 'TBM 스케줄 수정';
+                // 기존 스케줄 데이터 불러오기 (데모)
+                loadScheduleData(scheduleId);
+            } else {
+                title.textContent = 'TBM 스케줄 등록';
+                resetScheduleForm();
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // 스케줄 모달 닫기
+        function closeScheduleModal() {
+            const modal = document.getElementById('scheduleModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            currentEditScheduleId = null;
+        }
+
+        // 스케줄 폼 초기화
+        function resetScheduleForm() {
+            document.getElementById('scheduleTitle').value = '';
+            document.getElementById('scheduleGroup').value = '';
+            document.getElementById('scheduleLeader').value = '';
+            document.getElementById('scheduleRepeat').value = 'daily';
+            document.getElementById('scheduleStartTime').value = '08:00';
+            document.getElementById('scheduleEndTime').value = '08:30';
+            document.getElementById('scheduleLocation').value = '';
+            document.getElementById('scheduleWorkType').value = '';
+            document.getElementById('scheduleWorkContent').value = '';
+            document.getElementById('scheduleRiskLink').checked = true;
+            document.getElementById('scheduleSignature').checked = true;
+            document.getElementById('scheduleNotification').checked = true;
+            document.getElementById('scheduleActive').checked = true;
+
+            // 요일 체크박스 초기화
+            document.querySelectorAll('input[name="weekday"]').forEach(cb => cb.checked = false);
+
+            // 점검 항목 초기화
+            document.getElementById('checklistItems').innerHTML = `
+                <div class="flex items-center gap-2">
+                    <input type="text" class="input flex-1" placeholder="점검 항목 입력">
+                    <button type="button" class="p-2 text-gray-400 hover:text-red-500" onclick="this.parentElement.remove()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+
+            updateRepeatOptions();
+        }
+
+        // 기존 스케줄 데이터 불러오기 (데모)
+        function loadScheduleData(scheduleId) {
+            // 데모 데이터
+            const schedules = {
+                'schedule-1': {
+                    title: '조립1팀 일일 TBM',
+                    group: 'assembly1',
+                    leader: 'kim',
+                    repeat: 'daily',
+                    startTime: '08:00',
+                    endTime: '08:30',
+                    location: 'A동 1층',
+                    workType: '일일점검',
+                    workContent: '조립라인 점검 및 안전확인',
+                    active: true,
+                    checklist: ['안전보호구 착용 확인', '작업장 정리정돈', '설비 이상 유무 확인']
+                },
+                'schedule-2': {
+                    title: '도장팀 일일 TBM',
+                    group: 'paint',
+                    leader: 'lee',
+                    repeat: 'daily',
+                    startTime: '08:00',
+                    endTime: '08:30',
+                    location: 'B동 2층',
+                    workType: '일일점검',
+                    workContent: '도장작업 안전점검',
+                    active: true,
+                    checklist: ['환기시설 점검', '방독마스크 착용 확인']
+                },
+                'schedule-3': {
+                    title: '프레스팀 주간 TBM',
+                    group: 'press',
+                    leader: 'park',
+                    repeat: 'weekly',
+                    weekdays: ['mon'],
+                    startTime: '08:30',
+                    endTime: '09:00',
+                    location: 'C동 1층',
+                    workType: '주간점검',
+                    workContent: '프레스 설비 주간 점검',
+                    active: true,
+                    checklist: ['프레스 안전장치 점검', '금형 상태 확인', '비상정지 테스트']
+                }
+            };
+
+            const data = schedules[scheduleId] || schedules['schedule-1'];
+
+            document.getElementById('scheduleTitle').value = data.title;
+            document.getElementById('scheduleGroup').value = data.group;
+            document.getElementById('scheduleLeader').value = data.leader;
+            document.getElementById('scheduleRepeat').value = data.repeat;
+            document.getElementById('scheduleStartTime').value = data.startTime;
+            document.getElementById('scheduleEndTime').value = data.endTime;
+            document.getElementById('scheduleLocation').value = data.location;
+            document.getElementById('scheduleWorkType').value = data.workType;
+            document.getElementById('scheduleWorkContent').value = data.workContent || '';
+            document.getElementById('scheduleActive').checked = data.active;
+
+            updateRepeatOptions();
+
+            // 요일 설정 (주간 반복의 경우)
+            if (data.weekdays) {
+                document.querySelectorAll('input[name="weekday"]').forEach(cb => {
+                    cb.checked = data.weekdays.includes(cb.value);
+                });
+            }
+
+            // 점검 항목 설정
+            if (data.checklist && data.checklist.length > 0) {
+                const container = document.getElementById('checklistItems');
+                container.innerHTML = data.checklist.map(item => `
+                    <div class="flex items-center gap-2">
+                        <input type="text" class="input flex-1" value="${item}" placeholder="점검 항목 입력">
+                        <button type="button" class="p-2 text-gray-400 hover:text-red-500" onclick="this.parentElement.remove()">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // 반복 주기 옵션 업데이트
+        function updateRepeatOptions() {
+            const repeatType = document.getElementById('scheduleRepeat').value;
+            const weekdayOptions = document.getElementById('weekdayOptions');
+            const monthdayOptions = document.getElementById('monthdayOptions');
+
+            weekdayOptions.classList.add('hidden');
+            monthdayOptions.classList.add('hidden');
+
+            if (repeatType === 'weekly') {
+                weekdayOptions.classList.remove('hidden');
+            } else if (repeatType === 'monthly') {
+                monthdayOptions.classList.remove('hidden');
+            }
+        }
+
+        // 점검 항목 추가
+        function addChecklistItem() {
+            const container = document.getElementById('checklistItems');
+            const newItem = document.createElement('div');
+            newItem.className = 'flex items-center gap-2';
+            newItem.innerHTML = `
+                <input type="text" class="input flex-1" placeholder="점검 항목 입력">
+                <button type="button" class="p-2 text-gray-400 hover:text-red-500" onclick="this.parentElement.remove()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            `;
+            container.appendChild(newItem);
+            newItem.querySelector('input').focus();
+        }
+
+        // 스케줄 저장
+        function saveSchedule() {
+            const title = document.getElementById('scheduleTitle').value;
+            const group = document.getElementById('scheduleGroup').value;
+            const leader = document.getElementById('scheduleLeader').value;
+            const workType = document.getElementById('scheduleWorkType').value;
+
+            // 필수값 검증
+            if (!title || !group || !leader || !workType) {
+                alert('필수 항목을 모두 입력해주세요.');
+                return;
+            }
+
+            // 저장 성공 시뮬레이션
+            if (currentEditScheduleId) {
+                alert('스케줄이 수정되었습니다.');
+            } else {
+                alert('스케줄이 등록되었습니다.');
+            }
+
+            closeScheduleModal();
+        }
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeScheduleModal();
+            }
+        });
+
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('scheduleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeScheduleModal();
+            }
+        });
     </script>
 </body>
 </html>

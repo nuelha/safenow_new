@@ -354,14 +354,15 @@
         </nav>
 
         <div class="workspace-selector">
-          <button class="workspace-btn">
-            <div class="workspace-avatar">본</div>
+          <button class="workspace-btn" onclick="toggleWorkspaceDropdown()">
+            <div class="workspace-avatar" id="workspace-avatar">본</div>
             <div class="workspace-info">
-              <div class="workspace-name">본사 사업장</div>
-              <div class="workspace-role">경영책임자</div>
+              <div class="workspace-name" id="workspace-name">본사 사업장</div>
+              <div class="workspace-role" id="workspace-role">경영책임자</div>
             </div>
             <svg
-              class="w-4 h-4 text-slate-400"
+              class="w-4 h-4 text-slate-400 transition-transform"
+              id="workspace-chevron"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -374,6 +375,203 @@
               ></path>
             </svg>
           </button>
+
+          <!-- 사업장/권한 선택 드롭다운 -->
+          <div
+            id="workspace-dropdown"
+            class="hidden absolute bottom-full left-0 right-0 mb-2 mx-3 bg-slate-800 rounded-lg shadow-xl border border-slate-700 overflow-hidden z-50"
+          >
+            <div class="p-3 border-b border-slate-700">
+              <p class="text-xs text-slate-400 mb-2">권한 선택 (프로토타입)</p>
+            </div>
+
+            <!-- 경영책임자 -->
+            <div
+              class="workspace-option active"
+              data-role="ceo"
+              data-name="본사 사업장"
+              data-avatar="본"
+              data-user="김대표"
+              onclick="selectWorkspace(this)"
+            >
+              <div
+                class="flex items-center gap-3 p-3 hover:bg-slate-700 cursor-pointer"
+              >
+                <div
+                  class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm font-medium"
+                >
+                  본
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm text-white font-medium">본사 사업장</p>
+                  <p class="text-xs text-slate-400">경영책임자</p>
+                </div>
+                <svg
+                  class="w-5 h-5 text-blue-400 check-icon"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- 관리자 (안전관리자) -->
+            <div
+              class="workspace-option"
+              data-role="manager"
+              data-name="본사 사업장"
+              data-avatar="본"
+              data-user="박안전"
+              onclick="selectWorkspace(this)"
+            >
+              <div
+                class="flex items-center gap-3 p-3 hover:bg-slate-700 cursor-pointer"
+              >
+                <div
+                  class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center text-white text-sm font-medium"
+                >
+                  본
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm text-white font-medium">본사 사업장</p>
+                  <p class="text-xs text-slate-400">안전관리자</p>
+                </div>
+                <svg
+                  class="w-5 h-5 text-blue-400 check-icon hidden"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- 근로자 -->
+            <div
+              class="workspace-option"
+              data-role="worker"
+              data-name="본사 사업장"
+              data-avatar="본"
+              data-user="이근로"
+              onclick="selectWorkspace(this)"
+            >
+              <div
+                class="flex items-center gap-3 p-3 hover:bg-slate-700 cursor-pointer"
+              >
+                <div
+                  class="w-8 h-8 rounded-lg bg-orange-600 flex items-center justify-center text-white text-sm font-medium"
+                >
+                  본
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm text-white font-medium">본사 사업장</p>
+                  <p class="text-xs text-slate-400">근로자</p>
+                </div>
+                <svg
+                  class="w-5 h-5 text-blue-400 check-icon hidden"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+
+            <div class="border-t border-slate-700">
+              <!-- 협력업체 관리자 -->
+              <div
+                class="workspace-option"
+                data-role="manager"
+                data-name="(주)협력건설"
+                data-avatar="협"
+                data-user="최협력"
+                onclick="selectWorkspace(this)"
+              >
+                <div
+                  class="flex items-center gap-3 p-3 hover:bg-slate-700 cursor-pointer"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white text-sm font-medium"
+                  >
+                    협
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-white font-medium">(주)협력건설</p>
+                    <p class="text-xs text-slate-400">안전관리자 (협력업체)</p>
+                  </div>
+                  <svg
+                    class="w-5 h-5 text-blue-400 check-icon hidden"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- 협력업체 근로자 -->
+              <div
+                class="workspace-option"
+                data-role="worker"
+                data-name="(주)협력건설"
+                data-avatar="협"
+                data-user="정근로"
+                onclick="selectWorkspace(this)"
+              >
+                <div
+                  class="flex items-center gap-3 p-3 hover:bg-slate-700 cursor-pointer"
+                >
+                  <div
+                    class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center text-white text-sm font-medium"
+                  >
+                    협
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm text-white font-medium">(주)협력건설</p>
+                    <p class="text-xs text-slate-400">근로자 (협력업체)</p>
+                  </div>
+                  <svg
+                    class="w-5 h-5 text-blue-400 check-icon hidden"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -412,8 +610,8 @@
               <span class="header-notification-dot"></span>
             </button>
             <div class="header-user">
-              <div class="header-avatar">김</div>
-              <span class="header-username">김대표</span>
+              <div class="header-avatar" id="header-avatar">김</div>
+              <span class="header-username" id="header-username">김대표</span>
             </div>
           </div>
         </header>

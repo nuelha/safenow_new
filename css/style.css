@@ -117,6 +117,7 @@ body {
 .workspace-selector {
     padding: 16px;
     border-top: 1px solid #334155;
+    position: relative;
 }
 
 .workspace-btn {

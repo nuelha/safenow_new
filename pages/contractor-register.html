@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도급계약 등록 - 안전NOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        sidebar: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .wizard-step { display: flex; align-items: center; gap: 10px; flex: 1; position: relative; }
+        .wizard-step:not(:last-child)::after { content: ''; position: absolute; top: 18px; left: calc(50% + 18px); right: calc(-50% + 18px); height: 2px; background: #e5e7eb; z-index: 0; }
+        .wizard-step.done::after { background: #10b981; }
+        .wizard-step-circle { width: 36px; height: 36px; border-radius: 50%; background: #e5e7eb; color: #6b7280; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0; position: relative; z-index: 1; }
+        .wizard-step.current .wizard-step-circle { background: #3b82f6; color: white; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
+        .wizard-step.done .wizard-step-circle { background: #10b981; color: white; }
+        .wizard-step-label { font-size: 14px; color: #6b7280; }
+        .wizard-step.current .wizard-step-label { color: #1f2937; font-weight: 600; }
+        .wizard-step.done .wizard-step-label { color: #10b981; }
+
+        .mini-tab { padding: 8px 16px; font-size: 14px; font-weight: 500; border-bottom: 2px solid transparent; color: #6b7280; cursor: pointer; }
+        .mini-tab.active { color: #2563eb; border-color: #2563eb; }
+
+        .conn-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+        .conn-badge.connected { background: #dcfce7; color: #15803d; }
+        .conn-badge.invited { background: #ffedd5; color: #c2410c; }
+        .conn-badge.joined { background: #dbeafe; color: #1d4ed8; }
+        .conn-badge.unlinked { background: #f3f4f6; color: #6b7280; }
+
+        /* 평가서 선택 카드 */
+        .eval-form-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; }
+        .eval-form-card.selected { background: #eff6ff; border-color: #93c5fd; }
+        .eval-form-empty { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px dashed #fbbf24; border-radius: 8px; background: #fffbeb; }
+
+        /* 평가서 항목 카테고리 */
+        .eval-category-title { font-size: 13px; font-weight: 600; color: #374151; padding: 8px 12px; background: #f3f4f6; border-radius: 6px 6px 0 0; border: 1px solid #e5e7eb; border-bottom: none; }
+        .eval-item-row { display: grid; grid-template-columns: 1fr 70px 220px; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #f3f4f6; font-size: 13px; }
+        .eval-item-row:last-child { border-bottom: none; }
+        .eval-item-row .eval-item-name { color: #1f2937; }
+        .eval-item-row .eval-item-name .eval-item-desc { display: block; font-size: 11px; color: #6b7280; margin-top: 2px; font-weight: normal; }
+        .eval-item-row .eval-item-max { color: #6b7280; text-align: center; font-size: 12px; }
+        .eval-scale { display: flex; gap: 4px; }
+        .eval-scale label { flex: 1; text-align: center; padding: 4px 0; border: 1px solid #e5e7eb; border-radius: 4px; font-size: 11px; color: #6b7280; cursor: pointer; background: white; }
+        .eval-scale input { display: none; }
+        .eval-scale input:checked + span { background: #2563eb; color: white; border-color: #2563eb; }
+        .eval-scale label span { display: block; padding: 4px 0; border-radius: 3px; }
+        .eval-scale label:hover span { background: #f3f4f6; }
+        .eval-scale input:checked + span:hover { background: #1d4ed8; }
+        .eval-summary-card { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 8px; padding: 16px; }
+
+        /* 중첩 모달 z-index */
+        #eval-form-modal, #evaluation-modal { z-index: 1100; }
+        #eval-form-modal .modal-backdrop, #evaluation-modal .modal-backdrop { z-index: 1101; }
+        #eval-form-modal .modal-content, #evaluation-modal .modal-content { z-index: 1102; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 사이드바 -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="flex items-center gap-3">
+                    <div class="sidebar-logo">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-bold text-white">안전NOW</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="space-y-1">
+                    <li><a href="../index.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>대시보드</a></li>
+                    <li><a href="my-tasks.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>내 업무<span class="sidebar-item-badge red">5</span></a></li>
+
+                    <li class="sidebar-section">안전 활동</li>
+                    <li><a href="risk-assessment.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>위험성평가</a></li>
+                    <li><a href="tbm.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>TBM</a></li>
+                    <li><a href="safety-inspection.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>안전점검</a></li>
+                    <li><a href="safety-education.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>안전보건교육</a></li>
+                    <li><a href="safety-policy.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>안전경영방침</a></li>
+                    <li><a href="safety-budget.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>안전보건예산</a></li>
+                    <li><a href="opinion.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>의견청취<span class="sidebar-item-badge orange">2</span></a></li>
+                    <li><a href="improvement.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>개선조치<span class="sidebar-item-badge yellow">8</span></a></li>
+
+                    <li class="sidebar-section">관리</li>
+                    <li><a href="compliance.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>이행관리</a></li>
+                    <li><a href="documents.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>업무문서관리</a></li>
+                    <li><a href="process.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>공정관리</a></li>
+                    <li><a href="contractor.html" class="sidebar-item active"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>도급관리</a></li>
+                    <li><a href="workplace.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>사업장관리</a></li>
+
+                    <li class="sidebar-section">지원</li>
+                    <li><a href="support.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>고객지원</a></li>
+                    <li><a href="my-info.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>내 정보관리</a></li>
+                </ul>
+            </nav>
+
+            <div class="workspace-selector">
+                <button class="workspace-btn" onclick="toggleWorkspaceDropdown()">
+                    <div id="workspace-avatar" class="workspace-avatar">본</div>
+                    <div class="workspace-info">
+                        <div id="workspace-name" class="workspace-name">본사 사업장</div>
+                        <div id="workspace-role" class="workspace-role">경영책임자</div>
+                    </div>
+                    <svg id="workspace-chevron" class="w-4 h-4 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="header">
+                <div class="header-left">
+                    <a href="contractor.html" class="flex items-center gap-2 text-gray-500 hover:text-gray-700 mr-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </a>
+                    <h1 class="header-title">도급계약 등록</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-notification">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <span class="header-notification-dot"></span>
+                    </button>
+                    <div class="header-user">
+                        <div id="header-avatar" class="header-avatar">김</div>
+                        <span id="header-username" class="header-username">김대표</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-5xl mx-auto">
+                    <!-- 단계 네비게이터 -->
+                    <div class="card p-6 mb-6">
+                        <div class="flex items-center">
+                            <div class="wizard-step current" data-step="1">
+                                <div class="wizard-step-circle">1</div>
+                                <div>
+                                    <p class="wizard-step-label">계약 기본정보</p>
+                                    <p class="text-xs text-gray-400">사업장 / 사업명 / 기간</p>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-step="2">
+                                <div class="wizard-step-circle">2</div>
+                                <div>
+                                    <p class="wizard-step-label">수급업체 평가</p>
+                                    <p class="text-xs text-gray-400">업체 추가 + 평가</p>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-step="3">
+                                <div class="wizard-step-circle">3</div>
+                                <div>
+                                    <p class="wizard-step-label">선정 + 결재</p>
+                                    <p class="text-xs text-gray-400">적격업체 선정·상신</p>
+                                </div>
+                            </div>
+                            <div class="wizard-step" data-step="4">
+                                <div class="wizard-step-circle">4</div>
+                                <div>
+                                    <p class="wizard-step-label">초대 + 서약</p>
+                                    <p class="text-xs text-gray-400">알림톡 발송·서약</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 1. 계약 기본정보 -->
+                    <div id="wizard-pane-1" class="wizard-pane">
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h2 class="card-title">계약 기본정보</h2>
+                            </div>
+                            <div class="card-body space-y-5">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">사업장 <span class="text-red-500">*</span></label>
+                                        <select class="select w-full">
+                                            <option>본사 사업장</option>
+                                            <option>울산 제2공장</option>
+                                            <option>부산 물류센터</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">업종 <span class="text-red-500">*</span></label>
+                                        <select class="select w-full">
+                                            <option>건설</option>
+                                            <option>설비</option>
+                                            <option>전기</option>
+                                            <option>운송</option>
+                                            <option>청소·시설관리</option>
+                                            <option>기타</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-label">사업명 <span class="text-red-500">*</span></label>
+                                    <input type="text" class="input w-full" placeholder="예: 본사 1동 증축공사">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="form-label">계약 시작일 <span class="text-red-500">*</span></label>
+                                        <input type="date" class="input w-full">
+                                    </div>
+                                    <div>
+                                        <label class="form-label">계약 종료일 <span class="text-red-500">*</span></label>
+                                        <input type="date" class="input w-full">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="form-label">예산</label>
+                                    <input type="text" class="input w-full" placeholder="0원">
+                                </div>
+                                <div>
+                                    <label class="form-label">계약 내용</label>
+                                    <textarea class="input w-full" rows="4" placeholder="작업 범위 및 내용을 입력하세요"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2. 수급업체 평가 -->
+                    <div id="wizard-pane-2" class="wizard-pane hidden">
+                        <!-- 평가서 선택 카드 -->
+                        <div class="card mb-6">
+                            <div class="card-header flex items-center justify-between">
+                                <div>
+                                    <h2 class="card-title">평가서 <span class="text-red-500">*</span></h2>
+                                    <p class="text-xs text-gray-500 mt-1">업무문서에 등록된 평가서 중에서 선택하세요. 평가서가 변경되면 기존 평가 결과는 초기화됩니다.</p>
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm" onclick="openModal('eval-form-modal')">평가서 변경</button>
+                            </div>
+                            <div class="card-body">
+                                <div id="eval-form-selected" class="eval-form-card selected">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900" id="eval-form-name">수급업체 안전보건 평가표 (표준)</p>
+                                        <p class="text-xs text-gray-500 mt-0.5"><span id="eval-form-meta">업무문서 · 도급·계약 · 평가항목 12개 · 100점 만점 · 적격 기준 80점</span></p>
+                                    </div>
+                                    <span class="badge badge-info">선택됨</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-6">
+                            <div class="card-header flex items-center justify-between">
+                                <div>
+                                    <h2 class="card-title">수급업체 평가</h2>
+                                    <p class="text-xs text-gray-500 mt-1">평가 대상 업체를 추가하고 안전보건 평가를 진행하세요. 미가입 업체도 입력 가능합니다.</p>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="openModal('add-company-modal')">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    업체 추가
+                                </button>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">업체명</th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">사업자번호</th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">대표자</th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">담당자</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">관리계획서</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">평가점수</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">결과</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">상태</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600 w-28">관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium text-gray-900">(주)안전건설</td>
+                                            <td class="px-4 py-3 text-gray-600">123-45-67890</td>
+                                            <td class="px-4 py-3 text-gray-600">김건설</td>
+                                            <td class="px-4 py-3 text-gray-600">이도급</td>
+                                            <td class="px-4 py-3 text-center"><span class="text-xs text-green-600">제출</span></td>
+                                            <td class="px-4 py-3 text-center font-medium">92<span class="text-gray-400">/100</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">적격</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge connected">연결됨</span></td>
+                                            <td class="px-4 py-3 text-center"><button class="text-blue-600 hover:underline text-xs" onclick="openEvalModal('(주)안전건설', 'edit', 92)">평가수정</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium text-gray-900">대한설비(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">234-56-78901</td>
+                                            <td class="px-4 py-3 text-gray-600">박설비</td>
+                                            <td class="px-4 py-3 text-gray-600">박설비</td>
+                                            <td class="px-4 py-3 text-center"><span class="text-xs text-green-600">제출</span></td>
+                                            <td class="px-4 py-3 text-center font-medium">88<span class="text-gray-400">/100</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">적격</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge connected">연결됨</span></td>
+                                            <td class="px-4 py-3 text-center"><button class="text-blue-600 hover:underline text-xs" onclick="openEvalModal('대한설비(주)', 'edit', 88)">평가수정</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium text-gray-900">동방기계(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">678-90-12345</td>
+                                            <td class="px-4 py-3 text-gray-600">강동방</td>
+                                            <td class="px-4 py-3 text-gray-600">강동방</td>
+                                            <td class="px-4 py-3 text-center"><span class="text-xs text-yellow-600">미제출</span></td>
+                                            <td class="px-4 py-3 text-center text-gray-400">—</td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-gray">대기</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge unlinked">미연결</span></td>
+                                            <td class="px-4 py-3 text-center"><button class="text-blue-600 hover:underline text-xs" onclick="openEvalModal('동방기계(주)', 'new', 0)">평가하기</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <svg class="alert-icon text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <div class="alert-content">
+                                <p class="alert-message text-yellow-800">전체 업체 평가가 완료되어야 다음 단계로 진행할 수 있습니다. (현재 2/3 완료)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3. 적격업체 선정 + 결재 -->
+                    <div id="wizard-pane-3" class="wizard-pane hidden">
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h2 class="card-title">적격업체 선정</h2>
+                                <p class="text-xs text-gray-500 mt-1">계약을 체결할 적격 수급업체를 선택해 주세요.</p>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th class="px-4 py-3 w-10"><input type="checkbox" class="rounded"></th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">업체명</th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">사업자번호</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">평가점수</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">결과</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr>
+                                            <td class="px-4 py-3 text-center"><input type="checkbox" class="rounded" checked></td>
+                                            <td class="px-4 py-3 font-medium text-gray-900">(주)안전건설</td>
+                                            <td class="px-4 py-3 text-gray-600">123-45-67890</td>
+                                            <td class="px-4 py-3 text-center font-medium">92<span class="text-gray-400">/100</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">적격</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 text-center"><input type="checkbox" class="rounded" checked></td>
+                                            <td class="px-4 py-3 font-medium text-gray-900">대한설비(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">234-56-78901</td>
+                                            <td class="px-4 py-3 text-center font-medium">88<span class="text-gray-400">/100</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">적격</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 text-center"><input type="checkbox" class="rounded"></td>
+                                            <td class="px-4 py-3 font-medium text-gray-900">동방기계(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">678-90-12345</td>
+                                            <td class="px-4 py-3 text-center font-medium">81<span class="text-gray-400">/100</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-warning">적격</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h2 class="card-title">결재선</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-medium text-blue-600">박</div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">박안전</p>
+                                            <p class="text-xs text-gray-500">상신자 / 안전관리자</p>
+                                        </div>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm font-medium text-purple-600">김</div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">김총괄</p>
+                                            <p class="text-xs text-gray-500">결재 / 총괄관리자</p>
+                                        </div>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-sm font-medium text-red-600">대</div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">김대표</p>
+                                            <p class="text-xs text-gray-500">최종결재 / 경영책임자</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-5">
+                                    <label class="form-label">상신 의견</label>
+                                    <textarea class="input w-full" rows="3" placeholder="결재자에게 전달할 상신 의견을 입력하세요"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="alert-content">
+                                <p class="alert-message text-blue-700">결재 완료 시 미가입 업체에는 가입 초대 알림톡, 기가입 업체에는 소속 추가 알림톡이 자동 발송됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4. 초대 + 서약 -->
+                    <div id="wizard-pane-4" class="wizard-pane hidden">
+                        <div class="alert alert-info mb-6">
+                            <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="alert-content">
+                                <p class="alert-title text-blue-800">결재 완료 - 자동 초대 발송됨</p>
+                                <p class="alert-message text-blue-700">선정된 업체 담당자에게 알림톡이 자동 발송되었습니다. 가입/소속 수락 후 서약서가 자동으로 발송됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="card mb-6">
+                            <div class="card-header">
+                                <h2 class="card-title">초대 발송 현황</h2>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">업체명</th>
+                                            <th class="px-4 py-3 text-left font-medium text-gray-600">담당자</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">초대 유형</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">발송일</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">만료일</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">연결상태</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">서약</th>
+                                            <th class="px-4 py-3 text-center font-medium text-gray-600">관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium text-gray-900">(주)안전건설</td>
+                                            <td class="px-4 py-3 text-gray-600">이도급<br><span class="text-xs text-gray-400">010-1234-5678</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-info">소속 추가</span></td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.04.26</td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.05.10</td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge connected">연결됨</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">완료</span></td>
+                                            <td class="px-4 py-3 text-center text-gray-400 text-xs">—</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-3 font-medium text-gray-900">대한설비(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">박설비<br><span class="text-xs text-gray-400">010-2345-6789</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-info">소속 추가</span></td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.04.26</td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.05.10</td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge connected">연결됨</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-success">완료</span></td>
+                                            <td class="px-4 py-3 text-center text-gray-400 text-xs">—</td>
+                                        </tr>
+                                        <tr class="bg-orange-50/40">
+                                            <td class="px-4 py-3 font-medium text-gray-900">한일전기(주)</td>
+                                            <td class="px-4 py-3 text-gray-600">최전기<br><span class="text-xs text-gray-400">010-3456-7890</span></td>
+                                            <td class="px-4 py-3 text-center"><span class="badge badge-purple">신규 가입</span></td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.04.26</td>
+                                            <td class="px-4 py-3 text-center text-xs text-gray-600">2026.05.10</td>
+                                            <td class="px-4 py-3 text-center"><span class="conn-badge invited">초대 대기</span></td>
+                                            <td class="px-4 py-3 text-center text-gray-400 text-xs">—</td>
+                                            <td class="px-4 py-3 text-center"><button class="text-orange-600 hover:underline text-xs">재발송</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">알림톡 발송 내용 (미가입 업체)</h2>
+                            </div>
+                            <div class="card-body">
+                                <pre class="text-xs text-gray-700 whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-lg border border-gray-200">[안전NOW] 수급업체 선정 안내
+
+안녕하세요, {담당자명}님.
+
+{사업장명}에서 수급업체로 선정되어 안내드립니다.
+아래 링크를 통해 안전NOW에 가입하시면 계약 및 서약 절차가 자동으로 진행됩니다.
+
+▶ 가입하기: {초대 링크}
+링크 유효기간: 2주 ({만료일자})
+
+문의: {사업장 담당자 연락처}</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 하단 액션 -->
+                    <div class="flex items-center justify-between mt-6 pb-6">
+                        <button class="btn btn-secondary" onclick="prevWizardStep()" id="wizard-prev">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            이전
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <a href="contractor.html" class="btn btn-secondary">취소</a>
+                            <button class="btn btn-outline" onclick="saveDraft()">임시저장</button>
+                            <button class="btn btn-primary" onclick="nextWizardStep()" id="wizard-next">
+                                다음
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 업체 추가 모달 (가입 검색 / 신규 입력) — STEP 2의 보조 액션 -->
+    <div id="add-company-modal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeModal('add-company-modal')"></div>
+        <div class="modal-content max-w-2xl">
+            <div class="modal-header">
+                <h3 class="modal-title">업체 추가</h3>
+                <button class="modal-close" onclick="closeModal('add-company-modal')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="border-b border-gray-200 px-6">
+                <div class="flex gap-1">
+                    <div class="mini-tab active" data-mini-tab="search" onclick="switchMiniTab('search')">가입 업체 검색</div>
+                    <div class="mini-tab" data-mini-tab="new" onclick="switchMiniTab('new')">신규 업체 입력</div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <!-- 탭 A: 가입 업체 검색 -->
+                <div id="mini-pane-search" class="mini-pane">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">검색어</label>
+                        <div class="input-with-icon">
+                            <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="text" class="input w-full" placeholder="업체명 또는 사업자번호로 검색...">
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-xs text-gray-500 mb-2">검색 결과 (3건)</p>
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="px-4 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <span class="font-bold text-purple-600">안</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">(주)안전건설</p>
+                                        <p class="text-xs text-gray-500">123-45-67890 · 대표 김건설 · 가입 2024.03.15</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline btn-sm">선택</button>
+                            </div>
+                            <div class="px-4 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 bg-orange-100 rounded-lg flex items-center justify-center">
+                                        <span class="font-bold text-orange-600">대</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">대한설비(주)</p>
+                                        <p class="text-xs text-gray-500">234-56-78901 · 대표 박설비 · 가입 2024.06.22</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline btn-sm">선택</button>
+                            </div>
+                            <div class="px-4 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 bg-cyan-100 rounded-lg flex items-center justify-center">
+                                        <span class="font-bold text-cyan-600">신</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">신일운송(주)</p>
+                                        <p class="text-xs text-gray-500">456-78-90123 · 대표 신일운 · 가입 2025.01.10</p>
+                                    </div>
+                                </div>
+                                <button class="btn btn-outline btn-sm">선택</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 alert alert-info">
+                        <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div class="alert-content">
+                            <p class="alert-message text-blue-700">선택 시 즉시 평가 대상으로 추가되며, 별도 초대 절차 없이 서비스 연결 완료 상태가 됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 탭 B: 신규 업체 입력 -->
+                <div id="mini-pane-new" class="mini-pane hidden">
+                    <div class="space-y-4">
+                        <div class="alert alert-warning">
+                            <svg class="alert-icon text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="alert-content">
+                                <p class="alert-message text-yellow-800">안전NOW 미가입 업체. 평가 진행 후 결재 완료 시 담당자 연락처로 가입 초대 알림톡이 자동 발송됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">업체명 <span class="text-red-500">*</span></label>
+                                <input type="text" class="input w-full" placeholder="(주)업체명">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">사업자등록번호 <span class="text-red-500">*</span></label>
+                                <input type="text" class="input w-full" placeholder="000-00-00000">
+                                <p class="text-xs text-gray-500 mt-1">가입 업체와 사업자번호가 중복되면 가입 업체 검색 탭으로 안내됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">대표자명 <span class="text-red-500">*</span></label>
+                                <input type="text" class="input w-full" placeholder="홍길동">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">업종 <span class="text-red-500">*</span></label>
+                                <select class="select w-full">
+                                    <option>건설</option>
+                                    <option>설비</option>
+                                    <option>전기</option>
+                                    <option>운송</option>
+                                    <option>청소·시설관리</option>
+                                    <option>기타</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-200 pt-4">
+                            <p class="text-sm font-medium text-gray-700 mb-3">담당자 정보 (알림톡 수신자)</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">담당자명 <span class="text-red-500">*</span></label>
+                                    <input type="text" class="input w-full" placeholder="홍길동">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">담당자 연락처 <span class="text-red-500">*</span></label>
+                                    <input type="tel" class="input w-full" placeholder="010-0000-0000">
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">담당자 이메일</label>
+                                <input type="email" class="input w-full" placeholder="email@example.com">
+                                <p class="text-xs text-gray-500 mt-1">이메일 입력 시 알림톡과 병행하여 이메일 초대도 발송됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">안전보건관리계획서 (평가 전 제출 요청)</label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-sm text-gray-500">
+                                <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                클릭 또는 파일을 드래그하여 업로드
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('add-company-modal')">취소</button>
+                <button class="btn btn-primary">평가 대상으로 추가</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 평가서 선택 모달 -->
+    <div id="eval-form-modal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeModal('eval-form-modal')"></div>
+        <div class="modal-content max-w-2xl">
+            <div class="modal-header">
+                <h3 class="modal-title">평가서 선택</h3>
+                <button class="modal-close" onclick="closeModal('eval-form-modal')">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info mb-4">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700"><strong>업무문서</strong>에 등록된 문서 중 <strong>문서유형 = 평가표 또는 체크리스트</strong>인 항목만 노출됩니다. 새 평가서가 필요하면 <a href="documents.html" class="underline font-medium">업무문서관리</a>에서 등록하세요.</p>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="text" class="input w-full" placeholder="평가서명 검색...">
+                </div>
+
+                <div class="border border-gray-200 rounded-lg divide-y divide-gray-100 max-h-96 overflow-y-auto">
+                    <label class="flex items-start gap-3 p-3 hover:bg-blue-50 cursor-pointer">
+                        <input type="radio" name="eval-form" value="standard" class="mt-1" checked>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-sm font-medium text-gray-900">수급업체 안전보건 평가표 (표준)</p>
+                                <span class="badge badge-info">표준</span>
+                                <span class="badge badge-success">사용중</span>
+                            </div>
+                            <p class="text-xs text-gray-500">도급·계약 · 평가항목 12개 · 100점 만점 · 적격 기준 80점</p>
+                            <p class="text-xs text-gray-400 mt-0.5">등록일 2026.01.15 · 작성자 안전보건팀 김안전</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 hover:bg-blue-50 cursor-pointer">
+                        <input type="radio" name="eval-form" value="construction" class="mt-1">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-sm font-medium text-gray-900">건설공사 수급업체 안전보건 평가표</p>
+                                <span class="badge badge-gray">건설용</span>
+                            </div>
+                            <p class="text-xs text-gray-500">도급·계약 · 평가항목 15개 · 100점 만점 · 적격 기준 75점</p>
+                            <p class="text-xs text-gray-400 mt-0.5">등록일 2025.11.20 · 작성자 안전보건팀 김안전</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 hover:bg-blue-50 cursor-pointer">
+                        <input type="radio" name="eval-form" value="service" class="mt-1">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-sm font-medium text-gray-900">용역·위탁 업체 평가표 (간소형)</p>
+                                <span class="badge badge-gray">용역용</span>
+                            </div>
+                            <p class="text-xs text-gray-500">도급·계약 · 평가항목 8개 · 100점 만점 · 적격 기준 70점</p>
+                            <p class="text-xs text-gray-400 mt-0.5">등록일 2025.10.05 · 작성자 안전보건팀 박관리</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 hover:bg-blue-50 cursor-pointer">
+                        <input type="radio" name="eval-form" value="contract" class="mt-1">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <p class="text-sm font-medium text-gray-900">도급계약 안전보건 협의서</p>
+                            </div>
+                            <p class="text-xs text-gray-500">도급·계약 · 평가항목 10개 · 100점 만점 · 적격 기준 80점</p>
+                            <p class="text-xs text-gray-400 mt-0.5">등록일 2025.08.12 · 작성자 안전보건팀 김안전</p>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="mt-4 flex items-center justify-between text-xs text-gray-500">
+                    <span>총 4개 평가서</span>
+                    <a href="documents.html" class="text-blue-600 hover:underline">업무문서관리에서 평가서 등록 →</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('eval-form-modal')">취소</button>
+                <button class="btn btn-primary" onclick="applyEvalForm()">선택 적용</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 평가 진행 모달 -->
+    <div id="evaluation-modal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeEvalModal()"></div>
+        <div class="modal-content max-w-3xl">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">수급업체 안전보건 평가</h3>
+                    <p class="text-xs text-gray-500 mt-0.5"><span id="eval-target-name">동방기계(주)</span> · 평가서: <span id="eval-using-form">수급업체 안전보건 평가표 (표준)</span></p>
+                </div>
+                <button class="modal-close" onclick="closeEvalModal()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="eval-summary-card mb-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-600 mb-1">현재 합계 점수</p>
+                            <p class="text-2xl font-bold text-blue-700"><span id="eval-total-score">0</span><span class="text-sm text-gray-500"> / 100</span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-600 mb-1">적격 기준 80점</p>
+                            <p class="text-sm"><span id="eval-judgment" class="badge badge-gray">평가 진행중</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-xs text-gray-500 mb-3">각 항목별 평가 척도를 선택하세요. (매우우수 100% · 우수 80% · 보통 60% · 미흡 40% · 매우미흡 20%)</p>
+
+                <div class="eval-category-title">1. 안전보건 경영시스템 (30점)</div>
+                <div class="border border-gray-200 rounded-b-md mb-4">
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">안전보건 방침 및 목표 수립<span class="eval-item-desc">방침 문서화 / 게시 / 임직원 공유 여부</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-1-1" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-1-1" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-1-1" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-1-1" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-1-1" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">안전보건 조직 운영<span class="eval-item-desc">안전관리자 선임 / 조직도 / 책임 명시</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-1-2" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-1-2" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-1-2" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-1-2" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-1-2" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">안전보건 예산 편성<span class="eval-item-desc">연간 예산 / 집행 실적</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-1-3" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-1-3" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-1-3" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-1-3" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-1-3" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eval-category-title">2. 산업재해 발생 이력 (25점)</div>
+                <div class="border border-gray-200 rounded-b-md mb-4">
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">최근 3년 사망사고<span class="eval-item-desc">없음 / 1건 / 2건 이상</span></div>
+                        <div class="eval-item-max">15점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-2-1" data-max="15"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-2-1" data-max="15"><span>우수</span></label>
+                            <label><input type="radio" name="item-2-1" data-max="15"><span>보통</span></label>
+                            <label><input type="radio" name="item-2-1" data-max="15"><span>미흡</span></label>
+                            <label><input type="radio" name="item-2-1" data-max="15"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">최근 3년 재해율<span class="eval-item-desc">동종업종 평균 대비</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-2-2" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-2-2" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-2-2" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-2-2" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-2-2" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eval-category-title">3. 안전보건 활동 (30점)</div>
+                <div class="border border-gray-200 rounded-b-md mb-4">
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">위험성평가 실시<span class="eval-item-desc">정기·수시 평가 / 결과 반영</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-3-1" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-3-1" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-3-1" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-3-1" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-3-1" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">안전보건 교육<span class="eval-item-desc">정기/특별/관리자 교육 이수율</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-3-2" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-3-2" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-3-2" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-3-2" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-3-2" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">보호구 지급·관리<span class="eval-item-desc">지급 기록 / 착용 관리</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-3-3" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-3-3" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-3-3" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-3-3" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-3-3" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="eval-category-title">4. 법규 준수 (15점)</div>
+                <div class="border border-gray-200 rounded-b-md mb-4">
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">산업안전보건법 위반 이력<span class="eval-item-desc">최근 3년 행정처분 / 과태료</span></div>
+                        <div class="eval-item-max">10점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-4-1" data-max="10"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-4-1" data-max="10"><span>우수</span></label>
+                            <label><input type="radio" name="item-4-1" data-max="10"><span>보통</span></label>
+                            <label><input type="radio" name="item-4-1" data-max="10"><span>미흡</span></label>
+                            <label><input type="radio" name="item-4-1" data-max="10"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                    <div class="eval-item-row">
+                        <div class="eval-item-name">안전보건관리계획서 제출<span class="eval-item-desc">평가 전 제출 여부 / 충실도</span></div>
+                        <div class="eval-item-max">5점</div>
+                        <div class="eval-scale">
+                            <label><input type="radio" name="item-4-2" data-max="5"><span>매우우수</span></label>
+                            <label><input type="radio" name="item-4-2" data-max="5"><span>우수</span></label>
+                            <label><input type="radio" name="item-4-2" data-max="5"><span>보통</span></label>
+                            <label><input type="radio" name="item-4-2" data-max="5"><span>미흡</span></label>
+                            <label><input type="radio" name="item-4-2" data-max="5"><span>매우미흡</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">종합 의견 / 특이사항</label>
+                    <textarea class="input w-full" rows="3" placeholder="평가 결과에 대한 종합 의견 또는 특이사항을 입력하세요."></textarea>
+                </div>
+
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">평가 근거자료 첨부</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-sm text-gray-500">
+                        <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        평가 근거 자료(보고서, 인증서 등)를 업로드하세요
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEvalModal()">취소</button>
+                <button class="btn btn-outline" onclick="closeEvalModal()">임시저장</button>
+                <button class="btn btn-primary" onclick="closeEvalModal()">평가 완료</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        // 미니 탭 전환
+        function switchMiniTab(tab) {
+            document.querySelectorAll('.mini-tab').forEach(el => {
+                el.classList.toggle('active', el.dataset.miniTab === tab);
+            });
+            document.querySelectorAll('.mini-pane').forEach(pane => pane.classList.add('hidden'));
+            document.getElementById('mini-pane-' + tab).classList.remove('hidden');
+        }
+
+        // 4단계 위저드
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function renderWizardStep() {
+            document.querySelectorAll('.wizard-step').forEach(el => {
+                const step = parseInt(el.dataset.step);
+                el.classList.remove('done', 'current');
+                if (step < currentStep) el.classList.add('done');
+                else if (step === currentStep) el.classList.add('current');
+            });
+            document.querySelectorAll('.wizard-pane').forEach(pane => pane.classList.add('hidden'));
+            document.getElementById('wizard-pane-' + currentStep).classList.remove('hidden');
+
+            document.getElementById('wizard-prev').style.visibility = currentStep === 1 ? 'hidden' : 'visible';
+            const nextBtn = document.getElementById('wizard-next');
+            if (currentStep === totalSteps) {
+                nextBtn.innerHTML = '완료 및 활성화';
+            } else if (currentStep === 3) {
+                nextBtn.innerHTML = '결재 상신 →';
+            } else {
+                nextBtn.innerHTML = '다음 →';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextWizardStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                renderWizardStep();
+            } else {
+                // 완료 — 목록으로 이동
+                location.href = 'contractor.html';
+            }
+        }
+
+        function prevWizardStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                renderWizardStep();
+            }
+        }
+
+        function saveDraft() {
+            alert('임시저장되었습니다.');
+        }
+
+        // ========== 평가서 / 평가 모달 ==========
+        function applyEvalForm() {
+            const sel = document.querySelector('input[name="eval-form"]:checked');
+            if (!sel) return;
+            const formMap = {
+                standard: { name: '수급업체 안전보건 평가표 (표준)', meta: '업무문서 · 도급·계약 · 평가항목 12개 · 100점 만점 · 적격 기준 80점' },
+                construction: { name: '건설공사 수급업체 안전보건 평가표', meta: '업무문서 · 도급·계약 · 평가항목 15개 · 100점 만점 · 적격 기준 75점' },
+                service: { name: '용역·위탁 업체 평가표 (간소형)', meta: '업무문서 · 도급·계약 · 평가항목 8개 · 100점 만점 · 적격 기준 70점' },
+                contract: { name: '도급계약 안전보건 협의서', meta: '업무문서 · 도급·계약 · 평가항목 10개 · 100점 만점 · 적격 기준 80점' },
+            };
+            const f = formMap[sel.value] || formMap.standard;
+            document.getElementById('eval-form-name').textContent = f.name;
+            document.getElementById('eval-form-meta').textContent = f.meta;
+            document.getElementById('eval-using-form').textContent = f.name;
+            closeModal('eval-form-modal');
+        }
+
+        function openEvalModal(companyName, mode, prevScore) {
+            const modal = document.getElementById('evaluation-modal');
+            if (!modal) return;
+            const targetEl = document.getElementById('eval-target-name');
+            if (targetEl) targetEl.textContent = companyName;
+            const totalEl = document.getElementById('eval-total-score');
+            const judgeEl = document.getElementById('eval-judgment');
+            if (mode === 'edit' && prevScore > 0) {
+                if (totalEl) totalEl.textContent = prevScore;
+                applyJudgment(prevScore);
+            } else {
+                document.querySelectorAll('#evaluation-modal input[type="radio"][name^="item-"]').forEach(r => r.checked = false);
+                if (totalEl) totalEl.textContent = 0;
+                if (judgeEl) {
+                    judgeEl.className = 'badge badge-gray';
+                    judgeEl.textContent = '평가 진행중';
+                }
+            }
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeEvalModal() {
+            const modal = document.getElementById('evaluation-modal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.style.display = '';
+            document.body.style.overflow = '';
+        }
+
+        function applyJudgment(score) {
+            const judgeEl = document.getElementById('eval-judgment');
+            if (!judgeEl) return;
+            if (score >= 80) {
+                judgeEl.className = 'badge badge-success';
+                judgeEl.textContent = '적격 (80점 이상)';
+            } else if (score >= 60) {
+                judgeEl.className = 'badge badge-warning';
+                judgeEl.textContent = '조건부 (재평가 필요)';
+            } else if (score > 0) {
+                judgeEl.className = 'badge badge-danger';
+                judgeEl.textContent = '부적격';
+            } else {
+                judgeEl.className = 'badge badge-gray';
+                judgeEl.textContent = '평가 진행중';
+            }
+        }
+
+        const scaleRatio = [1.0, 0.8, 0.6, 0.4, 0.2];
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('#evaluation-modal input[type="radio"][name^="item-"]')) {
+                let total = 0;
+                const groups = new Set();
+                document.querySelectorAll('#evaluation-modal input[type="radio"][name^="item-"]').forEach(r => groups.add(r.name));
+                groups.forEach(name => {
+                    const checked = document.querySelector(`#evaluation-modal input[name="${name}"]:checked`);
+                    if (!checked) return;
+                    const max = parseFloat(checked.dataset.max) || 0;
+                    const idx = Array.from(checked.parentElement.parentElement.querySelectorAll('input')).indexOf(checked);
+                    total += Math.round(max * (scaleRatio[idx] || 0));
+                });
+                document.getElementById('eval-total-score').textContent = total;
+                applyJudgment(total);
+            }
+        });
+    </script>
+</body>
+</html>
