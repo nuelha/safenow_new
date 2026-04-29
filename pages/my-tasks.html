@@ -233,8 +233,8 @@
                     <div class="card">
                         <div class="px-6 pt-4" data-tab-group="my-tasks">
                             <div class="sub-tabs">
-                                <button class="sub-tab active" data-tab="all">전체<span class="count">43</span></button>
-                                <button class="sub-tab" data-tab="document">문서업무<span class="count">18</span></button>
+                                <button class="sub-tab active" data-tab="all">전체<span class="count">45</span></button>
+                                <button class="sub-tab" data-tab="document">문서업무<span class="count">20</span></button>
                                 <button class="sub-tab" data-tab="approval">결재대기<span class="count">5</span></button>
                                 <button class="sub-tab" data-tab="signature">전자서명<span class="count">8</span></button>
                                 <button class="sub-tab" data-tab="completed">완료<span class="count">28</span></button>
@@ -539,6 +539,54 @@
                             <div class="tab-pane hidden" data-pane="document">
                                 <div class="p-6">
                                     <div class="grid grid-cols-3 gap-4">
+                                        <!-- 도급평가 - 평가자 배정 (대기) -->
+                                        <div class="card border-l-4 border-l-blue-500 hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='contractor.html'">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-gray">대기</span>
+                                                        <span class="badge badge-info">도급안전평가</span>
+                                                    </div>
+                                                    <span class="text-sm text-red-600 font-medium">D-3</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">[도급평가] 2026년 1분기 정비공사 — 신일운송(주)</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                    <span>본사 사업장 · 계약담당 이도급</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs font-medium text-green-700">박</div>
+                                                        <span class="text-xs text-gray-500">박안전 (평가자)</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">평가 시작</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 도급평가 - 진행중 -->
+                                        <div class="card border-l-4 border-l-blue-500 hover:shadow-md transition-shadow cursor-pointer" onclick="window.location.href='contractor.html'">
+                                            <div class="p-4">
+                                                <div class="flex items-center justify-between mb-3">
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="badge badge-info">진행중</span>
+                                                        <span class="badge badge-info">도급안전평가</span>
+                                                    </div>
+                                                    <span class="text-sm text-gray-500 font-medium">D-7</span>
+                                                </div>
+                                                <h3 class="font-medium text-gray-900 mb-2 line-clamp-2">[도급평가] 2026년 1분기 정비공사 — 동방기계(주)</h3>
+                                                <div class="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                    <span>본사 사업장 · 계약담당 이도급</span>
+                                                </div>
+                                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-xs font-medium text-green-700">박</div>
+                                                        <span class="text-xs text-gray-500">박안전 (평가자)</span>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm">평가 계속</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="card border-l-4 border-l-purple-400 hover:shadow-md transition-shadow cursor-pointer">
                                             <div class="p-4">
                                                 <div class="flex items-center justify-between mb-3">
