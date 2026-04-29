@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dir \"C:\\Users\\User\\Documents\\safenow_new2\\design\")",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push *)"
     ],
     "deny": [],
     "ask": []
