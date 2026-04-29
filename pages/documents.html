@@ -192,6 +192,11 @@
                                         <option>미등록</option>
                                         <option>개정필요</option>
                                     </select>
+                                    <select class="select">
+                                        <option>전체 관리방식</option>
+                                        <option>파일형</option>
+                                        <option>데이터입력형</option>
+                                    </select>
                                 </div>
                                 <button class="btn btn-primary" onclick="openUploadDocModal()">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,6 +225,7 @@
                                                 <th class="w-12"><input type="checkbox" class="table-checkbox"></th>
                                                 <th>문서명</th>
                                                 <th>카테고리</th>
+                                                <th>관리방식</th>
                                                 <th>버전</th>
                                                 <th>최종수정일</th>
                                                 <th>작성자</th>
@@ -244,6 +250,7 @@
                                                     </div>
                                                 </td>
                                                 <td><span class="badge badge-info">위험성평가</span></td>
+                                                <td><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700">📄 파일형</span></td>
                                                 <td>v2.1</td>
                                                 <td>2026-04-15</td>
                                                 <td>김안전</td>
@@ -273,6 +280,7 @@
                                                     </div>
                                                 </td>
                                                 <td><span class="badge badge-success">안전보건 목표·방침</span></td>
+                                                <td><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700">📄 파일형</span></td>
                                                 <td>v1.0</td>
                                                 <td>2026-01-02</td>
                                                 <td>김대표</td>
@@ -301,6 +309,7 @@
                                                     </div>
                                                 </td>
                                                 <td><span class="badge badge-warning">비상조치</span></td>
+                                                <td><span class="text-xs text-gray-400">-</span></td>
                                                 <td>-</td>
                                                 <td>-</td>
                                                 <td>-</td>
@@ -321,6 +330,7 @@
                                                     </div>
                                                 </td>
                                                 <td><span class="badge badge-gray">협의체</span></td>
+                                                <td><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700">📝 데이터입력형</span></td>
                                                 <td>v3.0</td>
                                                 <td>2026-04-05</td>
                                                 <td>박노무</td>
@@ -329,6 +339,32 @@
                                                     <div class="flex items-center gap-1">
                                                         <button class="p-2 hover:bg-gray-100 rounded-lg" title="다운로드"><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
                                                         <button class="p-2 hover:bg-gray-100 rounded-lg" title="수정"><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr onclick="showDocDetail('contractor-eval')" class="cursor-pointer">
+                                                <td onclick="event.stopPropagation()"><input type="checkbox" class="table-checkbox"></td>
+                                                <td>
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                                        </div>
+                                                        <div>
+                                                            <p class="font-medium text-gray-900">수급업체 안전보건 평가표</p>
+                                                            <p class="text-xs text-gray-500">양식 항목 12개 · 100점 만점</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge badge-info">도급·계약</span></td>
+                                                <td><span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700">📝 데이터입력형</span></td>
+                                                <td>v1.0</td>
+                                                <td>2026-04-22</td>
+                                                <td>박안전</td>
+                                                <td><span class="badge badge-success">등록완료</span></td>
+                                                <td onclick="event.stopPropagation()">
+                                                    <div class="flex items-center gap-1">
+                                                        <button class="p-2 hover:bg-gray-100 rounded-lg" title="PDF 내보내기"><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></button>
+                                                        <button class="p-2 hover:bg-gray-100 rounded-lg" title="양식 수정"><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -648,7 +684,8 @@
                                         <span class="badge badge-danger">필수</span>
                                     </div>
                                     <h3 class="font-medium text-gray-900 mb-1">위험성평가 절차서</h3>
-                                    <p class="text-sm text-gray-500 mb-3">산업안전보건법 제36조</p>
+                                    <p class="text-sm text-gray-500 mb-2">산업안전보건법 제36조</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">기본 서류</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
@@ -665,7 +702,8 @@
                                         <span class="badge badge-danger">필수</span>
                                     </div>
                                     <h3 class="font-medium text-gray-900 mb-1">비상조치계획 절차서</h3>
-                                    <p class="text-sm text-gray-500 mb-3">중대재해처벌법 시행령 제4조</p>
+                                    <p class="text-sm text-gray-500 mb-2">중대재해처벌법 시행령 제4조</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">비상조치 매뉴얼</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
@@ -682,7 +720,8 @@
                                         <span class="badge badge-info">권장</span>
                                     </div>
                                     <h3 class="font-medium text-gray-900 mb-1">안전보건교육 계획서</h3>
-                                    <p class="text-sm text-gray-500 mb-3">연간 교육계획 수립용</p>
+                                    <p class="text-sm text-gray-500 mb-2">연간 교육계획 수립용</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-gray-100 text-gray-700 mb-3">📄 파일형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">교육</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
@@ -698,8 +737,9 @@
                                         </div>
                                         <span class="badge badge-info">권장</span>
                                     </div>
-                                    <h3 class="font-medium text-gray-900 mb-1">도급계약 안전보건 협의서</h3>
-                                    <p class="text-sm text-gray-500 mb-3">도급업체 계약 시 사용</p>
+                                    <h3 class="font-medium text-gray-900 mb-1">수급업체 안전평가표</h3>
+                                    <p class="text-sm text-gray-500 mb-2">도급업체 선정평가용 (양식 항목 12개)</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">도급, 용역, 위탁 평가</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
@@ -716,7 +756,8 @@
                                         <span class="badge badge-info">권장</span>
                                     </div>
                                     <h3 class="font-medium text-gray-900 mb-1">일일 안전점검 체크리스트</h3>
-                                    <p class="text-sm text-gray-500 mb-3">일상점검 기록용</p>
+                                    <p class="text-sm text-gray-500 mb-2">일상점검 기록용 (양식 항목 별 입력)</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs text-gray-400">안전점검</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
@@ -732,10 +773,11 @@
                                         </div>
                                         <span class="badge badge-info">권장</span>
                                     </div>
-                                    <h3 class="font-medium text-gray-900 mb-1">의견청취 기록부</h3>
-                                    <p class="text-sm text-gray-500 mb-3">근로자 의견 청취 기록용</p>
+                                    <h3 class="font-medium text-gray-900 mb-1">안전보건위원회 회의록</h3>
+                                    <p class="text-sm text-gray-500 mb-2">협의체 회의 기록용 (양식 항목별 입력)</p>
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded bg-blue-50 text-blue-700 mb-3">📝 데이터입력형</span>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-xs text-gray-400">의견청취</span>
+                                        <span class="text-xs text-gray-400">협의체</span>
                                         <button class="btn btn-outline btn-sm">가져오기</button>
                                     </div>
                                 </div>
@@ -773,21 +815,29 @@
                     <div class="flex items-center gap-3" id="uploadStep1Indicator">
                         <div class="w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-medium">1</div>
                         <div>
-                            <p class="text-sm font-medium text-gray-900">파일 업로드</p>
-                            <p class="text-xs text-gray-500">문서 파일 선택</p>
+                            <p class="text-sm font-medium text-gray-900">관리 방식</p>
+                            <p class="text-xs text-gray-500">파일형/데이터형</p>
                         </div>
                     </div>
-                    <div class="flex-1 h-px bg-gray-200 mx-4"></div>
+                    <div class="flex-1 h-px bg-gray-200 mx-3"></div>
                     <div class="flex items-center gap-3" id="uploadStep2Indicator">
                         <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-medium">2</div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500" id="uploadStep2Title">파일 업로드</p>
+                            <p class="text-xs text-gray-400" id="uploadStep2Subtitle">문서 파일 선택</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 h-px bg-gray-200 mx-3"></div>
+                    <div class="flex items-center gap-3" id="uploadStep3Indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-medium">3</div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">문서 정보</p>
                             <p class="text-xs text-gray-400">카테고리, 설명</p>
                         </div>
                     </div>
-                    <div class="flex-1 h-px bg-gray-200 mx-4"></div>
-                    <div class="flex items-center gap-3" id="uploadStep3Indicator">
-                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-medium">3</div>
+                    <div class="flex-1 h-px bg-gray-200 mx-3"></div>
+                    <div class="flex items-center gap-3" id="uploadStep4Indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center text-sm font-medium">4</div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">권한 설정</p>
                             <p class="text-xs text-gray-400">공유, 버전</p>
@@ -796,8 +846,45 @@
                 </div>
             </div>
 
-            <!-- Step 1: 파일 업로드 -->
+            <!-- Step 1: 관리 방식 선택 -->
             <div id="uploadStep1" class="modal-body">
+                <p class="text-sm text-gray-600 mb-4">이 문서를 어떻게 관리하시겠습니까? 관리 방식에 따라 등록 방법이 달라집니다.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="mgmtType" value="file" class="sr-only peer" checked onchange="setMgmtType('file')">
+                        <div class="p-5 border-2 border-gray-200 rounded-xl hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors h-full">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-2xl">📄</div>
+                                <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700">파일형</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-2">파일 업로드</h3>
+                            <p class="text-sm text-gray-600 mb-3">PDF, Word 등 파일을 업로드해서 관리합니다.</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">예: 절차서, 방침서, 계획서, 선임신고서, 점검결과서</p>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="mgmtType" value="form" class="sr-only peer" onchange="setMgmtType('form')">
+                        <div class="p-5 border-2 border-gray-200 rounded-xl hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 transition-colors h-full">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-2xl">📝</div>
+                                <span class="text-xs px-2 py-0.5 rounded bg-blue-50 text-blue-700">데이터입력형</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-gray-900 mb-2">양식 구성</h3>
+                            <p class="text-sm text-gray-600 mb-3">양식을 구성하고 항목별로 직접 입력해서 관리합니다.</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">예: 평가표, 회의록, 기록부, 확인서</p>
+                        </div>
+                    </label>
+                </div>
+                <div class="mt-4 alert alert-info">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700">데이터입력형으로 등록한 양식(평가표/체크리스트)은 도급관리, 안전점검 등 다른 메뉴에서 불러와 사용할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2A: 파일 업로드 (관리방식 = 파일형) -->
+            <div id="uploadStep2A" class="modal-body hidden">
                 <div class="mb-6">
                     <label class="form-label">문서 파일 업로드 <span class="text-red-500">*</span></label>
                     <div id="uploadDropzone" class="mt-2 border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-400 hover:bg-primary-50/50 transition-all cursor-pointer">
@@ -887,8 +974,126 @@
                 </div>
             </div>
 
-            <!-- Step 2: 문서 정보 입력 (초기 숨김) -->
-            <div id="uploadStep2" class="modal-body hidden">
+            <!-- Step 2B: 양식 구성 (관리방식 = 데이터입력형) -->
+            <div id="uploadStep2B" class="modal-body hidden">
+                <div class="alert alert-info mb-4">
+                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="alert-content">
+                        <p class="alert-message text-blue-700">양식의 섹션과 항목을 구성하세요. 항목 유형에 <strong>점수</strong>가 포함되면 평가표 설정이 추가됩니다.</p>
+                    </div>
+                </div>
+
+                <!-- 평가표 설정 (점수 항목 사용 시) -->
+                <div id="formEvalConfig" class="mb-5 border border-blue-100 bg-blue-50/40 rounded-lg p-4 hidden">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-3">평가표 설정</h4>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">만점</label>
+                            <div class="mt-1 flex items-center gap-2">
+                                <input type="number" class="input w-full" value="100" min="1">
+                                <span class="text-sm text-gray-500">점</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">적격 기준점수</label>
+                            <div class="mt-1 flex items-center gap-2">
+                                <input type="number" class="input w-full" value="80" min="0">
+                                <span class="text-sm text-gray-500">점 이상</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-medium text-gray-700">평가 척도</label>
+                            <select class="select w-full mt-1">
+                                <option value="5">5단계</option>
+                                <option value="3">3단계</option>
+                                <option value="2">2단계 (적합/부적합)</option>
+                                <option value="score">직접 점수 입력</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 섹션/항목 빌더 -->
+                <div id="formSections" class="space-y-3">
+                    <!-- 섹션 1 (기본) -->
+                    <div class="form-section bg-white border border-gray-200 rounded-lg p-3" data-section-index="0">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs text-gray-500 font-mono">섹션 1</span>
+                            <input type="text" class="input flex-1 section-title" placeholder="섹션명 (예: 기본 정보)" value="기본 정보">
+                            <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
+                            </button>
+                        </div>
+                        <div class="form-fields pl-4 space-y-2">
+                            <div class="form-field flex items-center gap-2">
+                                <span class="text-xs text-gray-400 w-12">항목 1</span>
+                                <input type="text" class="input flex-1 field-label" placeholder="항목명" value="업체명">
+                                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
+                                    <option value="text" selected>텍스트</option>
+                                    <option value="textarea">텍스트(장문)</option>
+                                    <option value="number">숫자</option>
+                                    <option value="date">날짜</option>
+                                    <option value="select">선택</option>
+                                    <option value="score">점수</option>
+                                    <option value="signature">서명</option>
+                                    <option value="file">파일첨부</option>
+                                </select>
+                                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded" checked> 필수</label>
+                                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
+                    </div>
+
+                    <!-- 섹션 2 (예시: 평가용) -->
+                    <div class="form-section bg-white border border-gray-200 rounded-lg p-3" data-section-index="1">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs text-gray-500 font-mono">섹션 2</span>
+                            <input type="text" class="input flex-1 section-title" placeholder="섹션명" value="안전관리 수준">
+                            <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
+                            </button>
+                        </div>
+                        <div class="form-fields pl-4 space-y-2">
+                            <div class="form-field flex items-center gap-2">
+                                <span class="text-xs text-gray-400 w-12">항목 1</span>
+                                <input type="text" class="input flex-1 field-label" placeholder="항목명" value="안전관리자 선임 여부">
+                                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
+                                    <option value="text">텍스트</option>
+                                    <option value="textarea">텍스트(장문)</option>
+                                    <option value="number">숫자</option>
+                                    <option value="date">날짜</option>
+                                    <option value="select">선택</option>
+                                    <option value="score" selected>점수</option>
+                                    <option value="signature">서명</option>
+                                    <option value="file">파일첨부</option>
+                                </select>
+                                <input type="number" class="input w-20 field-score" value="20" min="0" placeholder="만점">
+                                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded" checked> 필수</label>
+                                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
+                    </div>
+                </div>
+
+                <button type="button" class="mt-3 btn btn-outline btn-sm" onclick="addFormSection()">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    섹션 추가
+                </button>
+
+                <div class="mt-4 text-xs text-gray-500 space-y-1">
+                    <p>· 항목 유형이 "점수"인 경우 만점을 입력합니다.</p>
+                    <p>· 데이터입력형 양식은 다음 단계에서 문서 유형을 "평가표" 또는 "체크리스트"로 지정해야 다른 메뉴(도급관리, 안전점검 등)에서 사용할 수 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- Step 3: 문서 정보 입력 (공통) -->
+            <div id="uploadStep3" class="modal-body hidden">
                 <div class="mb-6">
                     <label class="form-label">문서명 <span class="text-red-500">*</span></label>
                     <input type="text" class="input w-full mt-2" placeholder="예: 2026년 상반기 위험성평가 결과 보고서" value="위험성평가_결과보고서">
@@ -1036,8 +1241,8 @@
                 </div>
             </div>
 
-            <!-- Step 3: 권한 설정 (초기 숨김) -->
-            <div id="uploadStep3" class="modal-body hidden">
+            <!-- Step 4: 권한 설정 (공통) -->
+            <div id="uploadStep4" class="modal-body hidden">
                 <div class="mb-6">
                     <label class="form-label">버전 정보</label>
                     <div class="grid grid-cols-2 gap-4 mt-2">
@@ -1150,10 +1355,14 @@
     <script src="../js/app.js"></script>
     <script>
         let currentUploadStep = 1;
+        let currentMgmtType = 'file'; // 'file' or 'form'
 
         function openUploadDocModal() {
             document.getElementById('uploadDocModal').classList.remove('hidden');
             currentUploadStep = 1;
+            currentMgmtType = 'file';
+            const fileRadio = document.querySelector('input[name="mgmtType"][value="file"]');
+            if (fileRadio) fileRadio.checked = true;
             updateUploadStepUI();
         }
 
@@ -1163,8 +1372,22 @@
             updateUploadStepUI();
         }
 
+        function setMgmtType(type) {
+            currentMgmtType = type;
+            // Step 2 인디케이터의 제목 업데이트
+            const t = document.getElementById('uploadStep2Title');
+            const s = document.getElementById('uploadStep2Subtitle');
+            if (type === 'file') {
+                if (t) t.textContent = '파일 업로드';
+                if (s) s.textContent = '문서 파일 선택';
+            } else {
+                if (t) t.textContent = '양식 구성';
+                if (s) s.textContent = '섹션·항목 정의';
+            }
+        }
+
         function nextUploadStep() {
-            if (currentUploadStep < 3) {
+            if (currentUploadStep < 4) {
                 currentUploadStep++;
                 updateUploadStepUI();
             }
@@ -1178,17 +1401,27 @@
         }
 
         function updateUploadStepUI() {
-            // Hide all steps
-            document.getElementById('uploadStep1').classList.add('hidden');
-            document.getElementById('uploadStep2').classList.add('hidden');
-            document.getElementById('uploadStep3').classList.add('hidden');
+            // Hide all step bodies
+            ['uploadStep1', 'uploadStep2A', 'uploadStep2B', 'uploadStep3', 'uploadStep4'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
 
-            // Show current step
-            document.getElementById('uploadStep' + currentUploadStep).classList.remove('hidden');
+            // Show current step body (Step 2 분기 처리)
+            if (currentUploadStep === 2) {
+                const target = currentMgmtType === 'form' ? 'uploadStep2B' : 'uploadStep2A';
+                document.getElementById(target).classList.remove('hidden');
+                if (target === 'uploadStep2B') {
+                    onFieldTypeChange();
+                }
+            } else {
+                document.getElementById('uploadStep' + currentUploadStep).classList.remove('hidden');
+            }
 
-            // Update indicators
-            for (let i = 1; i <= 3; i++) {
+            // Update 4 indicators
+            for (let i = 1; i <= 4; i++) {
                 const indicator = document.getElementById('uploadStep' + i + 'Indicator');
+                if (!indicator) continue;
                 const circle = indicator.querySelector('div:first-child');
                 const title = indicator.querySelector('p:first-child');
                 const subtitle = indicator.querySelector('p:last-child');
@@ -1213,8 +1446,102 @@
 
             // Update buttons
             document.getElementById('uploadPrevBtn').classList.toggle('hidden', currentUploadStep === 1);
-            document.getElementById('uploadNextBtn').classList.toggle('hidden', currentUploadStep === 3);
-            document.getElementById('uploadSubmitBtn').classList.toggle('hidden', currentUploadStep !== 3);
+            document.getElementById('uploadNextBtn').classList.toggle('hidden', currentUploadStep === 4);
+            document.getElementById('uploadSubmitBtn').classList.toggle('hidden', currentUploadStep !== 4);
+        }
+
+        // ===== 데이터입력형 양식 빌더 =====
+        function addFormSection() {
+            const container = document.getElementById('formSections');
+            const idx = container.querySelectorAll('.form-section').length;
+            const node = document.createElement('div');
+            node.className = 'form-section bg-white border border-gray-200 rounded-lg p-3';
+            node.dataset.sectionIndex = idx;
+            node.innerHTML = `
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs text-gray-500 font-mono">섹션 ${idx + 1}</span>
+                    <input type="text" class="input flex-1 section-title" placeholder="섹션명">
+                    <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
+                    </button>
+                </div>
+                <div class="form-fields pl-4 space-y-2"></div>
+                <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
+            `;
+            container.appendChild(node);
+        }
+
+        function removeFormSection(btn) {
+            if (document.querySelectorAll('.form-section').length <= 1) {
+                alert('최소 1개의 섹션이 필요합니다.');
+                return;
+            }
+            btn.closest('.form-section').remove();
+            // 인덱스 재정렬
+            document.querySelectorAll('.form-section').forEach((sec, idx) => {
+                sec.dataset.sectionIndex = idx;
+                const label = sec.querySelector('.font-mono');
+                if (label) label.textContent = `섹션 ${idx + 1}`;
+            });
+            onFieldTypeChange();
+        }
+
+        function addFormField(btn) {
+            const fields = btn.closest('.form-section').querySelector('.form-fields');
+            const idx = fields.querySelectorAll('.form-field').length;
+            const node = document.createElement('div');
+            node.className = 'form-field flex items-center gap-2';
+            node.innerHTML = `
+                <span class="text-xs text-gray-400 w-12">항목 ${idx + 1}</span>
+                <input type="text" class="input flex-1 field-label" placeholder="항목명">
+                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
+                    <option value="text" selected>텍스트</option>
+                    <option value="textarea">텍스트(장문)</option>
+                    <option value="number">숫자</option>
+                    <option value="date">날짜</option>
+                    <option value="select">선택</option>
+                    <option value="score">점수</option>
+                    <option value="signature">서명</option>
+                    <option value="file">파일첨부</option>
+                </select>
+                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded"> 필수</label>
+                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+            fields.appendChild(node);
+            onFieldTypeChange();
+        }
+
+        function removeFormField(btn) {
+            btn.closest('.form-field').remove();
+            onFieldTypeChange();
+        }
+
+        // 점수 항목이 하나라도 있으면 평가표 설정 노출 + 점수 입력 필드 토글
+        function onFieldTypeChange() {
+            let hasScore = false;
+            document.querySelectorAll('.form-field').forEach(field => {
+                const sel = field.querySelector('.field-type');
+                if (!sel) return;
+                let scoreInput = field.querySelector('.field-score');
+                if (sel.value === 'score') {
+                    hasScore = true;
+                    if (!scoreInput) {
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.className = 'input w-20 field-score';
+                        input.value = '10';
+                        input.min = '0';
+                        input.placeholder = '만점';
+                        sel.insertAdjacentElement('afterend', input);
+                    }
+                } else if (scoreInput) {
+                    scoreInput.remove();
+                }
+            });
+            const cfg = document.getElementById('formEvalConfig');
+            if (cfg) cfg.classList.toggle('hidden', !hasScore);
         }
 
         function submitUploadDoc() {
