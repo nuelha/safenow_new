@@ -976,15 +976,70 @@
 
             <!-- Step 2B: 양식 구성 (관리방식 = 데이터입력형) -->
             <div id="uploadStep2B" class="modal-body hidden">
-                <div class="alert alert-info mb-4">
-                    <svg class="alert-icon text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <div class="alert-content">
-                        <p class="alert-message text-blue-700">양식의 섹션과 항목을 구성하세요. 항목 유형에 <strong>점수</strong>가 포함되면 평가표 설정이 추가됩니다.</p>
+                <!-- 문서 유형 선택 (5종) -->
+                <div class="mb-5">
+                    <label class="form-label">문서 유형 <span class="text-red-500">*</span></label>
+                    <p class="text-xs text-gray-500 mt-1 mb-2">선택한 유형에 따라 기본 섹션과 항목이 자동으로 구성됩니다.</p>
+                    <div class="grid grid-cols-5 gap-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formDocType" value="evalform" class="sr-only peer" checked onchange="loadFormTemplate('evalform')">
+                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center transition-colors">
+                                <div class="text-2xl mb-1">📊</div>
+                                <p class="text-xs font-medium text-gray-900">평가표</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formDocType" value="minutes" class="sr-only peer" onchange="loadFormTemplate('minutes')">
+                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center transition-colors">
+                                <div class="text-2xl mb-1">📋</div>
+                                <p class="text-xs font-medium text-gray-900">회의록</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formDocType" value="record" class="sr-only peer" onchange="loadFormTemplate('record')">
+                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center transition-colors">
+                                <div class="text-2xl mb-1">📔</div>
+                                <p class="text-xs font-medium text-gray-900">기록부</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formDocType" value="certificate" class="sr-only peer" onchange="loadFormTemplate('certificate')">
+                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center transition-colors">
+                                <div class="text-2xl mb-1">✍️</div>
+                                <p class="text-xs font-medium text-gray-900">확인서</p>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formDocType" value="checklist" class="sr-only peer" onchange="loadFormTemplate('checklist')">
+                            <div class="p-3 border-2 border-gray-200 rounded-lg hover:border-primary-300 peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center transition-colors">
+                                <div class="text-2xl mb-1">✅</div>
+                                <p class="text-xs font-medium text-gray-900">체크리스트</p>
+                            </div>
+                        </label>
                     </div>
                 </div>
 
-                <!-- 평가표 설정 (점수 항목 사용 시) -->
-                <div id="formEvalConfig" class="mb-5 border border-blue-100 bg-blue-50/40 rounded-lg p-4 hidden">
+                <!-- 기록부 세부 유형 (기록부 선택 시 노출) -->
+                <div id="formRecordSubtype" class="hidden mb-4 border border-gray-200 rounded-lg p-3 bg-gray-50">
+                    <label class="text-sm font-medium text-gray-900">기록부 세부 유형</label>
+                    <div class="grid grid-cols-3 gap-2 mt-2">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formRecordType" value="education" class="sr-only peer" checked onchange="loadRecordSubtype('education')">
+                            <div class="p-2 border-2 border-gray-200 rounded-lg peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center text-sm transition-colors">교육기록부</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formRecordType" value="inspection" class="sr-only peer" onchange="loadRecordSubtype('inspection')">
+                            <div class="p-2 border-2 border-gray-200 rounded-lg peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center text-sm transition-colors">점검기록부</div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="formRecordType" value="custom" class="sr-only peer" onchange="loadRecordSubtype('custom')">
+                            <div class="p-2 border-2 border-gray-200 rounded-lg peer-checked:border-primary-500 peer-checked:bg-primary-50 text-center text-sm transition-colors">직접 구성</div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 평가표 설정 (평가표 선택 시 노출) -->
+                <div id="formEvalConfig" class="mb-4 border border-blue-100 bg-blue-50/40 rounded-lg p-4">
                     <h4 class="text-sm font-semibold text-gray-900 mb-3">평가표 설정</h4>
                     <div class="grid grid-cols-3 gap-3">
                         <div>
@@ -1004,8 +1059,8 @@
                         <div>
                             <label class="text-xs font-medium text-gray-700">평가 척도</label>
                             <select class="select w-full mt-1">
-                                <option value="5">5단계</option>
-                                <option value="3">3단계</option>
+                                <option value="5">5단계 (매우우수~매우미흡)</option>
+                                <option value="3">3단계 (우수/보통/미흡)</option>
                                 <option value="2">2단계 (적합/부적합)</option>
                                 <option value="score">직접 점수 입력</option>
                             </select>
@@ -1013,83 +1068,56 @@
                     </div>
                 </div>
 
-                <!-- 섹션/항목 빌더 -->
-                <div id="formSections" class="space-y-3">
-                    <!-- 섹션 1 (기본) -->
-                    <div class="form-section bg-white border border-gray-200 rounded-lg p-3" data-section-index="0">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-xs text-gray-500 font-mono">섹션 1</span>
-                            <input type="text" class="input flex-1 section-title" placeholder="섹션명 (예: 기본 정보)" value="기본 정보">
-                            <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
-                            </button>
-                        </div>
-                        <div class="form-fields pl-4 space-y-2">
-                            <div class="form-field flex items-center gap-2">
-                                <span class="text-xs text-gray-400 w-12">항목 1</span>
-                                <input type="text" class="input flex-1 field-label" placeholder="항목명" value="업체명">
-                                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
-                                    <option value="text" selected>텍스트</option>
-                                    <option value="textarea">텍스트(장문)</option>
-                                    <option value="number">숫자</option>
-                                    <option value="date">날짜</option>
-                                    <option value="select">선택</option>
-                                    <option value="score">점수</option>
-                                    <option value="signature">서명</option>
-                                    <option value="file">파일첨부</option>
-                                </select>
-                                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded" checked> 필수</label>
-                                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
+                <!-- 확인서 설정 (확인서 선택 시 노출) -->
+                <div id="formCertConfig" class="hidden mb-4 border border-purple-100 bg-purple-50/40 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">확인서 설정</h4>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked disabled> <span>전자서명 필수 <span class="text-gray-400">(확인서는 서명 시 잠금 처리됨)</span></span></label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>서명 완료 시 PDF 자동 생성</span></label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded"> <span>서명자에게 사본 알림톡 발송</span></label>
                     </div>
+                </div>
 
-                    <!-- 섹션 2 (예시: 평가용) -->
-                    <div class="form-section bg-white border border-gray-200 rounded-lg p-3" data-section-index="1">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-xs text-gray-500 font-mono">섹션 2</span>
-                            <input type="text" class="input flex-1 section-title" placeholder="섹션명" value="안전관리 수준">
-                            <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
-                            </button>
-                        </div>
-                        <div class="form-fields pl-4 space-y-2">
-                            <div class="form-field flex items-center gap-2">
-                                <span class="text-xs text-gray-400 w-12">항목 1</span>
-                                <input type="text" class="input flex-1 field-label" placeholder="항목명" value="안전관리자 선임 여부">
-                                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
-                                    <option value="text">텍스트</option>
-                                    <option value="textarea">텍스트(장문)</option>
-                                    <option value="number">숫자</option>
-                                    <option value="date">날짜</option>
-                                    <option value="select">선택</option>
-                                    <option value="score" selected>점수</option>
-                                    <option value="signature">서명</option>
-                                    <option value="file">파일첨부</option>
-                                </select>
-                                <input type="number" class="input w-20 field-score" value="20" min="0" placeholder="만점">
-                                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded" checked> 필수</label>
-                                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
+                <!-- 체크리스트 설정 (체크리스트 선택 시 노출) -->
+                <div id="formChecklistConfig" class="hidden mb-4 border border-green-100 bg-green-50/40 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">체크리스트 설정</h4>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>부적합 항목 발생 시 개선조치 자동 생성 팝업 노출</span></label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>안전점검 메뉴의 점검지 양식 목록에 노출</span></label>
                     </div>
+                </div>
+
+                <!-- 회의록 설정 (회의록 선택 시 노출) -->
+                <div id="formMinutesConfig" class="hidden mb-4 border border-orange-100 bg-orange-50/40 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">회의록 설정</h4>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>참석자 전자서명 연동</span></label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded"> <span>안건별 담당자에게 후속 업무 자동 배정</span></label>
+                    </div>
+                </div>
+
+                <!-- 기록부 설정 (기록부 선택 시 노출) -->
+                <div id="formRecordConfig" class="hidden mb-4 border border-cyan-100 bg-cyan-50/40 rounded-lg p-4">
+                    <h4 class="text-sm font-semibold text-gray-900 mb-2">기록부 설정</h4>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>월별/분기별 요약 통계 자동 생성</span></label>
+                        <label class="flex items-center gap-2"><input type="checkbox" class="rounded" checked> <span>엑셀 내보내기 지원</span></label>
+                    </div>
+                </div>
+
+                <!-- 섹션/항목 빌더 -->
+                <div class="flex items-center justify-between mb-2">
+                    <h4 class="text-sm font-semibold text-gray-900">양식 구성</h4>
+                    <span class="text-xs text-gray-500">기본 구성을 그대로 사용하거나 항목을 추가/수정/삭제할 수 있습니다</span>
+                </div>
+                <div id="formSections" class="space-y-3">
+                    <!-- loadFormTemplate에서 동적 생성 -->
                 </div>
 
                 <button type="button" class="mt-3 btn btn-outline btn-sm" onclick="addFormSection()">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     섹션 추가
                 </button>
-
-                <div class="mt-4 text-xs text-gray-500 space-y-1">
-                    <p>· 항목 유형이 "점수"인 경우 만점을 입력합니다.</p>
-                    <p>· 데이터입력형 양식은 다음 단계에서 문서 유형을 "평가표" 또는 "체크리스트"로 지정해야 다른 메뉴(도급관리, 안전점검 등)에서 사용할 수 있습니다.</p>
-                </div>
             </div>
 
             <!-- Step 3: 문서 정보 입력 (공통) -->
@@ -1412,6 +1440,12 @@
                 const target = currentMgmtType === 'form' ? 'uploadStep2B' : 'uploadStep2A';
                 document.getElementById(target).classList.remove('hidden');
                 if (target === 'uploadStep2B') {
+                    // 섹션이 비어있으면 현재 선택된 문서 유형의 기본 템플릿 로드
+                    const sections = document.getElementById('formSections');
+                    if (sections && sections.children.length === 0) {
+                        const checked = document.querySelector('input[name="formDocType"]:checked');
+                        loadFormTemplate(checked ? checked.value : 'evalform');
+                    }
                     onFieldTypeChange();
                 }
             } else {
@@ -1451,16 +1485,194 @@
         }
 
         // ===== 데이터입력형 양식 빌더 =====
-        function addFormSection() {
+        // 항목 유형 14종
+        const FIELD_TYPES = [
+            { value: 'text', label: '텍스트' },
+            { value: 'textarea', label: '텍스트(장문)' },
+            { value: 'number', label: '숫자' },
+            { value: 'date', label: '날짜' },
+            { value: 'datetime', label: '날짜+시간' },
+            { value: 'select', label: '선택' },
+            { value: 'checkbox', label: '체크박스' },
+            { value: 'score', label: '점수' },
+            { value: 'inspection', label: '점검결과' },
+            { value: 'signature', label: '전자서명' },
+            { value: 'user', label: '사용자 선택' },
+            { value: 'file', label: '파일첨부' },
+            { value: 'auto_number', label: '자동 번호' },
+            { value: 'auto_calc', label: '자동 계산' }
+        ];
+
+        function fieldTypeOptionsHTML(selected) {
+            return FIELD_TYPES.map(t => `<option value="${t.value}"${t.value === selected ? ' selected' : ''}>${t.label}</option>`).join('');
+        }
+
+        // 5종 문서 유형별 기본 템플릿
+        const FORM_TEMPLATES = {
+            evalform: [
+                { title: '평가 기본정보', fields: [
+                    { label: '피평가자/업체명', type: 'text', required: true },
+                    { label: '평가일자', type: 'date', required: true },
+                    { label: '평가자', type: 'user', required: true }
+                ]},
+                { title: '평가 항목', fields: [
+                    { label: '항목명', type: 'text', required: true },
+                    { label: '배점', type: 'score', score: 100, required: true },
+                    { label: '비고', type: 'text', required: false }
+                ]},
+                { title: '종합 의견', fields: [
+                    { label: '종합 평가의견', type: 'textarea', required: false },
+                    { label: '개선 권고사항', type: 'textarea', required: false }
+                ]}
+            ],
+            minutes: [
+                { title: '회의 기본정보', fields: [
+                    { label: '회의명', type: 'text', required: true },
+                    { label: '회의일시', type: 'datetime', required: true },
+                    { label: '회의 장소', type: 'text', required: true },
+                    { label: '회의 목적/안건 요약', type: 'textarea', required: false }
+                ]},
+                { title: '참석자 (반복 행)', fields: [
+                    { label: '소속/부서', type: 'text', required: false },
+                    { label: '성명', type: 'user', required: true },
+                    { label: '직책', type: 'text', required: false },
+                    { label: '서명', type: 'signature', required: false }
+                ]},
+                { title: '안건 (반복 추가)', fields: [
+                    { label: '안건 번호', type: 'auto_number', required: true },
+                    { label: '안건명', type: 'text', required: true },
+                    { label: '협의 내용', type: 'textarea', required: true },
+                    { label: '결정사항', type: 'textarea', required: false },
+                    { label: '담당자', type: 'user', required: false },
+                    { label: '완료 예정일', type: 'date', required: false }
+                ]},
+                { title: '첨부자료', fields: [
+                    { label: '첨부파일', type: 'file', required: false }
+                ]}
+            ],
+            record_education: [
+                { title: '기록부 기본정보', fields: [
+                    { label: '기록부명', type: 'text', required: true },
+                    { label: '사업장', type: 'text', required: true },
+                    { label: '작성 기간', type: 'date', required: false }
+                ]},
+                { title: '교육기록 (반복 행)', fields: [
+                    { label: '교육일시', type: 'datetime', required: true },
+                    { label: '교육명', type: 'text', required: true },
+                    { label: '교육 내용', type: 'textarea', required: true },
+                    { label: '강사', type: 'text', required: true },
+                    { label: '교육 시간(시간)', type: 'number', required: true },
+                    { label: '교육 장소', type: 'text', required: true },
+                    { label: '참여 인원', type: 'number', required: true },
+                    { label: '비고', type: 'text', required: false }
+                ]}
+            ],
+            record_inspection: [
+                { title: '기록부 기본정보', fields: [
+                    { label: '기록부명', type: 'text', required: true },
+                    { label: '사업장', type: 'text', required: true },
+                    { label: '작성 기간', type: 'date', required: false }
+                ]},
+                { title: '점검기록 (반복 행)', fields: [
+                    { label: '점검일시', type: 'datetime', required: true },
+                    { label: '점검 종류', type: 'select', required: true },
+                    { label: '점검자', type: 'user', required: true },
+                    { label: '점검 장소', type: 'text', required: true },
+                    { label: '점검 결과', type: 'inspection', required: true },
+                    { label: '이상 내용', type: 'textarea', required: false },
+                    { label: '조치 내용', type: 'textarea', required: false },
+                    { label: '비고', type: 'text', required: false }
+                ]}
+            ],
+            record_custom: [
+                { title: '기록부 기본정보', fields: [
+                    { label: '기록부명', type: 'text', required: true }
+                ]},
+                { title: '기록 테이블', fields: [] }
+            ],
+            certificate: [
+                { title: '확인서 기본정보', fields: [
+                    { label: '확인서 제목', type: 'text', required: true },
+                    { label: '발행일', type: 'date', required: true },
+                    { label: '유효기간', type: 'date', required: false }
+                ]},
+                { title: '확인 내용 (반복 추가)', fields: [
+                    { label: '항목 번호', type: 'auto_number', required: true },
+                    { label: '내용', type: 'textarea', required: true },
+                    { label: '확인 여부', type: 'checkbox', required: false }
+                ]},
+                { title: '서명', fields: [
+                    { label: '확인자 성명', type: 'user', required: true },
+                    { label: '소속/부서', type: 'text', required: false },
+                    { label: '서명일', type: 'date', required: true },
+                    { label: '전자서명', type: 'signature', required: true }
+                ]}
+            ],
+            checklist: [
+                { title: '점검 기본정보', fields: [
+                    { label: '점검명', type: 'text', required: true },
+                    { label: '점검일시', type: 'datetime', required: true },
+                    { label: '점검자', type: 'user', required: true },
+                    { label: '점검 장소', type: 'text', required: true }
+                ]},
+                { title: '점검 항목 (반복 추가)', fields: [
+                    { label: '점검 항목명', type: 'text', required: true },
+                    { label: '관련 법령/기준', type: 'text', required: false },
+                    { label: '점검 결과', type: 'inspection', required: true },
+                    { label: '부적합 내용', type: 'textarea', required: false },
+                    { label: '사진 첨부', type: 'file', required: false }
+                ]},
+                { title: '종합의견', fields: [
+                    { label: '종합 소견', type: 'textarea', required: false },
+                    { label: '전체 평가', type: 'select', required: false }
+                ]}
+            ]
+        };
+
+        function loadFormTemplate(type) {
+            // 토글 설정 패널
+            document.getElementById('formEvalConfig').classList.toggle('hidden', type !== 'evalform');
+            document.getElementById('formCertConfig').classList.toggle('hidden', type !== 'certificate');
+            document.getElementById('formChecklistConfig').classList.toggle('hidden', type !== 'checklist');
+            document.getElementById('formMinutesConfig').classList.toggle('hidden', type !== 'minutes');
+            document.getElementById('formRecordConfig').classList.toggle('hidden', type !== 'record');
+            document.getElementById('formRecordSubtype').classList.toggle('hidden', type !== 'record');
+
+            if (type === 'record') {
+                // 기록부는 세부 유형 분기
+                const sub = document.querySelector('input[name="formRecordType"]:checked');
+                loadRecordSubtype(sub ? sub.value : 'education');
+                return;
+            }
+            renderFormSections(FORM_TEMPLATES[type] || []);
+        }
+
+        function loadRecordSubtype(subtype) {
+            const key = 'record_' + subtype;
+            renderFormSections(FORM_TEMPLATES[key] || []);
+        }
+
+        function renderFormSections(template) {
             const container = document.getElementById('formSections');
-            const idx = container.querySelectorAll('.form-section').length;
+            container.innerHTML = '';
+            template.forEach((sec, sIdx) => {
+                const sectionEl = createSectionElement(sIdx, sec.title);
+                const fieldsContainer = sectionEl.querySelector('.form-fields');
+                sec.fields.forEach((f, fIdx) => {
+                    fieldsContainer.appendChild(createFieldElement(fIdx, f));
+                });
+                container.appendChild(sectionEl);
+            });
+        }
+
+        function createSectionElement(idx, title = '') {
             const node = document.createElement('div');
             node.className = 'form-section bg-white border border-gray-200 rounded-lg p-3';
             node.dataset.sectionIndex = idx;
             node.innerHTML = `
                 <div class="flex items-center gap-2 mb-3">
                     <span class="text-xs text-gray-500 font-mono">섹션 ${idx + 1}</span>
-                    <input type="text" class="input flex-1 section-title" placeholder="섹션명">
+                    <input type="text" class="input flex-1 section-title" placeholder="섹션명" value="${title.replace(/"/g, '&quot;')}">
                     <button type="button" class="text-red-500 hover:text-red-700 text-sm" onclick="removeFormSection(this)" title="섹션 삭제">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 3h6a1 1 0 011 1v3H8V4a1 1 0 011-1z"></path></svg>
                     </button>
@@ -1468,7 +1680,34 @@
                 <div class="form-fields pl-4 space-y-2"></div>
                 <button type="button" class="mt-2 ml-4 text-xs text-blue-600 hover:underline" onclick="addFormField(this)">+ 항목 추가</button>
             `;
-            container.appendChild(node);
+            return node;
+        }
+
+        function createFieldElement(idx, f = { label: '', type: 'text', required: false }) {
+            const node = document.createElement('div');
+            node.className = 'form-field flex items-center gap-2';
+            const scoreInput = f.type === 'score'
+                ? `<input type="number" class="input w-20 field-score" value="${f.score || 10}" min="0" placeholder="만점">`
+                : '';
+            node.innerHTML = `
+                <span class="text-xs text-gray-400 w-12">항목 ${idx + 1}</span>
+                <input type="text" class="input flex-1 field-label" placeholder="항목명" value="${(f.label || '').replace(/"/g, '&quot;')}">
+                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
+                    ${fieldTypeOptionsHTML(f.type || 'text')}
+                </select>
+                ${scoreInput}
+                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded"${f.required ? ' checked' : ''}> 필수</label>
+                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            `;
+            return node;
+        }
+
+        function addFormSection() {
+            const container = document.getElementById('formSections');
+            const idx = container.querySelectorAll('.form-section').length;
+            container.appendChild(createSectionElement(idx, ''));
         }
 
         function removeFormSection(btn) {
@@ -1477,7 +1716,6 @@
                 return;
             }
             btn.closest('.form-section').remove();
-            // 인덱스 재정렬
             document.querySelectorAll('.form-section').forEach((sec, idx) => {
                 sec.dataset.sectionIndex = idx;
                 const label = sec.querySelector('.font-mono');
@@ -1489,27 +1727,7 @@
         function addFormField(btn) {
             const fields = btn.closest('.form-section').querySelector('.form-fields');
             const idx = fields.querySelectorAll('.form-field').length;
-            const node = document.createElement('div');
-            node.className = 'form-field flex items-center gap-2';
-            node.innerHTML = `
-                <span class="text-xs text-gray-400 w-12">항목 ${idx + 1}</span>
-                <input type="text" class="input flex-1 field-label" placeholder="항목명">
-                <select class="select w-32 field-type" onchange="onFieldTypeChange()">
-                    <option value="text" selected>텍스트</option>
-                    <option value="textarea">텍스트(장문)</option>
-                    <option value="number">숫자</option>
-                    <option value="date">날짜</option>
-                    <option value="select">선택</option>
-                    <option value="score">점수</option>
-                    <option value="signature">서명</option>
-                    <option value="file">파일첨부</option>
-                </select>
-                <label class="flex items-center gap-1 text-xs text-gray-600"><input type="checkbox" class="rounded"> 필수</label>
-                <button type="button" class="text-red-400 hover:text-red-600" onclick="removeFormField(this)" title="삭제">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            `;
-            fields.appendChild(node);
+            fields.appendChild(createFieldElement(idx, { label: '', type: 'text', required: false }));
             onFieldTypeChange();
         }
 
@@ -1518,15 +1736,13 @@
             onFieldTypeChange();
         }
 
-        // 점수 항목이 하나라도 있으면 평가표 설정 노출 + 점수 입력 필드 토글
+        // 점수 항목별 만점 입력 토글 (평가표 설정은 유형 선택으로 별도 제어)
         function onFieldTypeChange() {
-            let hasScore = false;
             document.querySelectorAll('.form-field').forEach(field => {
                 const sel = field.querySelector('.field-type');
                 if (!sel) return;
                 let scoreInput = field.querySelector('.field-score');
                 if (sel.value === 'score') {
-                    hasScore = true;
                     if (!scoreInput) {
                         const input = document.createElement('input');
                         input.type = 'number';
@@ -1540,8 +1756,6 @@
                     scoreInput.remove();
                 }
             });
-            const cfg = document.getElementById('formEvalConfig');
-            if (cfg) cfg.classList.toggle('hidden', !hasScore);
         }
 
         function submitUploadDoc() {
