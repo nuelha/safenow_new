@@ -4,7 +4,11 @@
       "Bash(dir \"C:\\Users\\User\\Documents\\safenow_new2\\design\")",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(awk '/## Part 2/,/## 화면 수 요약/' IA.md)",
+      "Bash(node --check c:/Users/User/Documents/safenow_new2/design/screen-spec-modal.js)",
+      "Bash(node *)",
+      "Bash(git *)"
     ],
     "deny": [],
     "ask": []
