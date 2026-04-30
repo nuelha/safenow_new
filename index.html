@@ -24,6 +24,16 @@
       };
     </script>
     <link rel="stylesheet" href="css/style.css" />
+    <script>
+      // SUB/CON 컨텍스트가 index.html(원청 대시보드)에 직접 진입하면 DSH04-V로 리다이렉트
+      // (사이드바 대시보드 링크 잔재 / 북마크 / 뒤로가기 우회 방지)
+      (function () {
+        var ct = localStorage.getItem('safenow_company_type');
+        if (ct === 'subcontractor' || ct === 'consulting') {
+          window.location.replace('pages/dashboard-sub.html');
+        }
+      })();
+    </script>
   </head>
   <body class="bg-gray-50" data-spec-modal="push">
     <div class="flex h-screen overflow-hidden">
@@ -580,17 +590,6 @@
         <header class="header">
           <div class="header-left">
             <h1 id="header-title" class="header-title">대시보드</h1>
-            <div id="role-tabs" class="header-tabs">
-              <button class="role-tab header-tab active" data-role="ceo">
-                경영책임자
-              </button>
-              <button class="role-tab header-tab" data-role="manager">
-                관리자
-              </button>
-              <button class="role-tab header-tab" data-role="worker">
-                근로자
-              </button>
-            </div>
           </div>
           <div class="header-right">
             <button class="header-notification">
@@ -619,8 +618,8 @@
         <main class="flex-1 overflow-y-auto p-6">
           <!-- 경영책임자 대시보드 -->
           <div id="dashboard-ceo" class="dashboard-content space-y-6">
-            <!-- 이행률 카드 -->
-            <div class="card p-6">
+            <!-- 이행률 카드 (카드 전체 클릭 → CMP01-V 이행관리) -->
+            <a href="pages/compliance.html" class="card p-6 block hover:shadow-md hover:bg-gray-50 transition cursor-pointer">
               <div class="flex items-center gap-8">
                 <div class="flex-shrink-0">
                   <p class="text-sm text-gray-500 mb-1">이행률</p>
@@ -675,20 +674,21 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
 
+            <div class="grid grid-cols-2 gap-6">
             <!-- 목표/KPI 달성률 -->
             <div class="card">
               <div class="card-header">
                 <h2 class="card-title">목표/KPI 달성률</h2>
                 <a
-                  href="pages/safety-policy.html#goal-kpi"
+                  href="pages/safety-policy.html?tab=kpi"
                   class="text-sm text-primary-600 hover:text-primary-700 font-medium"
                   >바로가기 →</a
                 >
               </div>
               <div class="p-4">
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                   <div class="p-4 bg-gray-50 rounded-lg">
                     <div class="flex items-center justify-between mb-2">
                       <span class="text-sm text-gray-700 font-medium"
@@ -769,223 +769,80 @@
               </div>
             </div>
 
+            <!-- 결재대기 목록 (CEO 전용) -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  결재대기
+                  <span class="ml-2 inline-flex items-center justify-center text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700">3건</span>
+                </h2>
+                <a
+                  href="pages/my-tasks.html?tab=approval"
+                  class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  >바로가기 →</a
+                >
+              </div>
+              <div class="divide-y divide-gray-100">
+                <a href="pages/my-tasks.html?tab=approval&id=APR-2026-0042" class="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-700">도급선정</span>
+                      <span class="font-medium text-gray-900">A건설 외 2개사 도급계약 결재 요청</span>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-red-50 text-red-600 font-medium">5일 경과</span>
+                  </div>
+                  <div class="mt-1 ml-[5.5rem] text-xs text-gray-500">상신일 2026-04-25 · 상신자 박안전 (안전보건관리자)</div>
+                </a>
+                <a href="pages/my-tasks.html?tab=approval&id=APR-2026-0041" class="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700">예산</span>
+                      <span class="font-medium text-gray-900">2026년 안전보건예산 결재 요청</span>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-orange-50 text-orange-600 font-medium">2일 경과</span>
+                  </div>
+                  <div class="mt-1 ml-[5.5rem] text-xs text-gray-500">상신일 2026-04-28 · 상신자 김총괄 (총괄관리자)</div>
+                </a>
+                <a href="pages/my-tasks.html?tab=approval&id=APR-2026-0040" class="block px-5 py-4 hover:bg-gray-50 transition-colors">
+                  <div class="flex items-start justify-between">
+                    <div class="flex items-center gap-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-100 text-emerald-700">경영방침 점검</span>
+                      <span class="font-medium text-gray-900">2026년 상반기 경영방침 점검표 결재</span>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs bg-gray-100 text-gray-600 font-medium">오늘</span>
+                  </div>
+                  <div class="mt-1 ml-[5.5rem] text-xs text-gray-500">상신일 2026-04-30 · 상신자 박안전 (안전보건관리자)</div>
+                </a>
+              </div>
+            </div>
+            </div><!-- /목표KPI + 결재대기 가로 그리드 -->
+
             <div class="grid grid-cols-2 gap-6">
-              <!-- 아차사고-작업중지 발생 추이 -->
+              <!-- 아차사고-작업중지 발생 추이 (기간 토글 + 막대 클릭 → OPN01-L) -->
               <div class="card">
                 <div class="card-header">
                   <h2 class="card-title">아차사고-작업중지 발생 추이</h2>
-                  <div class="flex items-center gap-2">
-                    <button
-                      class="px-3 py-1 text-sm rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    >
+                  <div id="trend-period-toggle" class="flex items-center gap-2">
+                    <button type="button" data-period="6"
+                      class="px-3 py-1 text-sm rounded-md bg-gray-100 text-gray-600 hover:bg-gray-200">
                       6개월
                     </button>
-                    <button
-                      class="px-3 py-1 text-sm rounded-md bg-blue-500 text-white"
-                    >
+                    <button type="button" data-period="12"
+                      class="px-3 py-1 text-sm rounded-md bg-blue-500 text-white">
                       12개월
                     </button>
                   </div>
                 </div>
                 <div class="p-4">
-                  <div class="h-64 flex items-end gap-2">
-                    <!-- 간단한 바 차트 시뮬레이션 -->
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 60%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 30%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">4월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 45%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 20%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">5월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 70%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 35%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">6월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 55%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 25%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">7월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 40%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 15%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">8월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 50%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 20%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">9월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 35%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 10%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">10월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 30%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 15%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">11월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 25%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 10%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">12월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 20%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 8%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">1월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 28%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 12%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">2월</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-1">
-                      <div
-                        class="w-full flex gap-1 items-end justify-center h-48"
-                      >
-                        <div
-                          class="w-4 bg-orange-400 rounded-t"
-                          style="height: 22%"
-                        ></div>
-                        <div
-                          class="w-4 bg-red-400 rounded-t"
-                          style="height: 10%"
-                        ></div>
-                      </div>
-                      <span class="text-xs text-gray-500">3월</span>
-                    </div>
-                  </div>
-                  <div
-                    class="flex items-center justify-center gap-6 mt-4 text-sm"
-                  >
-                    <span class="flex items-center gap-2"
-                      ><span class="w-3 h-3 bg-orange-400 rounded"></span>
-                      아차사고</span
-                    >
-                    <span class="flex items-center gap-2"
-                      ><span class="w-3 h-3 bg-red-400 rounded"></span>
-                      작업중지</span
-                    >
+                  <p class="text-xs text-gray-400 mb-2">막대를 클릭하면 해당 월·분류로 필터된 의견청취 목록으로 이동합니다.</p>
+                  <div id="trend-chart" class="h-64 flex items-end gap-2"></div>
+                  <div class="flex items-center justify-center gap-6 mt-4 text-sm">
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 bg-orange-400 rounded"></span>아차사고</span>
+                    <span class="flex items-center gap-2"><span class="w-3 h-3 bg-red-400 rounded"></span>작업중지</span>
                   </div>
                 </div>
               </div>
-
+              <!-- /아차사고-작업중지 추이 끝 -->
               <!-- 개선조치 현황 -->
               <div class="card">
                 <div class="card-header">
@@ -1065,19 +922,19 @@
                       class="p-3 bg-blue-50 rounded-lg border border-blue-100"
                     >
                       <p class="text-xl font-bold text-blue-600">3</p>
-                      <p class="text-xs text-gray-600 mt-1">접수</p>
+                      <p class="text-xs text-gray-600 mt-1">접수대기</p>
                     </div>
                     <div
                       class="p-3 bg-purple-50 rounded-lg border border-purple-100"
                     >
                       <p class="text-xl font-bold text-purple-600">2</p>
-                      <p class="text-xs text-gray-600 mt-1">검토중</p>
+                      <p class="text-xs text-gray-600 mt-1">점검중</p>
                     </div>
                     <div
                       class="p-3 bg-yellow-50 rounded-lg border border-yellow-100"
                     >
                       <p class="text-xl font-bold text-yellow-600">4</p>
-                      <p class="text-xs text-gray-600 mt-1">조치중</p>
+                      <p class="text-xs text-gray-600 mt-1">개선조치중</p>
                     </div>
                     <div class="p-3 bg-red-50 rounded-lg border border-red-100">
                       <p class="text-xl font-bold text-red-600">1</p>
@@ -1087,7 +944,7 @@
                       class="p-3 bg-green-50 rounded-lg border border-green-100"
                     >
                       <p class="text-xl font-bold text-green-600">12</p>
-                      <p class="text-xs text-gray-600 mt-1">조치완료</p>
+                      <p class="text-xs text-gray-600 mt-1">완료</p>
                     </div>
                   </div>
                   <div class="border-b border-gray-200 mb-3">
@@ -1112,7 +969,7 @@
                   <div class="divide-y divide-gray-100">
                     <div class="py-3 flex items-center justify-between">
                       <div class="flex items-center gap-2">
-                        <span class="badge badge-warning">조치중</span>
+                        <span class="badge badge-warning">개선조치중</span>
                         <span class="text-sm text-gray-900"
                           >3층 작업장 소음 관련 건의</span
                         >
@@ -1121,7 +978,7 @@
                     </div>
                     <div class="py-3 flex items-center justify-between">
                       <div class="flex items-center gap-2">
-                        <span class="badge badge-info">검토중</span>
+                        <span class="badge badge-info">점검중</span>
                         <span class="text-sm text-gray-900"
                           >3층 작업장 소음 관련 건의</span
                         >
@@ -1130,7 +987,7 @@
                     </div>
                     <div class="py-3 flex items-center justify-between">
                       <div class="flex items-center gap-2">
-                        <span class="badge badge-success">접수</span>
+                        <span class="badge badge-success">접수대기</span>
                         <span class="text-sm text-gray-900"
                           >3층 작업장 소음 관련 건의</span
                         >
@@ -1139,7 +996,7 @@
                     </div>
                     <div class="py-3 flex items-center justify-between">
                       <div class="flex items-center gap-2">
-                        <span class="badge badge-success">접수</span>
+                        <span class="badge badge-success">접수대기</span>
                         <span class="text-sm text-gray-900"
                           >3층 작업장 소음 관련 건의</span
                         >
@@ -1662,7 +1519,7 @@
               <div class="p-4">
                 <div class="grid grid-cols-3 gap-4">
                   <a
-                    href="pages/opinion.html"
+                    href="pages/opinion-register.html?category=near_miss"
                     class="p-6 bg-orange-50 border border-orange-200 rounded-xl hover:bg-orange-100 transition-colors cursor-pointer text-center"
                   >
                     <div
@@ -1690,7 +1547,7 @@
                     </p>
                   </a>
                   <a
-                    href="pages/opinion.html"
+                    href="pages/opinion-register.html?category=work_stop"
                     class="p-6 bg-red-50 border border-red-200 rounded-xl hover:bg-red-100 transition-colors cursor-pointer text-center"
                   >
                     <div
@@ -1718,7 +1575,7 @@
                     </p>
                   </a>
                   <a
-                    href="pages/opinion.html"
+                    href="pages/opinion-register.html?category=suggestion"
                     class="p-6 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors cursor-pointer text-center"
                   >
                     <div
@@ -1842,7 +1699,7 @@
               <div class="card">
                 <div class="card-header">
                   <h2 class="card-title">내 교육 현황</h2>
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-3">
                     <select
                       class="text-sm border border-gray-200 rounded-md px-3 py-1.5 bg-white"
                     >
@@ -1850,6 +1707,11 @@
                       <option>26년 2분기</option>
                       <option>25년 4분기</option>
                     </select>
+                    <a
+                      href="pages/my-info.html?tab=education"
+                      class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                      >바로가기 →</a
+                    >
                   </div>
                 </div>
                 <div class="p-4">
@@ -1928,6 +1790,171 @@
     </div>
 
     <script src="js/app.js"></script>
+    <script>
+      // ─────────────────────────────────────────────────────────
+      // CEO 대시보드 — 아차사고·작업중지 추이 차트
+      // 기간 토글 + 막대 클릭 시 OPN01-L (의견청취 목록)으로 이동
+      // ─────────────────────────────────────────────────────────
+      (function () {
+        const trendData = [
+          { month: '2025-04', label: '4월', counts: { near_miss: 12, work_stop: 6 } },
+          { month: '2025-05', label: '5월', counts: { near_miss: 9,  work_stop: 4 } },
+          { month: '2025-06', label: '6월', counts: { near_miss: 14, work_stop: 7 } },
+          { month: '2025-07', label: '7월', counts: { near_miss: 11, work_stop: 5 } },
+          { month: '2025-08', label: '8월', counts: { near_miss: 8,  work_stop: 3 } },
+          { month: '2025-09', label: '9월', counts: { near_miss: 10, work_stop: 4 } },
+          { month: '2025-10', label: '10월', counts: { near_miss: 7,  work_stop: 2 } },
+          { month: '2025-11', label: '11월', counts: { near_miss: 6,  work_stop: 3 } },
+          { month: '2025-12', label: '12월', counts: { near_miss: 5,  work_stop: 2 } },
+          { month: '2026-01', label: '1월', counts: { near_miss: 4,  work_stop: 2 } },
+          { month: '2026-02', label: '2월', counts: { near_miss: 6,  work_stop: 2 } },
+          { month: '2026-03', label: '3월', counts: { near_miss: 4,  work_stop: 2 } }
+        ];
+
+        const chartEl = document.getElementById('trend-chart');
+        const toggleEl = document.getElementById('trend-period-toggle');
+        if (!chartEl || !toggleEl) return;
+
+        function renderChart(period) {
+          const data = period === 6 ? trendData.slice(-6) : trendData;
+          const max = Math.max(...data.flatMap(d => [d.counts.near_miss, d.counts.work_stop]));
+          chartEl.innerHTML = data.map(d => {
+            const nm = d.counts.near_miss;
+            const ws = d.counts.work_stop;
+            const nmH = max ? Math.round(nm / max * 90) : 0;
+            const wsH = max ? Math.round(ws / max * 90) : 0;
+            return `
+              <div class="flex-1 flex flex-col items-center gap-1">
+                <div class="w-full flex gap-1 items-end justify-center h-48">
+                  <button type="button"
+                    class="trend-bar w-4 bg-orange-400 hover:bg-orange-500 rounded-t cursor-pointer transition-all"
+                    style="height:${nmH}%"
+                    data-month="${d.month}" data-category="near_miss"
+                    title="${d.label} 아차사고 ${nm}건"></button>
+                  <button type="button"
+                    class="trend-bar w-4 bg-red-400 hover:bg-red-500 rounded-t cursor-pointer transition-all"
+                    style="height:${wsH}%"
+                    data-month="${d.month}" data-category="work_stop"
+                    title="${d.label} 작업중지 ${ws}건"></button>
+                </div>
+                <span class="text-xs text-gray-500">${d.label}</span>
+              </div>`;
+          }).join('');
+
+          chartEl.querySelectorAll('.trend-bar').forEach(bar => {
+            bar.addEventListener('click', () => {
+              const m = bar.dataset.month;
+              const cat = bar.dataset.category;
+              window.location.href = `pages/opinion.html?category=${cat}&month=${m}`;
+            });
+          });
+        }
+
+        toggleEl.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const p = parseInt(btn.dataset.period, 10);
+            toggleEl.querySelectorAll('button').forEach(b => {
+              const active = b === btn;
+              b.classList.toggle('bg-blue-500', active);
+              b.classList.toggle('text-white', active);
+              b.classList.toggle('bg-gray-100', !active);
+              b.classList.toggle('text-gray-600', !active);
+            });
+            renderChart(p);
+          });
+        });
+
+        renderChart(12);
+      })();
+
+      // ─────────────────────────────────────────────────────────
+      // 대시보드 목록/그리드/테이블 클릭 → 상세 화면 라우팅
+      //   - 카드 제목 키워드 → 기본 진입 URL 매핑
+      //   - 항목의 상태 배지 → 쿼리 파라미터 추가
+      //   - 내부 서브 탭 버튼 → 해당 분류·탭 진입
+      // ─────────────────────────────────────────────────────────
+      (function setupDashboardClickThrough() {
+        // 카드별 진입 URL + 상태 라벨 → 쿼리값 매핑
+        // 각 대상 화면의 statusFilter 옵션 값과 일치해야 함 (예: improvement.html은 'action', opinion.html은 'improvement'을 '조치중'으로 사용)
+        const TITLE_URL_MAP = [
+          { keyword: '개선조치 현황',   url: 'pages/improvement.html', statusParam: 'status',
+            statusMap: { '대기중': 'pending', '조치중': 'action',      '조치완료': 'done' } },
+          { keyword: '의견청취 현황',   url: 'pages/opinion.html', statusParam: 'status',
+            statusMap: { '접수대기': 'pending', '점검중': 'inspection', '개선조치중': 'improvement', '반려': 'reject', '완료': 'done' } },
+          { keyword: '교육 현황',       url: 'pages/safety-education.html' },
+          { keyword: '교육현황',        url: 'pages/safety-education.html' },
+          { keyword: '내 할일',         url: 'pages/my-tasks.html?tab=document' },
+          { keyword: 'TBM 이행율',      url: 'pages/tbm.html' },
+          { keyword: 'TBM 그룹 현황',   url: 'pages/tbm.html?tab=group' }
+        ];
+        const OPN_CATEGORY = { '청취조사': 'survey', '안전제안': 'suggestion', '위험신고': 'hazard_report' };
+        const TSK_TAB      = { '문서업무': 'document', '결재대기': 'approval',  '전자서명': 'signature' };
+
+        function appendParam(url, k, v) {
+          return url + (url.includes('?') ? '&' : '?') + k + '=' + encodeURIComponent(v);
+        }
+        function clickify(el, url) {
+          el.style.cursor = 'pointer';
+          el.classList.add('hover:bg-gray-50', 'transition-colors');
+          el.addEventListener('click', (e) => {
+            // 자식 버튼/링크가 자체 핸들러를 가지면 그쪽 우선
+            if (e.target.closest('a[href], button')) return;
+            window.location.href = url;
+          });
+        }
+        function matchTitle(text) {
+          for (const m of TITLE_URL_MAP) if (text.includes(m.keyword)) return m;
+          return null;
+        }
+
+        document.querySelectorAll('.dashboard-content .card').forEach(card => {
+          const titleEl = card.querySelector('.card-title');
+          if (!titleEl) return;
+          const title = titleEl.textContent.trim();
+          const match = matchTitle(title);
+          if (!match) return;
+
+          // 1. divide-y 목록 (개선조치/의견청취 항목)
+          card.querySelectorAll('.divide-y > div').forEach(item => {
+            let url = match.url;
+            const badge = item.querySelector('.badge');
+            if (badge && match.statusParam && match.statusMap) {
+              const s = match.statusMap[badge.textContent.trim()];
+              if (s) url = appendParam(url, match.statusParam, s);
+            }
+            clickify(item, url);
+          });
+
+          // 2. 그리드 카드 (교육현황·TBM 이행율·요약 카드)
+          card.querySelectorAll(':scope > .p-4 > .grid > div, :scope > .p-4 > .space-y-3 > div').forEach(item => {
+            // 이미 클릭 가능한 div는 스킵 (기존 cursor-pointer 마커)
+            if (item.tagName === 'A') return;
+            clickify(item, match.url);
+          });
+
+          // 3. 테이블 행 (TBM 그룹 현황)
+          card.querySelectorAll('tbody tr').forEach(tr => clickify(tr, match.url));
+
+          // 4. 카드 내부 서브 탭 버튼 → 분류·탭 파라미터 부여 후 이동
+          card.querySelectorAll('button').forEach(btn => {
+            const t = btn.textContent.trim();
+            if (title.includes('의견청취') && OPN_CATEGORY[t]) {
+              btn.style.cursor = 'pointer';
+              btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = 'pages/opinion.html?category=' + OPN_CATEGORY[t];
+              });
+            } else if (title.includes('내 할일') && TSK_TAB[t]) {
+              btn.style.cursor = 'pointer';
+              btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = 'pages/my-tasks.html?tab=' + TSK_TAB[t];
+              });
+            }
+          });
+        });
+      })();
+    </script>
     <script src="design/screen-spec-modal.js"></script>
   </body>
 </html>

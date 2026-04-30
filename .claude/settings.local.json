@@ -8,7 +8,22 @@
       "Bash(awk '/## Part 2/,/## 화면 수 요약/' IA.md)",
       "Bash(node --check c:/Users/User/Documents/safenow_new2/design/screen-spec-modal.js)",
       "Bash(node *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(grep -nB 5 \"바로가기 →\" c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(grep -nE 'goal-kpi|목표.{0,2}KPI|id=\"goal' c:/Users/User/Documents/safenow_new2/pages/safety-policy.html)",
+      "Bash(sed -n '1840,1870p' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(sed -n '622,680p' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(awk '/dashboard-manager/,/dashboard-worker/' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(sed -i '845,1042d' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(sed -n '840,855p' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(grep -nB 2 -A 3 'href=\"pages/opinion.html\"' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(grep -nB 1 -A 3 '내 교육 현황' c:/Users/User/Documents/safenow_new2/index.html)",
+      "Bash(xargs -n1 basename)",
+      "Bash(sed -n '196p' c:/Users/User/Documents/safenow_new2/pages/workplace.html)",
+      "Bash(sed -n '1198,1202p' c:/Users/User/Documents/safenow_new2/pages/workplace.html)",
+      "Bash(sed -n '1305,1335p' c:/Users/User/Documents/safenow_new2/pages/workplace.html)",
+      "Bash(sed -n '30,32p' c:/Users/User/Documents/safenow_new2/pages/workplace.html)",
+      "Bash(sed -n '177,180p' c:/Users/User/Documents/safenow_new2/pages/workplace.html)"
     ],
     "deny": [],
     "ask": []

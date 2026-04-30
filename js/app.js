@@ -36,14 +36,102 @@ const AppState = {
 const RoleNames = {
     'ceo': '경영책임자',
     'manager': '안전관리자',
-    'worker': '근로자'
+    'worker': '근로자',
+    'contractor': '도급담당자',
+    'consulting': '컨설팅담당자'
 };
 
-// 근로자용 메뉴 (제한적)
-const WorkerMenus = ['대시보드', '내 업무', 'TBM', '의견청취', '고객지원', '내 정보관리'];
+// =========================================
+// GNB 동적 렌더링 (company_type + role 기반)
+//   로그인_사업장선택_GNB분기_개발스펙.md §6 참조
+// =========================================
+const GNB_MENUS = {
+    principal_manager: ['dashboard','tasks','risk','tbm','inspection','education',
+                        'policy','budget','opinion','improvement','compliance',
+                        'documents','process','contractor','workplace','support','myinfo'],
+    principal_worker:  ['dashboard','tasks','tbm','opinion','support','myinfo'],
+    subcontractor:     ['dashboard','tasks','tbm','opinion','support','myinfo'],
+    consulting:        ['dashboard','tasks','opinion','support','myinfo']
+};
 
-// 경영책임자 전용 메뉴
-const CeoOnlyMenus = ['안전경영방침', '안전보건예산'];
+// href 파일명 → 메뉴 키 매핑
+const HREF_TO_MENU = {
+    'index.html': 'dashboard',
+    'dashboard-sub.html': 'dashboard',
+    'my-tasks.html': 'tasks',
+    'risk-assessment.html': 'risk',
+    'tbm.html': 'tbm',
+    'safety-inspection.html': 'inspection',
+    'safety-education.html': 'education',
+    'safety-policy.html': 'policy',
+    'safety-budget.html': 'budget',
+    'opinion.html': 'opinion',
+    'improvement.html': 'improvement',
+    'compliance.html': 'compliance',
+    'documents.html': 'documents',
+    'process.html': 'process',
+    'contractor.html': 'contractor',
+    'workplace.html': 'workplace',
+    'support.html': 'support',
+    'my-info.html': 'myinfo'
+};
+
+function deriveCompanyType(appRole) {
+    if (appRole === 'contractor') return 'subcontractor';
+    if (appRole === 'consulting')  return 'consulting';
+    return 'principal';
+}
+
+function getAllowedMenuKeys() {
+    const appRole = AppState.currentRole;
+    const company_type = localStorage.getItem('safenow_company_type') || deriveCompanyType(appRole);
+    if (company_type === 'subcontractor') return GNB_MENUS.subcontractor;
+    if (company_type === 'consulting')    return GNB_MENUS.consulting;
+    if (appRole === 'worker')             return GNB_MENUS.principal_worker;
+    return GNB_MENUS.principal_manager;
+}
+
+function applyGnbByContext() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+    const allowed = new Set(getAllowedMenuKeys());
+    const company_type = localStorage.getItem('safenow_company_type') || deriveCompanyType(AppState.currentRole);
+    const inPagesFolder = window.location.pathname.includes('/pages/');
+
+    // 1) 메뉴 항목 가시성 + 대시보드 링크 동적 재작성 (컨텍스트별 진입 화면 분기)
+    sidebar.querySelectorAll('.sidebar-nav > ul > li').forEach(li => {
+        if (li.classList.contains('sidebar-section')) return;
+        const a = li.querySelector('a.sidebar-item');
+        if (!a) return;
+        const href = a.getAttribute('href') || '';
+        const file = href.split('/').pop().split('?')[0].split('#')[0];
+        const key = HREF_TO_MENU[file];
+        li.classList.toggle('hidden', !(key && allowed.has(key)));
+
+        // 대시보드 링크: SUB/CON은 dashboard-sub.html로, principal은 index.html로
+        if (key === 'dashboard') {
+            let target;
+            if (company_type === 'subcontractor' || company_type === 'consulting') {
+                target = inPagesFolder ? 'dashboard-sub.html' : 'pages/dashboard-sub.html';
+            } else {
+                target = inPagesFolder ? '../index.html' : 'index.html';
+            }
+            a.setAttribute('href', target);
+        }
+    });
+
+    // 2) 섹션 라벨: 다음 섹션까지 보이는 메뉴가 없으면 라벨도 숨김
+    const lis = Array.from(sidebar.querySelectorAll('.sidebar-nav > ul > li'));
+    lis.forEach((li, i) => {
+        if (!li.classList.contains('sidebar-section')) return;
+        let hasVisible = false;
+        for (let j = i + 1; j < lis.length; j++) {
+            if (lis[j].classList.contains('sidebar-section')) break;
+            if (!lis[j].classList.contains('hidden')) { hasVisible = true; break; }
+        }
+        li.classList.toggle('hidden', !hasVisible);
+    });
+}
 
 // =========================================
 // 2. 사업장/권한 선택기
@@ -70,6 +158,8 @@ function selectWorkspace(element) {
     AppState.currentWorkplace = name;
     AppState.currentUser = user;
     AppState.currentAvatar = avatar;
+    // GNB 분기를 위한 company_type 동기화
+    localStorage.setItem('safenow_company_type', deriveCompanyType(role));
 
     // UI 업데이트
     applyCurrentRole();
@@ -131,61 +221,8 @@ function applyCurrentRole() {
         }
     });
 
-    // 사이드바 메뉴 권한별 표시/숨김
-    updateSidebarByRole(role);
-}
-
-// 사이드바 메뉴 권한별 표시/숨김
-function updateSidebarByRole(role) {
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-
-    const menuItems = sidebar.querySelectorAll('.sidebar-item');
-    const sections = sidebar.querySelectorAll('.sidebar-section');
-
-    if (role === 'worker') {
-        // 근로자: 허용된 메뉴만 표시
-        menuItems.forEach(item => {
-            const menuText = item.textContent.trim().split('\n')[0].trim();
-            const li = item.closest('li');
-            if (li) {
-                if (WorkerMenus.some(m => menuText.includes(m))) {
-                    li.classList.remove('hidden');
-                } else {
-                    li.classList.add('hidden');
-                }
-            }
-        });
-        // 관리 섹션 숨기기
-        sections.forEach(section => {
-            if (section.textContent.includes('관리')) {
-                section.classList.add('hidden');
-            } else {
-                section.classList.remove('hidden');
-            }
-        });
-    } else if (role === 'manager') {
-        // 관리자: 경영책임자 전용 메뉴 숨김
-        menuItems.forEach(item => {
-            const menuText = item.textContent.trim().split('\n')[0].trim();
-            const li = item.closest('li');
-            if (li) {
-                if (CeoOnlyMenus.some(m => menuText.includes(m))) {
-                    li.classList.add('hidden');
-                } else {
-                    li.classList.remove('hidden');
-                }
-            }
-        });
-        sections.forEach(section => section.classList.remove('hidden'));
-    } else {
-        // 경영책임자: 모든 메뉴 표시
-        menuItems.forEach(item => {
-            const li = item.closest('li');
-            if (li) li.classList.remove('hidden');
-        });
-        sections.forEach(section => section.classList.remove('hidden'));
-    }
+    // 사이드바 메뉴 — company_type + role 기반 GNB 동적 렌더링
+    applyGnbByContext();
 }
 
 // =========================================
@@ -382,3 +419,104 @@ const Utils = {
         return `${this.formatNumber(amount)}원`;
     },
 };
+
+// 헤더 사용자 영역 클릭 → 마이페이지 이동
+// 헤더 사용자 영역 클릭 → 드롭다운 (내 정보 관리 / 로그아웃)
+(function setupHeaderUserMenu() {
+    function init() {
+        const userEl = document.querySelector('.header-user');
+        if (!userEl) return;
+
+        // 경로 해석 (페이지 위치에 따라 다름)
+        const inPagesFolder = window.location.pathname.includes('/pages/');
+        const myInfoPath = inPagesFolder ? 'my-info.html' : 'pages/my-info.html';
+        const loginPath  = inPagesFolder ? '../login.html' : 'login.html';
+
+        // 트리거 셋업
+        userEl.style.cursor = 'pointer';
+        userEl.style.position = 'relative';
+        userEl.setAttribute('role', 'button');
+        userEl.setAttribute('tabindex', '0');
+        userEl.setAttribute('aria-haspopup', 'menu');
+        userEl.setAttribute('aria-expanded', 'false');
+        userEl.setAttribute('title', '내 정보 관리 / 로그아웃');
+
+        // 드롭다운 화살표 아이콘
+        const chev = document.createElement('span');
+        chev.id = 'header-user-chev';
+        chev.style.marginLeft = '4px';
+        chev.style.fontSize = '10px';
+        chev.style.color = '#9CA3AF';
+        chev.style.transition = 'transform 0.15s';
+        chev.textContent = '▾';
+        userEl.appendChild(chev);
+
+        // 드롭다운 메뉴
+        const menu = document.createElement('div');
+        menu.id = 'header-user-menu';
+        menu.className = 'hidden absolute right-0 top-full mt-1 w-44 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-50';
+        menu.setAttribute('role', 'menu');
+        menu.innerHTML =
+            '<a href="' + myInfoPath + '" class="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" role="menuitem">' +
+            '  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+            '    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>' +
+            '  </svg>' +
+            '  내 정보 관리' +
+            '</a>' +
+            '<button type="button" id="header-user-logout" class="flex items-center gap-2 w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 border-t border-gray-100" role="menuitem">' +
+            '  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+            '    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>' +
+            '  </svg>' +
+            '  로그아웃' +
+            '</button>';
+        userEl.appendChild(menu);
+
+        function openMenu() {
+            menu.classList.remove('hidden');
+            userEl.setAttribute('aria-expanded', 'true');
+            chev.style.transform = 'rotate(180deg)';
+        }
+        function closeMenu() {
+            menu.classList.add('hidden');
+            userEl.setAttribute('aria-expanded', 'false');
+            chev.style.transform = '';
+        }
+        function toggleMenu() {
+            menu.classList.contains('hidden') ? openMenu() : closeMenu();
+        }
+
+        // 트리거 클릭
+        userEl.addEventListener('click', (e) => {
+            // 드롭다운 내부 클릭은 메뉴 자체 핸들러에 위임
+            if (e.target.closest('#header-user-menu')) return;
+            e.stopPropagation();
+            toggleMenu();
+        });
+        // 키보드 접근성
+        userEl.addEventListener('keydown', (e) => {
+            if (e.target.closest('#header-user-menu')) return;
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMenu(); }
+            else if (e.key === 'Escape') closeMenu();
+        });
+        // 외부 클릭 닫기
+        document.addEventListener('click', (e) => {
+            if (!userEl.contains(e.target)) closeMenu();
+        });
+
+        // 로그아웃 핸들러
+        document.getElementById('header-user-logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            ['safenow_session_user_email','safenow_session_user_name','safenow_logged_in',
+             'safenow_role','safenow_workplace','safenow_user','safenow_avatar',
+             'safenow_company_type','safenow_company_name','safenow_just_added_company','safenow_pending_invite']
+                .forEach(k => localStorage.removeItem(k));
+            window.location.replace(loginPath);
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

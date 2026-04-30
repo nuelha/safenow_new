@@ -2270,6 +2270,17 @@
                 document.getElementById('goal-char-count').textContent = this.value.length;
             });
         }
+
+        // URL ?tab= 파라미터로 서브탭 자동 활성화
+        // 진입처: 대시보드 목표/KPI 카드 → ?tab=kpi, 경영방침 점검 → ?tab=checklist
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const tab = params.get('tab');
+            const VALID = ['management', 'notification', 'kpi', 'checklist'];
+            if (tab && VALID.includes(tab) && typeof switchTab === 'function') {
+                switchTab('policy', tab);
+            }
+        });
     </script>
     <script src="../design/screen-spec-modal.js"></script>
 </body>

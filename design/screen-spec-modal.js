@@ -16,7 +16,12 @@
   // 1. 페이지 → 화면 ID 매핑
   // ─────────────────────────────────────────────────────────
   const PAGE_SPECS = {
+    'login':                ['LOGIN-S'],
+    'site-select':          ['LOGIN-S', 'INV-01'],
+    'register':             ['REG-01', 'REG-02', 'REG-03', 'ERR-01'],
+    'add-company':          ['BIZ-01', 'BIZ-02', 'BIZ-03'],
     'index':                ['DSH01-V', 'DSH02-V', 'DSH03-V'],
+    'dashboard-sub':        ['DSH04-V'],
     'my-tasks':             ['TSK01-L', 'TSK02-L', 'TSK03-L', 'TSK04-L', 'TSK05-L'],
     'risk-assessment':      ['RSK01-V', 'RSK02-L', 'RSK02-D', 'RSK02-F', 'RSK03-L', 'RSK04-L', 'RSK04-M'],
     'tbm':                  ['TBM01-L', 'TBM01-D', 'TBM01-F', 'TBM02-L', 'TBM02-M', 'TBM03-L', 'TBM03-F'],
@@ -35,7 +40,9 @@
     'contractor':           ['CON01-L', 'CON01-D', 'CON02-L', 'CON03-L', 'CON03-M', 'CON08-D'],
     'contractor-register':  ['CON04-F', 'CON05-F', 'CON05-M', 'CON05-M2', 'CON05-M3', 'CON06-F', 'CON07-F'],
     'workplace':            ['WRK01-D', 'WRK01-L', 'WRK02-L', 'WRK02-M', 'WRK02-M2', 'WRK03-V', 'WRK04-V',
-                             'WRK05-S', 'WRK05-M', 'WRK06-S', 'WRK07-S', 'WRK08-S', 'WRK09-S', 'WRK09-M']
+                             'WRK05-S', 'WRK05-M', 'WRK06-S', 'WRK07-S', 'WRK08-S', 'WRK09-S', 'WRK09-M'],
+    'support':              ['SUP01-L', 'SUP01-D', 'SUP02-L', 'SUP02-F'],
+    'my-info':              ['MYI01-S', 'MYI02-L', 'MYI03-L', 'MYI04-V']
   };
 
   const MD_FILES = [
@@ -47,7 +54,8 @@
     '화면설계서_06_업무문서관리_공정관리.md',
     '화면설계서_07_도급관리.md',
     '화면설계서_08_사업장관리.md',
-    '화면설계서_09_고객지원_내정보관리.md'
+    '화면설계서_09_고객지원_내정보관리.md',
+    '회원가입_화면설계서.md'
   ];
 
   const MARKED_CDN = 'https://cdn.jsdelivr.net/npm/marked@12/marked.min.js';
@@ -78,12 +86,13 @@
 
   /**
    * MD 텍스트를 화면 ID 단위 섹션으로 파싱.
-   * - 섹션 시작: `### XXX##-X[숫자] 제목`
-   * - 섹션 종료: 다음 `### XXX##-X` OR 다음 `## ` OR `# ` (상위 레벨)
+   * - 섹션 시작: `### XXX##-X[숫자] 제목` 또는 `## N. REG-XX 제목` 등
+   *   매칭 ID 패턴: 영문대문자(2~5)-(영문대문자|숫자)+ 또는 영문대문자{3}\d{2}-[A-Z]\d?
+   * - 섹션 종료: 다음 ID 헤딩 OR 다음 일반 `## ` / `# ` (상위 레벨)
    */
   function parseMd(text) {
     const sections = {};
-    const headingRe = /^###\s+([A-Z]{3}\d{2}-[A-Z]\d?)\s*(.*)$/;
+    const headingRe = /^#{2,3}\s+(?:\d+\.\s*)?([A-Z][A-Z0-9]*-[A-Z0-9]+)(?:\s+(.*))?$/;
     const lines = text.split(/\r?\n/);
     let curId = null, curTitle = '', buf = [];
     const flush = () => {

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대시보드 (도급/컨설팅) - 안전NOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        sidebar: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body class="bg-gray-50" data-spec-modal="push">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 사이드바 -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="../site-select.html" class="flex items-center gap-3">
+                    <div class="sidebar-logo">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-bold text-white">안전NOW</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="space-y-1">
+                    <li data-menu-key="dashboard">
+                        <a href="dashboard-sub.html" class="sidebar-item active">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                            대시보드
+                        </a>
+                    </li>
+                    <li data-menu-key="tasks">
+                        <a href="my-tasks.html" class="sidebar-item">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            내 업무
+                            <span class="sidebar-item-badge red">3</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-section">안전 활동</li>
+                    <li data-menu-key="tbm"><a href="tbm.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>TBM</a></li>
+                    <li data-menu-key="opinion"><a href="opinion.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>의견청취</a></li>
+
+                    <li class="sidebar-section">지원</li>
+                    <li data-menu-key="support"><a href="support.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>고객지원</a></li>
+                    <li data-menu-key="myinfo"><a href="my-info.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>내 정보관리</a></li>
+                </ul>
+            </nav>
+
+            <!-- 사업장 전환 트리거 -->
+            <div class="workspace-selector">
+                <button class="workspace-btn" onclick="window.location.href='../site-select.html'">
+                    <div id="workspace-avatar" class="workspace-avatar">동</div>
+                    <div class="workspace-info">
+                        <div id="workspace-name" class="workspace-name">동방기계㈜</div>
+                        <div id="workspace-role" class="workspace-role">도급담당자</div>
+                    </div>
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12M4 7h.01M8 12h12M4 12h.01M8 17h12M4 17h.01"></path>
+                    </svg>
+                </button>
+                <p class="text-[10px] text-slate-500 px-3 mt-1">클릭 시 사업장 선택 화면으로 이동</p>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="header-title">대시보드</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-notification">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <span class="header-notification-dot"></span>
+                    </button>
+                    <div class="header-user">
+                        <div id="header-avatar" class="header-avatar">강</div>
+                        <span id="header-username" class="header-username">강동방</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6">
+                <div>
+                    <!-- 컨텍스트 배너 -->
+                    <div class="mb-5 p-4 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-3">
+                        <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m-6 3l6-3"></path>
+                        </svg>
+                        <div class="flex-1">
+                            <p class="text-xs text-amber-800 font-medium">현재 작업 중인 원청 사업장</p>
+                            <div class="flex items-center gap-3 mt-1">
+                                <span class="text-base font-bold text-gray-900" id="principalSiteName">다온산업 본사 현장</span>
+                                <span class="text-xs text-gray-500">|</span>
+                                <span class="text-sm text-gray-600">계약기간: 2026-01-01 ~ 2026-12-31</span>
+                            </div>
+                        </div>
+                        <button type="button" class="text-xs text-amber-700 hover:text-amber-900 font-medium underline" onclick="alert('계약된 원청 사업장이 여러 개인 경우 이 메뉴에서 전환합니다.')">사업장 전환 ▼</button>
+                    </div>
+
+                    <!-- 인사 카드 -->
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">안녕하세요, <span id="greetUser">강동방</span> 님</h2>
+                        <p class="text-sm text-gray-500 mt-1">
+                            <span id="greetCompany">동방기계㈜</span> ·
+                            <span id="greetTypeLabel">도급업체</span> ·
+                            <span id="greetRoleLabel">도급담당자</span>
+                        </p>
+                    </div>
+
+                    <!-- 위젯 그리드 -->
+                    <div class="grid grid-cols-2 gap-6 mb-6">
+                        <!-- 내 할일 미니뷰 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">내 할일</h2>
+                                <a href="my-tasks.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">내 업무 전체보기 →</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid grid-cols-2 gap-3 mb-3">
+                                    <a href="my-tasks.html?tab=document" class="block p-4 bg-blue-50 border border-blue-100 rounded-lg hover:bg-blue-100 transition-colors text-center">
+                                        <p class="text-2xl font-bold text-blue-700">3</p>
+                                        <p class="text-xs text-gray-600 mt-1">미완료</p>
+                                    </a>
+                                    <a href="my-tasks.html?tab=document" class="block p-4 bg-red-50 border border-red-100 rounded-lg hover:bg-red-100 transition-colors text-center">
+                                        <p class="text-2xl font-bold text-red-600">1</p>
+                                        <p class="text-xs text-gray-600 mt-1">기한임박</p>
+                                    </a>
+                                </div>
+                                <ul class="divide-y divide-gray-100 text-sm">
+                                    <li class="py-2 flex items-center justify-between">
+                                        <span class="text-gray-800">크레인 작업 TBM 작성</span>
+                                        <span class="text-xs text-red-600 font-medium">D-1</span>
+                                    </li>
+                                    <li class="py-2 flex items-center justify-between">
+                                        <span class="text-gray-800">관리계획서 제출</span>
+                                        <span class="text-xs text-gray-500">D-5</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- TBM 현황 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">TBM 현황</h2>
+                                <a href="tbm.html" class="text-sm text-primary-600 hover:text-primary-700 font-medium">TBM 작성 →</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid grid-cols-2 gap-3 mb-3">
+                                    <a href="tbm.html?tab=list" class="block p-4 bg-emerald-50 border border-emerald-100 rounded-lg hover:bg-emerald-100 transition-colors text-center">
+                                        <p class="text-2xl font-bold text-emerald-700">12</p>
+                                        <p class="text-xs text-gray-600 mt-1">이번달 작성</p>
+                                    </a>
+                                    <a href="tbm.html?tab=schedule" class="block p-4 bg-purple-50 border border-purple-100 rounded-lg hover:bg-purple-100 transition-colors text-center">
+                                        <p class="text-2xl font-bold text-purple-700">4</p>
+                                        <p class="text-xs text-gray-600 mt-1">예정</p>
+                                    </a>
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    <p>이번달 누적시간: <span class="font-semibold text-gray-700">3.5h</span></p>
+                                    <p class="mt-0.5">분기 누적시간: <span class="font-semibold text-gray-700">11.5h</span> · 법정기준 12h</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 바로가기 (의견청취 작성 폼 분류별) -->
+                    <div class="card">
+                        <div class="card-header border-b-0 pb-0">
+                            <h2 class="card-title">바로가기</h2>
+                            <span class="text-sm text-gray-500">현장에서 발생한 상황을 즉시 신고하세요.</span>
+                        </div>
+                        <div class="p-4">
+                            <div class="grid grid-cols-3 gap-4">
+                                <a href="opinion-register.html?category=near_miss"
+                                   class="p-6 bg-orange-50 border border-orange-200 rounded-xl hover:bg-orange-100 transition-colors cursor-pointer text-center">
+                                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="font-semibold text-gray-900 mb-1">아차사고 신고</p>
+                                    <p class="text-xs text-gray-500">사고가 날 뻔한 상황을<br/>즉시 신고하세요</p>
+                                </a>
+                                <a href="opinion-register.html?category=suggestion"
+                                   class="p-6 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors cursor-pointer text-center">
+                                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="font-semibold text-gray-900 mb-1">안전제안</p>
+                                    <p class="text-xs text-gray-500">더 안전한 작업환경을 위해<br/>아이디어를 제안하세요</p>
+                                </a>
+                                <a href="opinion-register.html?category=hazard_report"
+                                   class="p-6 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition-colors cursor-pointer text-center">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5 19h14a2 2 0 001.84-2.75l-7-12.84a2 2 0 00-3.68 0l-7 12.84A2 2 0 005 19z"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="font-semibold text-gray-900 mb-1">위험신고</p>
+                                    <p class="text-xs text-gray-500">현장의 위험 요소를<br/>발견 즉시 신고하세요</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        // localStorage에 저장된 사업장 선택 결과를 화면에 반영
+        (function applyContext() {
+            const ctype = localStorage.getItem('safenow_company_type') || 'subcontractor';
+            const cname = localStorage.getItem('safenow_company_name') || '동방기계㈜';
+            const wname = localStorage.getItem('safenow_workplace')    || '다온산업 본사 현장';
+            const user  = localStorage.getItem('safenow_user')         || '강동방';
+            const av    = localStorage.getItem('safenow_avatar')       || cname.charAt(0);
+
+            const TYPE_LABEL = { subcontractor: '도급업체', consulting: '컨설팅업체', principal: '구독사업자' };
+            const ROLE_LABEL = { contractor: '도급담당자', consulting: '컨설팅담당자' };
+            const appRole = localStorage.getItem('safenow_role') || 'contractor';
+
+            // 헤더
+            const ha = document.getElementById('header-avatar');
+            const hu = document.getElementById('header-username');
+            if (ha) ha.textContent = user.charAt(0);
+            if (hu) hu.textContent = user;
+
+            // 사이드바 워크스페이스 표시
+            const wa = document.getElementById('workspace-avatar');
+            const wn = document.getElementById('workspace-name');
+            const wr = document.getElementById('workspace-role');
+            if (wa) wa.textContent = av;
+            if (wn) wn.textContent = cname;
+            if (wr) wr.textContent = ROLE_LABEL[appRole] || '담당자';
+
+            // 컨텍스트 배너
+            const psn = document.getElementById('principalSiteName');
+            if (psn) psn.textContent = wname;
+
+            // 인사 카드
+            const gu = document.getElementById('greetUser');
+            const gc = document.getElementById('greetCompany');
+            const gt = document.getElementById('greetTypeLabel');
+            const gr = document.getElementById('greetRoleLabel');
+            if (gu) gu.textContent = user;
+            if (gc) gc.textContent = cname;
+            if (gt) gt.textContent = TYPE_LABEL[ctype] || '협력사';
+            if (gr) gr.textContent = ROLE_LABEL[appRole] || '담당자';
+        })();
+    </script>
+    <script src="../design/screen-spec-modal.js"></script>
+</body>
+</html>

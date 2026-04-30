@@ -1443,13 +1443,20 @@
     <script src="../js/app.js"></script>
     <script>
         // 탭 전환
+        function activateTbmTab(name) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            const pane = document.getElementById('tab-' + name);
+            if (pane) pane.classList.remove('hidden');
+        }
         document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-                tab.classList.add('active');
-                document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
-            });
+            tab.addEventListener('click', () => activateTbmTab(tab.dataset.tab));
+        });
+
+        // URL ?tab= 으로 진입 시 탭 자동 활성화 (대시보드에서 ?tab=group 진입 등)
+        document.addEventListener('DOMContentLoaded', () => {
+            const t = new URLSearchParams(window.location.search).get('tab');
+            if (t && ['list', 'schedule', 'group'].includes(t)) activateTbmTab(t);
         });
 
         // 뷰 전환

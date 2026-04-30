@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사업장 선택 - 안전NOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50:'#eff6ff', 100:'#dbeafe', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8' },
+                        sidebar: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col" data-spec-modal="push">
+    <!-- 상단 바 -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-sidebar rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <span class="text-base font-bold text-gray-900">안전NOW</span>
+            </div>
+
+            <!-- 사용자 메뉴 -->
+            <div class="relative">
+                <button id="userMenuBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-gray-50" onclick="toggleUserMenu()">
+                    <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-sm font-bold" id="userInitial">박</div>
+                    <span class="text-sm font-medium text-gray-700"><span id="userName">박안전</span> 님</span>
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div id="userMenuDropdown" class="hidden absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-10">
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onclick="alert('내 정보 수정은 사업장 입장 후 이용해 주세요.')">내 정보 수정</a>
+                    <button type="button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onclick="logout()">로그아웃</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="flex-1">
+        <div class="max-w-5xl mx-auto px-6 py-10">
+            <!-- 페이지 제목 -->
+            <div class="mb-8 flex items-end justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">사업장</h1>
+                    <p id="pageSubtitle" class="text-sm text-gray-500 mt-1">접속할 사업장을 선택해 주세요. 입장 후 사이드바 사업장 선택기로 다시 이 화면에 돌아올 수 있습니다.</p>
+                </div>
+                <a href="add-company.html" class="btn btn-primary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    사업자 추가
+                </a>
+            </div>
+
+            <!-- 방금 추가된 사업자 안내 (BIZ-03 직후) -->
+            <div id="justAddedBanner" class="hidden mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-start gap-2">
+                <svg class="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <p class="text-sm text-green-900" id="justAddedText"></p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- 초대 섹션 (조건부)                                              -->
+            <!-- ============================================================ -->
+            <section id="invitesSection" class="hidden mb-8">
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <h2 class="text-base font-bold text-gray-900">초대</h2>
+                    <span class="ml-1 inline-flex items-center justify-center text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700" id="invitesCount">0건</span>
+                </div>
+                <div id="invitesList" class="grid gap-3">
+                    <!-- JS 렌더링 -->
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- 내 사업장 섹션 (조건부)                                          -->
+            <!-- ============================================================ -->
+            <section id="sitesSection" class="hidden">
+                <div class="flex items-center gap-2 mb-3">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <h2 class="text-base font-bold text-gray-900">내 사업장</h2>
+                    <span class="ml-1 text-xs text-gray-500" id="sitesCount">(0)</span>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <div class="input-with-icon max-w-md">
+                                <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" class="input w-full" id="siteSearch" placeholder="사업장명 또는 회사명으로 검색" />
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="table" id="siteTable">
+                                <thead>
+                                    <tr>
+                                        <th class="w-12 text-center">No</th>
+                                        <th>사업장명</th>
+                                        <th class="w-32">권한</th>
+                                        <th class="w-36 text-center">알림 수신</th>
+                                        <th class="w-28 text-center">상태</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="siteTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div id="searchEmptyState" class="hidden py-12 text-center text-sm text-gray-500">
+                            검색 결과가 없습니다.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================================================ -->
+            <!-- 완전 빈 상태 (사업장 0 + 초대 0)                                 -->
+            <!-- ============================================================ -->
+            <section id="emptyState" class="hidden">
+                <div class="card">
+                    <div class="card-body py-12 text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7l9-4 9 4M5 11v6a2 2 0 002 2h10a2 2 0 002-2v-6M5 11l7 4 7-4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-1">등록된 사업장이 없습니다.</h3>
+                        <p class="text-sm text-gray-500 mb-6">
+                            사업장을 직접 추가하거나<br/>초대 링크를 통해 참여할 수 있습니다.
+                        </p>
+                        <a href="add-company.html" class="btn btn-primary btn-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            사업자 추가
+                        </a>
+                        <p class="mt-6 text-xs text-gray-400">초대받은 적이 있으신가요? 담당자에게 초대 재발송을 요청하세요.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 데모 토글 -->
+            <div class="mt-8 p-3 bg-white border border-gray-200 rounded-lg text-xs text-gray-500 flex flex-wrap items-center gap-2">
+                <span class="font-semibold text-gray-700">데모 시나리오:</span>
+                <a href="?" class="px-2 py-1 rounded border border-gray-200 hover:bg-gray-50">기본 (사업장 + 초대)</a>
+                <a href="?empty=1" class="px-2 py-1 rounded border border-gray-200 hover:bg-gray-50">빈 상태 (신규 가입자)</a>
+                <a href="?invites_only=1" class="px-2 py-1 rounded border border-gray-200 hover:bg-gray-50">초대만 있는 상태</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-200 bg-white py-4">
+        <p class="text-center text-xs text-gray-400">© 2026 안전NOW · 프로토타입 v1.0</p>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- INV-01 초대 수락 확인 모달                                       -->
+    <!-- ============================================================ -->
+    <div id="inviteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onclick="closeInviteModal(event)">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full" onclick="event.stopPropagation()">
+            <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+                <h2 class="text-lg font-bold text-gray-900">수락하시겠습니까?</h2>
+                <span class="text-xs text-gray-400">화면 ID: INV-01</span>
+            </div>
+            <div class="px-6 py-5">
+                <p class="text-sm text-gray-700 mb-4" id="inviteModalDesc">
+                    <!-- JS -->
+                </p>
+                <dl class="space-y-1.5 text-sm bg-gray-50 rounded-lg p-4">
+                    <div class="flex">
+                        <dt class="w-16 text-gray-500">역할</dt>
+                        <dd class="font-medium text-gray-900" id="inviteModalRole">—</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-16 text-gray-500">업체</dt>
+                        <dd class="font-medium text-gray-900" id="inviteModalCompany">—</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-16 text-gray-500">사업장</dt>
+                        <dd class="font-medium text-gray-900" id="inviteModalSite">—</dd>
+                    </div>
+                </dl>
+                <p class="mt-4 text-xs text-gray-500" id="inviteModalNote">수락 시 해당 사업장의 담당자로 업무를 수행할 수 있습니다.</p>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3">
+                <button type="button" class="btn btn-outline" onclick="closeInviteModal()">취소</button>
+                <button type="button" class="btn btn-primary" onclick="confirmAcceptInvite()">수락하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─────────────────────────────────────────────────────────
+        // Mock 데이터
+        //   실제 구현: GET /api/me/memberships, GET /api/me/invites
+        // ─────────────────────────────────────────────────────────
+        const FULL_SITES = [
+            { id: 1, companyName: '다온산업', siteName: '본사 사업장',  companyType: 'principal',     role: 'CEO',  roleLabel: '경영책임자',     kakaoEnabled: true,  appRole: 'ceo',        avatar: '본', user: '김대표' },
+            { id: 2, companyName: '다온산업', siteName: '평택 1공장',   companyType: 'principal',     role: 'SHM',  roleLabel: '안전보건관리자', kakaoEnabled: true,  appRole: 'manager',    avatar: '평', user: '박안전' },
+            { id: 3, companyName: '다온산업', siteName: '화성 2공장',   companyType: 'principal',     role: 'WKR',  roleLabel: '근로자',         kakaoEnabled: false, appRole: 'worker',     avatar: '화', user: '최근로' },
+            { id: 4, companyName: '동방기계㈜', siteName: '다온산업 본사 현장',   companyType: 'subcontractor', role: 'subcontractor_manager', roleLabel: '도급담당자',   kakaoEnabled: true,  appRole: 'contractor', avatar: '동', user: '강동방' },
+            { id: 5, companyName: '(주)대한안전컨설팅', siteName: '다온산업 위탁', companyType: 'consulting',    role: 'consulting_manager',    roleLabel: '컨설팅담당자', kakaoEnabled: true,  appRole: 'consulting', avatar: '컨', user: '이컨설' }
+        ];
+
+        const FULL_INVITES = [
+            {
+                id: 'INV-001',
+                inviteType: 'subcontractor',
+                inviterCompany: '다온산업',
+                inviterSite: '다온산업 본사',
+                targetCompany: '동방기계㈜',
+                targetSite: '다온산업 본사 현장',
+                roleLabel: '도급업체 담당자',
+                expiresAt: '2026-05-14',
+                inviterUser: '박안전 (안전보건관리자)'
+            },
+            {
+                id: 'INV-002',
+                inviteType: 'worker',
+                inviterCompany: '다온산업',
+                inviterSite: '다온산업 본사 사업장',
+                targetCompany: '다온산업',
+                targetSite: '본사 사업장',
+                roleLabel: '근로자',
+                expiresAt: '2026-05-14',
+                inviterUser: '박안전 (안전보건관리자)'
+            }
+        ];
+
+        // company_type별 인라인 배지 — principal은 배지 없음
+        // 스펙: 로그인_사업장선택_GNB분기_개발스펙.md §3 사업장명 옆 배지 표시 규칙
+        const TYPE_BADGE = {
+            principal:     null,  // 배지 없음
+            subcontractor: { label: '도급업체', cls: 'bg-orange-100 text-orange-700' },
+            consulting:    { label: '컨설팅',   cls: 'bg-purple-100 text-purple-700' },
+            worker:        { label: '구성원',   cls: 'bg-blue-100 text-blue-700' }   // 초대 카드용
+        };
+
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // URL 시나리오 처리
+        //   ?empty=1         → 사업장 0 + 초대 0
+        //   ?invites_only=1  → 사업장 0 + 초대 2
+        //   기본              → 사업장 5 + 초대 2
+        // ─────────────────────────────────────────────────────────
+        const params = new URLSearchParams(window.location.search);
+        const isEmpty = params.get('empty') === '1';
+        const invitesOnly = params.get('invites_only') === '1';
+        let SITES   = isEmpty || invitesOnly ? [] : FULL_SITES.slice();
+        let INVITES = isEmpty ? [] : FULL_INVITES.slice();
+
+        // ─────────────────────────────────────────────────────────
+        // 초대 카드 렌더링
+        // ─────────────────────────────────────────────────────────
+        function renderInvites() {
+            const sec = document.getElementById('invitesSection');
+            const list = document.getElementById('invitesList');
+            const cnt = document.getElementById('invitesCount');
+            if (INVITES.length === 0) { sec.classList.add('hidden'); return; }
+            sec.classList.remove('hidden');
+            cnt.textContent = INVITES.length + '건';
+
+            list.innerHTML = INVITES.map(inv => {
+                const isWorker = inv.inviteType === 'worker';
+                const badge = isWorker ? TYPE_BADGE.worker : TYPE_BADGE[inv.inviteType];
+                const headIcon = isWorker ? '🏢 구성원 초대' : '📌 수급업체 초대';
+                return `
+                <div class="bg-white border border-amber-200 rounded-xl p-5 shadow-sm">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-sm font-bold text-gray-900">${headIcon}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${badge.cls}">${badge.label}</span>
+                    </div>
+                    <p class="text-sm text-gray-700 mb-2">
+                        <strong>${escapeHtml(inv.inviterCompany)}</strong>에서
+                        ${isWorker ? '구성원' : '수급업체'}으로 초대했습니다.
+                    </p>
+                    <p class="text-sm text-gray-600 mb-1">
+                        ${escapeHtml(inv.targetCompany)} · ${escapeHtml(inv.roleLabel)} 역할
+                    </p>
+                    <p class="text-xs text-gray-500">초대 만료: <strong>${escapeHtml(inv.expiresAt)}</strong></p>
+                    <p class="text-xs text-gray-400 mt-0.5">초대자: ${escapeHtml(inv.inviterUser)}</p>
+                    <div class="mt-4 flex items-center justify-end gap-2">
+                        <button type="button" class="btn btn-outline btn-sm" onclick="rejectInvite('${inv.id}')">거절</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="openInviteModal('${inv.id}')">수락 →</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // 사업장 테이블 렌더링
+        // ─────────────────────────────────────────────────────────
+        function renderTable(filter = '') {
+            const tbody = document.getElementById('siteTableBody');
+            const empty = document.getElementById('searchEmptyState');
+            const q = filter.trim().toLowerCase();
+            const filtered = SITES.filter(s =>
+                !q || s.companyName.toLowerCase().includes(q) || s.siteName.toLowerCase().includes(q)
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '';
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            tbody.innerHTML = filtered.map((s, i) => {
+                const badge = TYPE_BADGE[s.companyType];
+                const inlineBadge = badge
+                    ? `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-semibold ${badge.cls}">${badge.label}</span>`
+                    : '';
+                return `
+                <tr>
+                    <td class="text-center text-gray-500">${i + 1}</td>
+                    <td>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="font-medium text-gray-900">${escapeHtml(s.companyName)}</span>
+                            ${inlineBadge}
+                        </div>
+                        <div class="text-xs text-gray-500 mt-0.5">${escapeHtml(s.siteName)}</div>
+                    </td>
+                    <td class="text-gray-700 text-sm">${escapeHtml(s.roleLabel)}</td>
+                    <td class="text-center">
+                        <label class="inline-flex items-center gap-2 cursor-pointer" title="카카오톡 알림 수신 토글">
+                            <input type="checkbox" ${s.kakaoEnabled ? 'checked' : ''}
+                                   data-id="${s.id}" class="kakao-toggle peer sr-only" onchange="updateKakao(${s.id}, this.checked)" />
+                            <span class="w-9 h-5 bg-gray-200 rounded-full relative transition-colors peer-checked:bg-primary-600">
+                                <span class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-4"></span>
+                            </span>
+                            <span class="text-xs text-gray-500">카카오톡</span>
+                        </label>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-primary btn-sm" onclick='enterSite(${s.id})'>입장</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // 섹션 가시성 컨트롤
+        // ─────────────────────────────────────────────────────────
+        function applyVisibility() {
+            const sitesSec = document.getElementById('sitesSection');
+            const emptySec = document.getElementById('emptyState');
+            const sCnt = document.getElementById('sitesCount');
+
+            if (SITES.length === 0 && INVITES.length === 0) {
+                sitesSec.classList.add('hidden');
+                emptySec.classList.remove('hidden');
+                document.getElementById('pageSubtitle').textContent =
+                    '아직 등록된 사업장이 없습니다. 사업자를 추가하거나 초대를 받아 시작하세요.';
+            } else {
+                emptySec.classList.add('hidden');
+                if (SITES.length > 0) {
+                    sitesSec.classList.remove('hidden');
+                    sCnt.textContent = '(' + SITES.length + ')';
+                } else {
+                    sitesSec.classList.add('hidden');
+                }
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // 입장 라우팅
+        // ─────────────────────────────────────────────────────────
+        function enterSite(id) {
+            const site = SITES.find(s => s.id === id);
+            if (!site) return;
+            localStorage.setItem('safenow_role',         site.appRole);
+            localStorage.setItem('safenow_workplace',    site.siteName);
+            localStorage.setItem('safenow_user',         site.user);
+            localStorage.setItem('safenow_avatar',       site.avatar);
+            localStorage.setItem('safenow_company_type', site.companyType);
+            localStorage.setItem('safenow_company_name', site.companyName);
+
+            let target;
+            if (site.companyType === 'principal') target = 'index.html';
+            else if (site.companyType === 'subcontractor' || site.companyType === 'consulting') target = 'pages/dashboard-sub.html';
+            else target = 'index.html';
+
+            window.location.replace(target);
+        }
+
+        function updateKakao(id, enabled) {
+            const site = SITES.find(s => s.id === id);
+            if (site) site.kakaoEnabled = enabled;
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // INV-01 초대 수락 모달
+        // ─────────────────────────────────────────────────────────
+        let activeInviteId = null;
+
+        function openInviteModal(invId) {
+            const inv = INVITES.find(i => i.id === invId);
+            if (!inv) return;
+            activeInviteId = invId;
+            const isWorker = inv.inviteType === 'worker';
+            document.getElementById('inviteModalDesc').innerHTML =
+                `<strong>${escapeHtml(inv.inviterCompany)}</strong>에서 ` +
+                (isWorker ? '구성원' : '수급업체') + '으로 초대했습니다.';
+            document.getElementById('inviteModalRole').textContent = inv.roleLabel;
+            document.getElementById('inviteModalCompany').textContent = inv.targetCompany;
+            document.getElementById('inviteModalSite').textContent = inv.targetSite;
+            document.getElementById('inviteModalNote').textContent =
+                isWorker ? '수락 시 해당 사업장의 근로자로 등록됩니다.'
+                         : '수락 시 해당 사업장의 도급업체 담당자로 업무를 수행할 수 있습니다.';
+            document.getElementById('inviteModal').classList.remove('hidden');
+        }
+
+        function closeInviteModal(e) {
+            if (e && e.target.id !== 'inviteModal') return;
+            document.getElementById('inviteModal').classList.add('hidden');
+            activeInviteId = null;
+        }
+
+        function confirmAcceptInvite() {
+            const inv = INVITES.find(i => i.id === activeInviteId);
+            if (!inv) return;
+
+            // 모킹: 초대를 SITES에 추가하고 INVITES에서 제거
+            const newId = SITES.length ? Math.max(...SITES.map(s => s.id)) + 1 : 1;
+            const isWorker = inv.inviteType === 'worker';
+            SITES.push({
+                id: newId,
+                companyName: inv.targetCompany,
+                siteName: inv.targetSite,
+                companyType: isWorker ? 'principal' : inv.inviteType,
+                role: isWorker ? 'WKR' : (inv.inviteType === 'subcontractor' ? 'subcontractor_manager' : 'consulting_manager'),
+                roleLabel: inv.roleLabel,
+                kakaoEnabled: true,
+                appRole: isWorker ? 'worker' : (inv.inviteType === 'subcontractor' ? 'contractor' : 'consulting'),
+                avatar: inv.targetCompany.charAt(0),
+                user: localStorage.getItem('safenow_session_user_name') || '박안전'
+            });
+            INVITES = INVITES.filter(i => i.id !== inv.id);
+            closeInviteModal();
+            renderInvites();
+            renderTable();
+            applyVisibility();
+            alert(`✓ "${inv.targetCompany} - ${inv.targetSite}" 초대를 수락했습니다.`);
+        }
+
+        function rejectInvite(invId) {
+            const inv = INVITES.find(i => i.id === invId);
+            if (!inv) return;
+            if (!confirm(`"${inv.targetCompany} - ${inv.targetSite}" 초대를 거절하시겠습니까?\n거절 후에는 초대 재발송을 요청해야 합니다.`)) return;
+            INVITES = INVITES.filter(i => i.id !== invId);
+            renderInvites();
+            applyVisibility();
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // 사용자 메뉴 / 검색 / 로그아웃
+        // ─────────────────────────────────────────────────────────
+        function toggleUserMenu() {
+            document.getElementById('userMenuDropdown').classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const wrap = document.getElementById('userMenuBtn').parentElement;
+            if (!wrap.contains(e.target)) {
+                document.getElementById('userMenuDropdown').classList.add('hidden');
+            }
+        });
+
+        function logout() {
+            ['safenow_session_user_email','safenow_session_user_name','safenow_logged_in',
+             'safenow_role','safenow_workplace','safenow_user','safenow_avatar',
+             'safenow_company_type','safenow_company_name','safenow_just_added_company','safenow_pending_invite'].forEach(k => localStorage.removeItem(k));
+            window.location.replace('login.html');
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // 초기화
+        // ─────────────────────────────────────────────────────────
+        (function init() {
+            const name = localStorage.getItem('safenow_session_user_name') || '박안전';
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userInitial').textContent = name.charAt(0);
+
+            // BIZ-03 직후: 방금 추가된 사업자 안내
+            const justAdded = localStorage.getItem('safenow_just_added_company');
+            if (justAdded) {
+                try {
+                    const c = JSON.parse(justAdded);
+                    const banner = document.getElementById('justAddedBanner');
+                    document.getElementById('justAddedText').textContent =
+                        `사업자 "${c.name}" (${c.site}) 등록이 완료되었습니다. 요금제: ${c.tier}`;
+                    banner.classList.remove('hidden');
+                    // 신규 사업자도 SITES에 추가 (mock)
+                    if (!isEmpty && !invitesOnly) {
+                        const newId = SITES.length ? Math.max(...SITES.map(s => s.id)) + 1 : 1;
+                        SITES.unshift({
+                            id: newId,
+                            companyName: c.name,
+                            siteName: c.site,
+                            companyType: 'principal',
+                            role: 'CEO',
+                            roleLabel: '경영책임자',
+                            kakaoEnabled: true,
+                            appRole: 'ceo',
+                            avatar: c.name.charAt(0),
+                            user: name
+                        });
+                    }
+                } catch (e) {}
+                localStorage.removeItem('safenow_just_added_company');
+            }
+
+            // 초대 링크 진입(register.html에서 token 저장) 후: 초대 카드 자동 강조 (mock — 그대로 INVITES 사용)
+            localStorage.removeItem('safenow_pending_invite');
+
+            renderInvites();
+            renderTable();
+            applyVisibility();
+
+            const search = document.getElementById('siteSearch');
+            if (search) search.addEventListener('input', (e) => renderTable(e.target.value));
+        })();
+    </script>
+    <script src="design/screen-spec-modal.js"></script>
+</body>
+</html>

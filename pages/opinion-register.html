@@ -176,7 +176,7 @@
                 </div>
 
                 <!-- 등록 폼 -->
-                <div class="max-w-3xl">
+                <div>
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title">의견 등록</h2>
@@ -188,11 +188,11 @@
                                     <label class="form-label">분류 <span class="text-red-500">*</span></label>
                                     <select class="select w-full" id="categorySelect" onchange="handleCategoryChange()">
                                         <option value="">선택하세요</option>
-                                        <option value="stop">작업중지요청</option>
+                                        <option value="work_stop">작업중지요청</option>
                                         <option value="survey">청취조사</option>
-                                        <option value="near-miss">아차사고</option>
+                                        <option value="near_miss">아차사고</option>
                                         <option value="suggestion">안전제안</option>
-                                        <option value="report">위험신고</option>
+                                        <option value="hazard_report">위험신고</option>
                                     </select>
                                 </div>
 
@@ -278,6 +278,19 @@
 
     <script src="../js/app.js"></script>
     <script>
+        // URL ?category= 자동 선택 (대시보드 바로가기에서 진입)
+        (function applyCategoryFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('category');
+            if (!cat) return;
+            const sel = document.getElementById('categorySelect');
+            const opt = Array.from(sel.options).find(o => o.value === cat);
+            if (opt) {
+                sel.value = cat;
+                handleCategoryChange();
+            }
+        })();
+
         // 분류 변경 시 처리
         function handleCategoryChange() {
             const category = document.getElementById('categorySelect').value;
@@ -285,14 +298,14 @@
             const occurDateField = document.getElementById('occurDateField');
 
             // 작업중지요청 안내
-            if (category === 'stop') {
+            if (category === 'work_stop') {
                 stopWorkAlert.classList.remove('hidden');
             } else {
                 stopWorkAlert.classList.add('hidden');
             }
 
             // 발생일시 필드 (아차사고, 위험신고 시)
-            if (category === 'near-miss' || category === 'report') {
+            if (category === 'near_miss' || category === 'hazard_report') {
                 occurDateField.classList.remove('hidden');
             } else {
                 occurDateField.classList.add('hidden');
@@ -366,7 +379,7 @@
             }
 
             // 제출 처리 (실제로는 서버에 전송)
-            if (category === 'stop') {
+            if (category === 'work_stop') {
                 alert('작업중지요청이 등록되었습니다.\n안전관리자에게 즉시 알림톡이 발송됩니다.');
             } else {
                 alert('의견이 등록되었습니다.');

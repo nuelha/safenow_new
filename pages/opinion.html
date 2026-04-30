@@ -259,15 +259,15 @@
                     </div>
 
                     <!-- 필터 & 검색 -->
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
+                    <div class="flex flex-wrap items-center justify-between mb-2 gap-3">
+                        <div class="flex flex-wrap items-center gap-3">
                             <select class="select" id="categoryFilter">
                                 <option value="">전체 분류</option>
-                                <option value="stop">작업중지요청</option>
+                                <option value="work_stop">작업중지요청</option>
                                 <option value="survey">청취조사</option>
-                                <option value="near-miss">아차사고</option>
+                                <option value="near_miss">아차사고</option>
                                 <option value="suggestion">안전제안</option>
-                                <option value="report">위험신고</option>
+                                <option value="hazard_report">위험신고</option>
                             </select>
                             <select class="select" id="statusFilter">
                                 <option value="">전체 상태</option>
@@ -277,11 +277,16 @@
                                 <option value="done">완료</option>
                                 <option value="reject">반려</option>
                             </select>
+                            <div class="flex items-center gap-2">
+                                <input type="date" class="input" id="startDateFilter" aria-label="시작일">
+                                <span class="text-gray-400">~</span>
+                                <input type="date" class="input" id="endDateFilter" aria-label="종료일">
+                            </div>
                             <div class="input-with-icon">
                                 <svg class="icon w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
-                                <input type="text" class="input w-64" placeholder="제목, 작성자 검색...">
+                                <input type="text" class="input w-64" id="searchInput" placeholder="제목, 작성자 검색...">
                             </div>
                         </div>
                         <a href="opinion-register.html" class="btn btn-primary">
@@ -290,6 +295,18 @@
                             </svg>
                             의견 등록
                         </a>
+                    </div>
+
+                    <!-- 활성 필터 칩 -->
+                    <div id="activeFilterChips" class="hidden flex flex-wrap items-center gap-2 mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <span class="text-xs font-semibold text-blue-700">적용된 필터:</span>
+                        <div id="chipsContainer" class="flex flex-wrap items-center gap-2"></div>
+                        <button type="button" id="clearAllFilters" class="ml-auto text-xs text-blue-700 hover:text-blue-900 font-medium underline">전체 해제</button>
+                    </div>
+
+                    <!-- 빈 결과 안내 -->
+                    <div id="emptyState" class="hidden text-center py-12 bg-gray-50 rounded-lg mb-4">
+                        <p class="text-gray-500">선택한 필터 조건에 해당하는 의견이 없습니다.</p>
                     </div>
 
                     <!-- 작업중지 요청 (상단 고정) -->
@@ -306,7 +323,7 @@
                         <div class="card-body p-0">
                             <table class="table">
                                 <tbody>
-                                    <tr class="cursor-pointer hover:bg-red-100" onclick="showOpinionDetail('stop-1')">
+                                    <tr class="opinion-row cursor-pointer hover:bg-red-100" data-category="work_stop" data-date="2026-04-30" data-status="pending" onclick="showOpinionDetail('stop-1')">
                                         <td class="w-28">
                                             <span class="badge bg-red-100 text-red-700 border border-red-300">작업중지요청</span>
                                         </td>
@@ -338,14 +355,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('near-miss-1')">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="near_miss" data-date="2026-04-22" data-status="pending" onclick="showOpinionDetail('near-miss-1')">
                                         <td><span class="badge bg-orange-100 text-orange-700">아차사고</span></td>
                                         <td class="font-medium text-gray-900">지게차 후진 중 충돌 위험 상황 발생</td>
                                         <td class="text-gray-600">박작업</td>
                                         <td class="text-gray-600">2026-04-22</td>
                                         <td class="text-center"><span class="badge badge-warning">접수대기</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('suggestion-1')">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="suggestion" data-date="2026-04-21" data-status="inspection" onclick="showOpinionDetail('suggestion-1')">
                                         <td><span class="badge bg-blue-100 text-blue-700">안전제안</span></td>
                                         <td class="font-medium text-gray-900">
                                             <div class="flex items-center gap-2">
@@ -357,7 +374,7 @@
                                         <td class="text-gray-600">2026-04-21</td>
                                         <td class="text-center"><span class="badge badge-info">점검중</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('report-1')">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="hazard_report" data-date="2026-04-20" data-status="improvement" onclick="showOpinionDetail('report-1')">
                                         <td><span class="badge bg-purple-100 text-purple-700">위험신고</span></td>
                                         <td class="font-medium text-gray-900">
                                             <div class="flex items-center gap-2">
@@ -369,7 +386,7 @@
                                         <td class="text-gray-600">2026-04-20</td>
                                         <td class="text-center"><span class="badge badge-warning">개선조치중</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50" onclick="showOpinionDetail('survey-1')">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="survey" data-date="2026-04-19" data-status="inspection" onclick="showOpinionDetail('survey-1')">
                                         <td><span class="badge bg-green-100 text-green-700">청취조사</span></td>
                                         <td class="font-medium text-gray-900">
                                             <div class="flex items-center gap-2">
@@ -381,28 +398,28 @@
                                         <td class="text-gray-600">2026-04-19</td>
                                         <td class="text-center"><span class="badge badge-info">점검중</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="suggestion" data-date="2026-04-18" data-status="done">
                                         <td><span class="badge bg-blue-100 text-blue-700">안전제안</span></td>
                                         <td class="font-medium text-gray-900">안전모 턱끈 자동잠금 장치 도입 제안</td>
                                         <td class="text-gray-600">한제안</td>
                                         <td class="text-gray-600">2026-04-18</td>
                                         <td class="text-center"><span class="badge badge-success">완료</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="near_miss" data-date="2026-04-17" data-status="done">
                                         <td><span class="badge bg-orange-100 text-orange-700">아차사고</span></td>
                                         <td class="font-medium text-gray-900">자재 낙하 위험 상황 (B구역)</td>
                                         <td class="text-gray-600">강현장</td>
                                         <td class="text-gray-600">2026-04-17</td>
                                         <td class="text-center"><span class="badge badge-success">완료</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="hazard_report" data-date="2026-04-16" data-status="done">
                                         <td><span class="badge bg-purple-100 text-purple-700">위험신고</span></td>
                                         <td class="font-medium text-gray-900">전기배선 피복 손상 발견</td>
                                         <td class="text-gray-600">오전기</td>
                                         <td class="text-gray-600">2026-04-16</td>
                                         <td class="text-center"><span class="badge badge-success">완료</span></td>
                                     </tr>
-                                    <tr class="cursor-pointer hover:bg-gray-50">
+                                    <tr class="opinion-row cursor-pointer hover:bg-gray-50" data-category="survey" data-date="2026-04-15" data-status="reject">
                                         <td><span class="badge bg-green-100 text-green-700">청취조사</span></td>
                                         <td class="font-medium text-gray-900">보호구 착용 불편사항 의견</td>
                                         <td class="text-gray-600">윤작업</td>
@@ -1055,6 +1072,138 @@ B구역 물류창고 시야 확보 상태 점검
                 showOpinionDetail(id);
             }
         });
+
+        // ─────────────────────────────────────────────────────────
+        // 의견청취 필터 — URL 쿼리 + UI
+        //   ?category=near_miss|work_stop|...
+        //   ?status=pending|inspection|...
+        //   ?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+        //   ?month=YYYY-MM (해당 월 전체로 시작/종료일 자동 설정)
+        //   ?q=keyword
+        // ─────────────────────────────────────────────────────────
+        (function setupOpinionFilters() {
+            const CAT_LABEL = {
+                work_stop: '작업중지요청',
+                survey: '청취조사',
+                near_miss: '아차사고',
+                suggestion: '안전제안',
+                hazard_report: '위험신고'
+            };
+            const STATUS_LABEL = {
+                pending: '접수대기', inspection: '점검중',
+                improvement: '개선조치중', done: '완료', reject: '반려'
+            };
+
+            const els = {
+                cat: document.getElementById('categoryFilter'),
+                status: document.getElementById('statusFilter'),
+                startDate: document.getElementById('startDateFilter'),
+                endDate: document.getElementById('endDateFilter'),
+                search: document.getElementById('searchInput'),
+                chips: document.getElementById('activeFilterChips'),
+                chipsBox: document.getElementById('chipsContainer'),
+                clearAll: document.getElementById('clearAllFilters'),
+                empty: document.getElementById('emptyState')
+            };
+            if (!els.cat || !els.status) return;
+
+            // URL 쿼리 → 필터 초기값 적용
+            const params = new URLSearchParams(window.location.search);
+            const month = params.get('month');
+            if (month && /^\d{4}-\d{2}$/.test(month)) {
+                els.startDate.value = month + '-01';
+                const [y, m] = month.split('-').map(Number);
+                const last = new Date(y, m, 0).getDate();
+                els.endDate.value = `${month}-${String(last).padStart(2, '0')}`;
+            } else {
+                if (params.get('startDate')) els.startDate.value = params.get('startDate');
+                if (params.get('endDate')) els.endDate.value = params.get('endDate');
+            }
+            if (params.get('category')) els.cat.value = params.get('category');
+            if (params.get('status')) els.status.value = params.get('status');
+            if (params.get('q')) els.search.value = params.get('q');
+
+            function renderChips() {
+                const chips = [];
+                if (els.cat.value) chips.push({ key: 'cat', label: '분류: ' + (CAT_LABEL[els.cat.value] || els.cat.value) });
+                if (els.status.value) chips.push({ key: 'status', label: '상태: ' + (STATUS_LABEL[els.status.value] || els.status.value) });
+                if (els.startDate.value || els.endDate.value) {
+                    const s = els.startDate.value || '...';
+                    const e = els.endDate.value || '...';
+                    chips.push({ key: 'date', label: `기간: ${s} ~ ${e}` });
+                }
+                if (els.search.value.trim()) chips.push({ key: 'q', label: '검색: ' + els.search.value.trim() });
+
+                if (!chips.length) {
+                    els.chips.classList.add('hidden');
+                    els.chipsBox.innerHTML = '';
+                    return;
+                }
+                els.chips.classList.remove('hidden');
+                els.chips.classList.add('flex');
+                els.chipsBox.innerHTML = chips.map(c => `
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-white border border-blue-300 text-blue-700 text-xs rounded-full">
+                        ${c.label}
+                        <button type="button" data-key="${c.key}" class="hover:text-blue-900" aria-label="필터 해제">✕</button>
+                    </span>`).join('');
+                els.chipsBox.querySelectorAll('button[data-key]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const k = btn.dataset.key;
+                        if (k === 'cat') els.cat.value = '';
+                        if (k === 'status') els.status.value = '';
+                        if (k === 'date') { els.startDate.value = ''; els.endDate.value = ''; }
+                        if (k === 'q') els.search.value = '';
+                        applyFilters();
+                    });
+                });
+            }
+
+            function applyFilters() {
+                const cat = els.cat.value;
+                const status = els.status.value;
+                const sd = els.startDate.value;
+                const ed = els.endDate.value;
+                const q = els.search.value.trim().toLowerCase();
+
+                let visible = 0;
+                document.querySelectorAll('.opinion-row').forEach(row => {
+                    const rowCat = row.dataset.category;
+                    const rowStatus = row.dataset.status;
+                    const rowDate = row.dataset.date;
+                    const text = row.textContent.toLowerCase();
+
+                    let show = true;
+                    if (cat && rowCat !== cat) show = false;
+                    if (status && rowStatus !== status) show = false;
+                    if (sd && rowDate < sd) show = false;
+                    if (ed && rowDate > ed) show = false;
+                    if (q && !text.includes(q)) show = false;
+
+                    row.style.display = show ? '' : 'none';
+                    if (show) visible++;
+                });
+
+                els.empty.classList.toggle('hidden', visible > 0);
+                renderChips();
+            }
+
+            els.cat.addEventListener('change', applyFilters);
+            els.status.addEventListener('change', applyFilters);
+            els.startDate.addEventListener('change', applyFilters);
+            els.endDate.addEventListener('change', applyFilters);
+            els.search.addEventListener('input', applyFilters);
+            els.clearAll.addEventListener('click', () => {
+                els.cat.value = '';
+                els.status.value = '';
+                els.startDate.value = '';
+                els.endDate.value = '';
+                els.search.value = '';
+                applyFilters();
+            });
+
+            // 초기 적용
+            applyFilters();
+        })();
     </script>
     <script src="../design/screen-spec-modal.js"></script>
 </body>

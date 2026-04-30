@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보관리 - 안전NOW</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        },
+                        sidebar: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50" data-spec-modal="push">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 사이드바 -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="flex items-center gap-3">
+                    <div class="sidebar-logo">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-bold text-white">안전NOW</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="space-y-1">
+                    <li>
+                        <a href="../index.html" class="sidebar-item">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                            대시보드
+                        </a>
+                    </li>
+                    <li>
+                        <a href="my-tasks.html" class="sidebar-item">
+                            <svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                            </svg>
+                            내 업무
+                            <span class="sidebar-item-badge red">5</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-section">안전 활동</li>
+                    <li><a href="risk-assessment.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>위험성평가</a></li>
+                    <li><a href="tbm.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>TBM</a></li>
+                    <li><a href="safety-inspection.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>안전점검</a></li>
+                    <li><a href="safety-education.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>안전보건교육</a></li>
+                    <li><a href="safety-policy.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>안전경영방침</a></li>
+                    <li><a href="safety-budget.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>안전보건예산</a></li>
+                    <li><a href="opinion.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>의견청취<span class="sidebar-item-badge orange">2</span></a></li>
+                    <li><a href="improvement.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>개선조치<span class="sidebar-item-badge yellow">8</span></a></li>
+
+                    <li class="sidebar-section">관리</li>
+                    <li><a href="compliance.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>이행관리</a></li>
+                    <li><a href="documents.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>업무문서관리</a></li>
+                    <li><a href="process.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path></svg>공정관리</a></li>
+                    <li><a href="contractor.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>도급관리</a></li>
+                    <li><a href="workplace.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>사업장관리</a></li>
+
+                    <li class="sidebar-section">지원</li>
+                    <li><a href="support.html" class="sidebar-item"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>고객지원</a></li>
+                    <li><a href="my-info.html" class="sidebar-item active"><svg class="sidebar-item-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>내 정보관리</a></li>
+                </ul>
+            </nav>
+
+            <div class="workspace-selector">
+                <button class="workspace-btn" onclick="toggleWorkspaceDropdown()">
+                    <div id="workspace-avatar" class="workspace-avatar">본</div>
+                    <div class="workspace-info">
+                        <div id="workspace-name" class="workspace-name">본사 사업장</div>
+                        <div id="workspace-role" class="workspace-role">경영책임자</div>
+                    </div>
+                    <svg id="workspace-chevron" class="w-4 h-4 text-slate-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                    </svg>
+                </button>
+                <div id="workspace-dropdown" class="hidden absolute bottom-full left-0 right-0 mb-1 mx-2 bg-slate-800 border border-slate-600 rounded-lg shadow-lg overflow-hidden z-50">
+                    <div class="py-1 max-h-64 overflow-y-auto">
+                        <div class="px-3 py-1.5 text-xs font-medium text-slate-400 uppercase">원청 사업장</div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="ceo" data-name="본사 사업장" data-avatar="본" data-user="김대표" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">경영책임자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="manager" data-name="본사 사업장" data-avatar="본" data-user="박안전" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">안전관리자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div class="workspace-option px-3 py-2 hover:bg-slate-700 cursor-pointer flex items-center gap-3" data-role="worker" data-name="본사 사업장" data-avatar="본" data-user="최근로" onclick="selectWorkspace(this)">
+                            <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center text-white text-sm font-medium">본</div>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-white">본사 사업장</div>
+                                <div class="text-xs text-slate-400">근로자</div>
+                            </div>
+                            <svg class="check-icon hidden w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="header-title">내 정보관리</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-notification">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <span class="header-notification-dot"></span>
+                    </button>
+                    <div class="header-user">
+                        <div id="header-avatar" class="header-avatar">김</div>
+                        <span id="header-username" class="header-username">김대표</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6">
+                <div>
+                    <!-- 탭 -->
+                    <div class="border-b border-gray-200 mb-6">
+                        <nav class="-mb-px flex gap-2" id="myInfoTabs">
+                            <button type="button" class="my-info-tab px-4 py-3 text-sm font-medium border-b-2 border-primary-600 text-primary-600" data-tab="profile">
+                                내 정보 수정
+                            </button>
+                            <button type="button" class="my-info-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="workplaces">
+                                소속 사업장
+                            </button>
+                            <button type="button" class="my-info-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="notifications">
+                                알림 내역
+                                <span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-red-100 text-red-700">3</span>
+                            </button>
+                            <button type="button" class="my-info-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="education">
+                                교육현황
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- TAB 1. MYI01-S 내 정보 수정 -->
+                    <div class="tab-pane" data-pane="profile">
+                        <div class="card max-w-2xl">
+                            <div class="card-header">
+                                <h2 class="card-title">내 정보 수정</h2>
+                                <span class="text-xs text-gray-400">화면 ID: MYI01-S</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="space-y-5">
+                                    <div class="flex items-center gap-4 pb-4 border-b">
+                                        <div class="w-16 h-16 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xl font-bold">김</div>
+                                        <div>
+                                            <p class="font-semibold text-gray-900">김대표</p>
+                                            <p class="text-sm text-gray-500">가입일 2024-08-15 · 본사 사업장</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="form-label">이름</label>
+                                            <input type="text" class="input w-full" value="김대표">
+                                        </div>
+                                        <div>
+                                            <label class="form-label">생년월일</label>
+                                            <input type="date" class="input w-full" value="1972-05-12">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">연락처 <span class="text-red-500">*</span></label>
+                                        <input type="tel" class="input w-full" value="010-1234-5678" placeholder="010-0000-0000">
+                                        <p class="text-xs text-gray-400 mt-1">알림톡 수신에 사용됩니다.</p>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">이메일</label>
+                                        <input type="email" class="input w-full" value="ceo@example.com">
+                                    </div>
+                                    <div class="pt-4 border-t">
+                                        <h3 class="text-sm font-semibold text-gray-700 mb-3">비밀번호 변경</h3>
+                                        <div class="space-y-3">
+                                            <input type="password" class="input w-full" placeholder="현재 비밀번호">
+                                            <input type="password" class="input w-full" placeholder="새 비밀번호 (8자 이상, 영문+숫자+특수문자)">
+                                            <input type="password" class="input w-full" placeholder="새 비밀번호 확인">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer flex items-center justify-end gap-3">
+                                <button type="button" class="btn btn-outline">취소</button>
+                                <button type="button" class="btn btn-primary" onclick="alert('내 정보가 저장되었습니다.')">저장</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2. MYI02-L 소속 사업장 -->
+                    <div class="tab-pane hidden" data-pane="workplaces">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">소속 사업장</h2>
+                                <span class="text-xs text-gray-400">화면 ID: MYI02-L</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>사업장명</th>
+                                            <th class="w-32">역할</th>
+                                            <th class="w-36">소속일</th>
+                                            <th class="w-28">상태</th>
+                                            <th class="w-24 text-right">관리</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="font-medium text-gray-900">본사 사업장</div>
+                                                <div class="text-xs text-gray-500">서울특별시 강남구 · 제조업</div>
+                                            </td>
+                                            <td><span class="badge bg-blue-100 text-blue-700">경영책임자</span></td>
+                                            <td class="text-gray-600">2024-08-15</td>
+                                            <td><span class="badge badge-success">활성</span></td>
+                                            <td class="text-right">
+                                                <button type="button" class="text-xs text-gray-500 hover:text-red-600" onclick="confirmLeaveWorkplace('본사 사업장')">탈퇴</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="font-medium text-gray-900">평택 1공장</div>
+                                                <div class="text-xs text-gray-500">경기도 평택시 · 제조업</div>
+                                            </td>
+                                            <td><span class="badge bg-blue-100 text-blue-700">경영책임자</span></td>
+                                            <td class="text-gray-600">2024-09-20</td>
+                                            <td><span class="badge badge-success">활성</span></td>
+                                            <td class="text-right">
+                                                <button type="button" class="text-xs text-gray-500 hover:text-red-600" onclick="confirmLeaveWorkplace('평택 1공장')">탈퇴</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="font-medium text-gray-900">화성 2공장</div>
+                                                <div class="text-xs text-gray-500">경기도 화성시 · 제조업</div>
+                                            </td>
+                                            <td><span class="badge bg-blue-100 text-blue-700">경영책임자</span></td>
+                                            <td class="text-gray-600">2025-02-01</td>
+                                            <td><span class="badge badge-success">활성</span></td>
+                                            <td class="text-right">
+                                                <button type="button" class="text-xs text-gray-500 hover:text-red-600" onclick="confirmLeaveWorkplace('화성 2공장')">탈퇴</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-xs text-gray-500">※ 마지막 사업장에서 탈퇴하면 계정이 비활성화됩니다.</p>
+                    </div>
+
+                    <!-- TAB 3. MYI03-L 알림 내역 -->
+                    <div class="tab-pane hidden" data-pane="notifications">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <select class="select" id="notifTypeFilter">
+                                    <option value="">전체 유형</option>
+                                    <option value="approval">결재</option>
+                                    <option value="signature">전자서명</option>
+                                    <option value="task">업무 알림</option>
+                                    <option value="opinion">의견청취</option>
+                                </select>
+                                <select class="select" id="notifReadFilter">
+                                    <option value="">전체</option>
+                                    <option value="unread">읽지 않음</option>
+                                    <option value="read">읽음</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-outline btn-sm" onclick="markAllNotifsRead()">모두 읽음 처리</button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">알림 내역</h2>
+                                <span class="text-xs text-gray-400">화면 ID: MYI03-L</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="divide-y divide-gray-100" id="notifList">
+                                    <li class="notif-item p-4 bg-blue-50 border-l-4 border-blue-500" data-type="approval" data-read="unread">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-start gap-3">
+                                                <span class="badge bg-blue-100 text-blue-700">결재</span>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-900">A건설 외 2개사 도급계약 결재 요청이 도착했습니다.</p>
+                                                    <p class="text-xs text-gray-500 mt-1">박안전 (안전보건관리자)이 상신했습니다.</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-gray-400 whitespace-nowrap">5분 전</span>
+                                        </div>
+                                    </li>
+                                    <li class="notif-item p-4 bg-blue-50 border-l-4 border-blue-500" data-type="signature" data-read="unread">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-start gap-3">
+                                                <span class="badge bg-purple-100 text-purple-700">전자서명</span>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-900">2026년 안전보건방침 게시 서명 요청</p>
+                                                    <p class="text-xs text-gray-500 mt-1">서명 기한: 2026-05-07</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-gray-400 whitespace-nowrap">2시간 전</span>
+                                        </div>
+                                    </li>
+                                    <li class="notif-item p-4 bg-blue-50 border-l-4 border-blue-500" data-type="opinion" data-read="unread">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-start gap-3">
+                                                <span class="badge bg-red-100 text-red-700">작업중지요청</span>
+                                                <div>
+                                                    <p class="text-sm font-medium text-gray-900">크레인 와이어로프 마모 - 작업중지 요청이 접수되었습니다.</p>
+                                                    <p class="text-xs text-gray-500 mt-1">김근로 (현장근로자) · 본사 사업장</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-gray-400 whitespace-nowrap">오늘 09:24</span>
+                                        </div>
+                                    </li>
+                                    <li class="notif-item p-4" data-type="task" data-read="read">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-start gap-3">
+                                                <span class="badge bg-gray-100 text-gray-700">업무 알림</span>
+                                                <div>
+                                                    <p class="text-sm text-gray-700">2026년 1분기 위험성평가 마감 1주 전입니다.</p>
+                                                    <p class="text-xs text-gray-500 mt-1">마감일: 2026-04-30</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-gray-400 whitespace-nowrap">1일 전</span>
+                                        </div>
+                                    </li>
+                                    <li class="notif-item p-4" data-type="approval" data-read="read">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-start gap-3">
+                                                <span class="badge bg-blue-100 text-blue-700">결재</span>
+                                                <div>
+                                                    <p class="text-sm text-gray-700">2026년 안전보건예산 결재가 승인되었습니다.</p>
+                                                    <p class="text-xs text-gray-500 mt-1">최종승인: 2026-04-26</p>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs text-gray-400 whitespace-nowrap">4일 전</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4. MYI04-V 교육현황 -->
+                    <div class="tab-pane hidden" data-pane="education">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <select class="select" id="eduPeriodFilter">
+                                    <option value="2026-1H" selected>2026년 상반기</option>
+                                    <option value="2025-2H">2025년 하반기</option>
+                                    <option value="2025-1H">2025년 상반기</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="alert('교육 이수증 PDF가 다운로드됩니다.')">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                </svg>
+                                전체 이수증 PDF
+                            </button>
+                        </div>
+
+                        <!-- 이수 시간 요약 -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h2 class="card-title">이수 시간 요약</h2>
+                                <span class="text-xs text-gray-400">화면 ID: MYI04-V · TBM 인정시간 + 정기교육 합산</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid grid-cols-3 gap-6 mb-6">
+                                    <div class="p-5 bg-blue-50 border border-blue-100 rounded-lg text-center">
+                                        <p class="text-xs text-blue-700 font-medium mb-1">정기 교육 누적</p>
+                                        <p class="text-2xl font-bold text-blue-900">8.5h</p>
+                                    </div>
+                                    <div class="p-5 bg-emerald-50 border border-emerald-100 rounded-lg text-center">
+                                        <p class="text-xs text-emerald-700 font-medium mb-1">TBM 인정시간</p>
+                                        <p class="text-2xl font-bold text-emerald-900">3.0h</p>
+                                    </div>
+                                    <div class="p-5 bg-indigo-50 border-2 border-indigo-300 rounded-lg text-center">
+                                        <p class="text-xs text-indigo-700 font-medium mb-1">합계 / 법정 이수시간</p>
+                                        <p class="text-2xl font-bold text-indigo-900">11.5h <span class="text-base font-normal text-indigo-500">/ 12h</span></p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs text-gray-500 mb-1">
+                                        <span>달성률</span>
+                                        <span class="font-semibold text-indigo-700">96%</span>
+                                    </div>
+                                    <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-indigo-400 to-indigo-600 rounded-full" style="width: 96%"></div>
+                                    </div>
+                                    <p class="mt-3 text-xs text-gray-500">※ 산업안전보건법 시행규칙 제26조 — 사무직 외 근로자 정기교육: 분기당 6시간 이상</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 이수 이력 -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">이수 이력</h2>
+                            </div>
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="w-28">유형</th>
+                                            <th>교육명</th>
+                                            <th class="w-28">이수일</th>
+                                            <th class="w-20 text-center">시간</th>
+                                            <th class="w-32 text-center">이수증</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><span class="badge bg-blue-100 text-blue-700">정기교육</span></td>
+                                            <td>2026년 1분기 정기 안전보건교육</td>
+                                            <td class="text-gray-600">2026-03-25</td>
+                                            <td class="text-center font-medium">3.0h</td>
+                                            <td class="text-center">
+                                                <button type="button" class="text-xs text-primary-600 hover:text-primary-800 font-medium" onclick="alert('PDF 다운로드')">PDF 다운로드</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-blue-100 text-blue-700">정기교육</span></td>
+                                            <td>2026년 1분기 관리감독자 교육</td>
+                                            <td class="text-gray-600">2026-02-18</td>
+                                            <td class="text-center font-medium">5.5h</td>
+                                            <td class="text-center">
+                                                <button type="button" class="text-xs text-primary-600 hover:text-primary-800 font-medium" onclick="alert('PDF 다운로드')">PDF 다운로드</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-emerald-100 text-emerald-700">TBM</span></td>
+                                            <td>1공장 오전 TBM (전사고 위험요소 점검)</td>
+                                            <td class="text-gray-600">2026-04-22</td>
+                                            <td class="text-center font-medium">0.5h</td>
+                                            <td class="text-center text-gray-400 text-xs">—</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-emerald-100 text-emerald-700">TBM</span></td>
+                                            <td>1공장 오전 TBM</td>
+                                            <td class="text-gray-600">2026-04-15</td>
+                                            <td class="text-center font-medium">0.5h</td>
+                                            <td class="text-center text-gray-400 text-xs">—</td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="badge bg-emerald-100 text-emerald-700">TBM</span></td>
+                                            <td>특별 TBM (화학물질 취급)</td>
+                                            <td class="text-gray-600">2026-04-08</td>
+                                            <td class="text-center font-medium">2.0h</td>
+                                            <td class="text-center text-gray-400 text-xs">—</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        // ─────────────────────────────────────────────────────────
+        // 탭 전환 + URL ?tab=... 동기화
+        // ─────────────────────────────────────────────────────────
+        (function setupMyInfoTabs() {
+            const tabs = document.querySelectorAll('.my-info-tab');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            function activate(name) {
+                tabs.forEach(t => {
+                    const on = t.dataset.tab === name;
+                    t.classList.toggle('border-primary-600', on);
+                    t.classList.toggle('text-primary-600', on);
+                    t.classList.toggle('border-transparent', !on);
+                    t.classList.toggle('text-gray-500', !on);
+                });
+                panes.forEach(p => p.classList.toggle('hidden', p.dataset.pane !== name));
+
+                const url = new URL(window.location);
+                url.searchParams.set('tab', name);
+                history.replaceState(null, '', url);
+            }
+
+            tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
+
+            const initial = new URLSearchParams(window.location.search).get('tab');
+            const VALID = ['profile', 'workplaces', 'notifications', 'education'];
+            if (initial && VALID.includes(initial)) activate(initial);
+        })();
+
+        // ─────────────────────────────────────────────────────────
+        // 알림 필터 + 모두 읽음
+        // ─────────────────────────────────────────────────────────
+        (function setupNotifFilters() {
+            const typeEl = document.getElementById('notifTypeFilter');
+            const readEl = document.getElementById('notifReadFilter');
+            if (!typeEl || !readEl) return;
+
+            function applyNotifFilters() {
+                const t = typeEl.value;
+                const r = readEl.value;
+                document.querySelectorAll('#notifList .notif-item').forEach(li => {
+                    const okT = !t || li.dataset.type === t;
+                    const okR = !r || li.dataset.read === r;
+                    li.style.display = (okT && okR) ? '' : 'none';
+                });
+            }
+            typeEl.addEventListener('change', applyNotifFilters);
+            readEl.addEventListener('change', applyNotifFilters);
+        })();
+
+        function markAllNotifsRead() {
+            document.querySelectorAll('#notifList .notif-item').forEach(li => {
+                li.dataset.read = 'read';
+                li.classList.remove('bg-blue-50', 'border-l-4', 'border-blue-500');
+            });
+            alert('모든 알림이 읽음 처리되었습니다.');
+        }
+
+        function confirmLeaveWorkplace(name) {
+            if (confirm(`"${name}"에서 탈퇴하시겠습니까?\n탈퇴 후에는 해당 사업장의 데이터에 접근할 수 없습니다.`)) {
+                alert(`"${name}"에서 탈퇴 신청이 접수되었습니다.\n관리자 승인 후 탈퇴 처리됩니다.`);
+            }
+        }
+    </script>
+    <script src="../design/screen-spec-modal.js"></script>
+</body>
+</html>

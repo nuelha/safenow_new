@@ -799,6 +799,22 @@
                 showLinkedSource('opinion');
             }
         }
+
+        // URL ?status=, ?source= 으로 진입 시 필터 자동 적용 (대시보드 카드 클릭 동선)
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = urlParams.get('status');
+            const source = urlParams.get('source');
+            const statusEl = document.getElementById('statusFilter');
+            const sourceEl = document.getElementById('sourceFilter');
+            if (status && statusEl && Array.from(statusEl.options).some(o => o.value === status)) {
+                statusEl.value = status;
+                statusEl.dispatchEvent(new Event('change'));
+            }
+            if (source && sourceEl && Array.from(sourceEl.options).some(o => o.value === source)) {
+                sourceEl.value = source;
+                sourceEl.dispatchEvent(new Event('change'));
+            }
+        });
     </script>
     <script src="../design/screen-spec-modal.js"></script>
 </body>
