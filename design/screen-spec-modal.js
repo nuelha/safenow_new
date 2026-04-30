@@ -13,6 +13,249 @@
 (function () {
 
   // ─────────────────────────────────────────────────────────
+  // 0. 공통 레이아웃 스펙 (모든 페이지 첫 탭에 항상 노출)
+  //    스펙 원본: design/공통레이아웃_화면설계서.md
+  //    구조: ## 헤딩 단위로 sections 분할. content는 HTML.
+  // ─────────────────────────────────────────────────────────
+  const COMMON_SPEC = {
+    id: 'LAYOUT',
+    title: '공통 레이아웃',
+    sections: [
+      {
+        heading: '1. 전체 레이아웃 구조',
+        content:
+`<pre><code>┌──────────────────────────────────────────────────────┐
+│                    TOPBAR (56px)                      │ ← 고정
+├──────────┬───────────────────────────────────────────┤
+│          │                                           │
+│  SIDEBAR │              MAIN CONTENT                 │
+│  (200px) │                                           │
+│  고정    │         스크롤 가능 영역                   │
+│          │                                           │
+│  [하단]  │                                           │
+│  컨텍스트│                                           │
+│  선택기  │                                           │
+└──────────┴───────────────────────────────────────────┘</code></pre>
+<ul>
+  <li><b>TOPBAR</b>: 상단 고정 (position: fixed / sticky)</li>
+  <li><b>SIDEBAR</b>: 좌측 고정, TOPBAR 아래부터 화면 끝까지</li>
+  <li><b>MAIN CONTENT</b>: 나머지 영역, 독립적으로 스크롤</li>
+</ul>`
+      },
+      {
+        heading: '2. TOPBAR',
+        content:
+`<table>
+  <tr><th>항목</th><th>값</th></tr>
+  <tr><td>높이</td><td>56px</td></tr>
+  <tr><td>배경색</td><td><code>#1E2A3B</code> (네이비)</td></tr>
+  <tr><td>position</td><td>fixed top</td></tr>
+  <tr><td>z-index</td><td>100</td></tr>
+</table>
+<h4>로고 (좌측)</h4>
+<ul>
+  <li>아이콘 32px + 텍스트 "안전NOW" 16px / 색상 흰색</li>
+  <li>클릭 → 현재 컨텍스트 기준 기본 화면(DSH 또는 TSK)</li>
+</ul>
+<h4>알림 아이콘 (우측 영역 좌측)</h4>
+<ul>
+  <li>🔔 + 미읽음 배지 (0이면 숨김, 최대 99+)</li>
+  <li>클릭 → 알림 드롭다운 패널 (최근 10건, 미읽음 파랑 도트)</li>
+  <li>항목 클릭 → 해당 화면 이동 + 읽음 처리</li>
+  <li>[알림 전체보기] → MYI03-L</li>
+</ul>
+<h4>프로필 드롭다운 (우측)</h4>
+<ul>
+  <li>아바타(이름 첫 글자 32px) + 이름 + 사업장명</li>
+  <li>드롭다운 메뉴: 👤 내 정보관리 (→ MYI01-S) / 🏢 사업장 전환 (→ LOGIN-S) / 로그아웃</li>
+</ul>`
+      },
+      {
+        heading: '3. SIDEBAR (GNB)',
+        content:
+`<table>
+  <tr><th>항목</th><th>값</th></tr>
+  <tr><td>너비</td><td>200px</td></tr>
+  <tr><td>배경색</td><td><code>#1E2A3B</code> (네이비)</td></tr>
+  <tr><td>position</td><td>fixed left, top: 56px</td></tr>
+  <tr><td>높이</td><td><code>calc(100vh - 56px)</code></td></tr>
+  <tr><td>오버플로우</td><td>메뉴 영역 scroll / 컨텍스트 선택기 고정</td></tr>
+</table>
+<h4>메뉴 항목 상태별 스타일</h4>
+<table>
+  <tr><th>상태</th><th>배경</th><th>텍스트 / 아이콘</th></tr>
+  <tr><td>기본</td><td>투명</td><td><code>#9CA3AF</code></td></tr>
+  <tr><td>호버</td><td><code>#2D3F56</code></td><td><code>#E5E7EB</code></td></tr>
+  <tr><td>활성</td><td><code>#2563EB</code></td><td><code>#fff</code></td></tr>
+</table>
+<h4>배지 (카운트)</h4>
+<ul>
+  <li>내 업무 / 의견청취 / 개선조치 등 미처리 건수</li>
+  <li>색상 빨강(<code>#DC2626</code>), 최대 99+, 0이면 숨김</li>
+</ul>
+<h4>그룹 구분선 (선택)</h4>
+<p>안전 활동 / 관리 / 조직·계약 / 지원 그룹으로 시각 분리.</p>`
+      },
+      {
+        heading: '4. 컨텍스트 선택기 (SIDEBAR 하단 고정)',
+        content:
+`<pre><code>┌──────────────────────┐
+│ 🏢 다온산업           │
+│    본사 사업장        │
+│    경영책임자     ∨   │ ← 클릭 시 LOGIN-S로 이동
+└──────────────────────┘</code></pre>
+<ul>
+  <li>회사 아이콘 + 회사명 + 사업장명 + 역할 + 전환 아이콘(∨)</li>
+  <li>클릭 → LOGIN-S (사업장 선택 화면)</li>
+  <li>로그아웃 없이 사업장 전환</li>
+</ul>
+<h4>도급업체 / 컨설팅업체 컨텍스트</h4>
+<ul>
+  <li>상단에 [도급업체] 주황 배지 또는 [컨설팅] 보라 배지 표시</li>
+  <li>업체명 + 원청 사업장명 + 담당자 역할</li>
+</ul>`
+      },
+      {
+        heading: '5. 컨텍스트별 GNB 메뉴 노출 규칙',
+        content:
+`<h4>5-1. 구독사업자 — CEO / GM / SM / SHM (17개 메뉴 전체)</h4>
+<p>대시보드 / 내 업무 / 위험성평가 / TBM / 안전점검 / 안전보건교육 / 안전경영방침 / 안전보건예산 / 의견청취 / 개선조치 / 이행관리 / 업무문서관리 / 공정관리 / 도급관리 / 사업장관리 / 고객지원 / 내 정보관리</p>
+<table>
+  <tr><th>메뉴</th><th>CEO</th><th>GM</th><th>SM</th><th>SHM</th></tr>
+  <tr><td>대시보드</td><td>DSH01-V</td><td>DSH02-V</td><td>DSH02-V</td><td>DSH02-V</td></tr>
+  <tr><td>안전보건예산</td><td>전체</td><td>전체</td><td>본인 사업소</td><td>본인 사업소</td></tr>
+  <tr><td>사업장관리</td><td>목록</td><td>목록</td><td>본인 사업소만</td><td>본인 사업소만</td></tr>
+</table>
+<h4>5-2. 구독사업자 — WKR (6개)</h4>
+<p>대시보드(DSH03-V) / 내 업무 / TBM / 의견청취 / 고객지원 / 내 정보관리</p>
+<h4>5-3. 도급업체 SUB (5개)</h4>
+<p>내 업무 / TBM / 의견청취 / 고객지원 / 내 정보관리 — 기본 진입은 DSH04-V (간소 대시보드)</p>
+<h4>5-4. 컨설팅업체 CON (3 + 위임 메뉴)</h4>
+<p>내 업무 / 고객지원 / 내 정보관리 + 위임 범위 메뉴(<code>risk_assessment</code> → 위험성평가 / <code>compliance_docs</code> → 이행관리·업무문서관리·개선조치)</p>
+<h4>렌더링 로직 (요약)</h4>
+<pre><code>function getMenuList({ company_type, role, consulting_scope }) {
+  if (company_type === 'subcontractor') return BASE_MENUS.subcontractor;
+  if (company_type === 'consulting') {
+    const m = [...BASE_MENUS.consulting];
+    if (consulting_scope?.includes('risk_assessment')) m.splice(1, 0, 'risk');
+    if (consulting_scope?.includes('compliance_docs')) m.splice(1, 0, 'compliance', 'documents', 'improvement');
+    return m;
+  }
+  if (role === 'WKR') return BASE_MENUS.principal_wkr;
+  return BASE_MENUS.principal_ceo_gm_sm_shm;
+}</code></pre>`
+      },
+      {
+        heading: '6. 메뉴 ID — 화면 ID 매핑',
+        content:
+`<table>
+  <tr><th>메뉴 ID</th><th>메뉴명</th><th>이동 화면</th><th>배지 데이터 소스</th></tr>
+  <tr><td><code>dashboard</code></td><td>대시보드</td><td>역할별 DSH01~04</td><td>—</td></tr>
+  <tr><td><code>tasks</code></td><td>내 업무</td><td>TSK01-L</td><td>tasks WHERE assignee=본인 AND status!=DONE COUNT</td></tr>
+  <tr><td><code>risk</code></td><td>위험성평가</td><td>RSK01-V</td><td>—</td></tr>
+  <tr><td><code>tbm</code></td><td>TBM</td><td>TBM01-L</td><td>—</td></tr>
+  <tr><td><code>inspection</code></td><td>안전점검</td><td>INS01-V</td><td>—</td></tr>
+  <tr><td><code>education</code></td><td>안전보건교육</td><td>EDU01-V</td><td>—</td></tr>
+  <tr><td><code>policy</code></td><td>안전경영방침</td><td>POL01-L</td><td>—</td></tr>
+  <tr><td><code>budget</code></td><td>안전보건예산</td><td>BGT01-V</td><td>—</td></tr>
+  <tr><td><code>opinion</code></td><td>의견청취</td><td>OPN01-L</td><td>opinion_requests WHERE status=RECEIVED AND site=본인 COUNT</td></tr>
+  <tr><td><code>improvement</code></td><td>개선조치</td><td>IMP01-L</td><td>improvements WHERE status!=DONE AND site=본인 COUNT</td></tr>
+  <tr><td><code>compliance</code></td><td>이행관리</td><td>CMP01-V</td><td>—</td></tr>
+  <tr><td><code>documents</code></td><td>업무문서관리</td><td>DOC01-L</td><td>—</td></tr>
+  <tr><td><code>process</code></td><td>공정관리</td><td>PRC01-L</td><td>—</td></tr>
+  <tr><td><code>contractor</code></td><td>도급관리</td><td>CON01-L</td><td>—</td></tr>
+  <tr><td><code>workplace</code></td><td>사업장관리</td><td>WRK01-L 또는 WRK01-D</td><td>—</td></tr>
+  <tr><td><code>support</code></td><td>고객지원</td><td>SUP01-L</td><td>—</td></tr>
+  <tr><td><code>myinfo</code></td><td>내 정보관리</td><td>MYI01-S</td><td>—</td></tr>
+</table>`
+      },
+      {
+        heading: '7. TBM 메뉴 진입 시 탭 분기',
+        content:
+`<table>
+  <tr><th>컨텍스트</th><th>진입 화면</th><th>노출 탭</th></tr>
+  <tr><td>구독사업자 (SHM+)</td><td>TBM01-L</td><td>[TBM 목록] [스케줄] [그룹]</td></tr>
+  <tr><td>구독사업자 (WKR)</td><td>TBM01-L</td><td>[TBM 목록] (스케줄·그룹 숨김)</td></tr>
+  <tr><td>도급업체 (SUB)</td><td>TBM01-L</td><td>[TBM 목록] (스케줄·그룹 숨김)</td></tr>
+</table>`
+      },
+      {
+        heading: '8. 사업장관리 메뉴 진입 시 분기',
+        content:
+`<table>
+  <tr><th>역할</th><th>진입 화면</th><th>비고</th></tr>
+  <tr><td>CEO / GM</td><td>WRK01-L (사업장 목록)</td><td>전체 사업장 목록 표시</td></tr>
+  <tr><td>SM / SHM</td><td>WRK01-D (사업장 상세)</td><td>본인 소속 사업장 자동 로드. 목록 건너뜀</td></tr>
+  <tr><td>WKR / SUB</td><td>—</td><td>메뉴 자체 비노출</td></tr>
+</table>`
+      },
+      {
+        heading: '9. 반응형 처리 (모바일)',
+        content:
+`<table>
+  <tr><th>구분</th><th>기준</th><th>처리</th></tr>
+  <tr><td>데스크탑</td><td>1024px 이상</td><td>사이드바 고정 표시</td></tr>
+  <tr><td>태블릿</td><td>768~1023px</td><td>사이드바 아이콘만 표시 (호버 시 툴팁)</td></tr>
+  <tr><td>모바일</td><td>767px 이하</td><td>사이드바 숨김 + 하단 탭바로 대체</td></tr>
+</table>
+<h4>모바일 하단 탭바 (컨텍스트별 4~5개)</h4>
+<ul>
+  <li>구독사업자(SHM+): [대시보드] [내 업무] [의견청취] [개선조치] [더보기]</li>
+  <li>근로자/도급: [내 업무] [TBM] [의견청취] [내 정보] [더보기]</li>
+</ul>`
+      },
+      {
+        heading: '10. 공통 레이아웃 사용 예외 화면',
+        content:
+`<table>
+  <tr><th>화면</th><th>이유</th></tr>
+  <tr><td>로그인</td><td>인증 전 화면</td></tr>
+  <tr><td>LOGIN-S 사업장 선택</td><td>컨텍스트 설정 전. TOPBAR만 표시</td></tr>
+  <tr><td>REG-01~03 회원가입</td><td>인증 전 화면</td></tr>
+  <tr><td>BIZ-01~03 사업자 추가</td><td>TOPBAR만 표시 (SIDEBAR 없음)</td></tr>
+  <tr><td>ERR-01 초대 링크 만료</td><td>단독 오류 화면</td></tr>
+</table>`
+      },
+      {
+        heading: '11. CSS 변수 및 토큰 (공통 참조)',
+        content:
+`<pre><code>:root {
+  /* 색상 */
+  --color-navy:        #1E2A3B;
+  --color-navy-dark:   #131D2B;
+  --color-navy-hover:  #2D3F56;
+  --color-blue:        #2563EB;
+  --color-blue-light:  #EFF6FF;
+  --color-green:       #16A34A;
+  --color-orange:      #EA580C;
+  --color-red:         #DC2626;
+  --color-purple:      #7C3AED;
+
+  --color-bg:      #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-border:  #E2E5EB;
+  --color-text:    #1A1D23;
+  --color-muted:   #6B7280;
+  --color-dim:     #9CA3AF;
+
+  /* 레이아웃 */
+  --topbar-height: 56px;
+  --sidebar-width: 200px;
+
+  /* 반경 */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  /* 그림자 */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+}</code></pre>`
+      }
+    ]
+  };
+
+  // ─────────────────────────────────────────────────────────
   // 1. 페이지 → 화면 ID 매핑
   // ─────────────────────────────────────────────────────────
   const PAGE_SPECS = {
@@ -378,13 +621,23 @@
     }[c]));
   }
 
+  // LAYOUT 탭 sentinel — currentIds 안에 항상 첫번째 항목으로 들어감
+  const LAYOUT_SENTINEL = '__LAYOUT__';
+
   function renderTabs() {
     const tabsEl = document.getElementById('spec-modal-tabs');
     tabsEl.innerHTML = currentIds.map((id, i) => {
-      const spec = currentSpecsMap[id];
-      const title = spec ? spec.title : '(미정의)';
+      let label, subTitle;
+      if (id === LAYOUT_SENTINEL) {
+        label = COMMON_SPEC.id;
+        subTitle = COMMON_SPEC.title;
+      } else {
+        const spec = currentSpecsMap[id];
+        label = id;
+        subTitle = spec ? spec.title : '(미정의)';
+      }
       return `<div class="spec-tab${i === 0 ? ' active' : ''}" data-idx="${i}">` +
-             `${id}<br><span class="spec-tab-sub">${escapeHtml(title)}</span></div>`;
+             `${label}<br><span class="spec-tab-sub">${escapeHtml(subTitle)}</span></div>`;
     }).join('');
     tabsEl.querySelectorAll('.spec-tab').forEach(el => {
       el.onclick = () => renderContent(parseInt(el.dataset.idx, 10));
@@ -394,16 +647,27 @@
   function renderContent(idx) {
     currentTabIdx = idx;
     const id = currentIds[idx];
-    const spec = currentSpecsMap[id];
-
-    document.getElementById('spec-modal-title').textContent =
-      spec ? `${id} · ${spec.title}` : id;
+    const body = document.getElementById('spec-modal-body');
 
     document.querySelectorAll('.spec-tab').forEach((t, i) => {
       t.classList.toggle('active', i === idx);
     });
 
-    const body = document.getElementById('spec-modal-body');
+    // LAYOUT 탭 — 하드코딩 HTML 섹션 직접 렌더 (marked 불필요)
+    if (id === LAYOUT_SENTINEL) {
+      document.getElementById('spec-modal-title').textContent =
+        `${COMMON_SPEC.id} · ${COMMON_SPEC.title}`;
+      body.innerHTML = COMMON_SPEC.sections.map(s =>
+        `<h3>${escapeHtml(s.heading)}</h3>${s.content}`
+      ).join('');
+      return;
+    }
+
+    // 페이지별 ID — MD 캐시에서 꺼내 marked 렌더
+    const spec = currentSpecsMap[id];
+    document.getElementById('spec-modal-title').textContent =
+      spec ? `${id} · ${spec.title}` : id;
+
     if (!spec) {
       body.innerHTML =
         '<div class="spec-empty">' +
@@ -423,22 +687,26 @@
     document.getElementById('spec-modal-title').textContent = '—';
 
     const page = getCurrentPage();
-    currentIds = PAGE_SPECS[page] || [];
+    const pageSpecs = PAGE_SPECS[page] || [];
+    // LAYOUT 탭은 항상 첫 번째로. 페이지 스펙은 그 뒤에 이어 붙임.
+    currentIds = [LAYOUT_SENTINEL, ...pageSpecs];
 
-    if (currentIds.length === 0) {
-      renderEmpty();
-      return;
+    // 페이지별 스펙이 있을 때만 marked.js + MD 로드 (LAYOUT 단독이면 fetch 불필요)
+    if (pageSpecs.length > 0) {
+      try {
+        const [, specs] = await Promise.all([loadMarked(), loadSpecs()]);
+        currentSpecsMap = specs;
+      } catch (e) {
+        console.error('[screen-spec-modal]', e);
+        // MD 로드 실패해도 LAYOUT 탭은 정상 표시. 다른 탭 클릭 시 에러 메시지.
+        currentSpecsMap = {};
+      }
+    } else {
+      currentSpecsMap = {};
     }
 
-    try {
-      const [, specs] = await Promise.all([loadMarked(), loadSpecs()]);
-      currentSpecsMap = specs;
-      renderTabs();
-      renderContent(0);
-    } catch (e) {
-      console.error('[screen-spec-modal]', e);
-      renderError(e && e.message ? e.message : String(e));
-    }
+    renderTabs();
+    renderContent(0);
   }
 
   // ─────────────────────────────────────────────────────────
